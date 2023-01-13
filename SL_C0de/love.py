@@ -135,21 +135,22 @@ class LOVE(object):
         """
 
         # Load the Load Love Numbers
+        self.h_e=np.loadtxt(way+'/h_e.dat',unpack=True)[1,:]
+        self.k_e=np.loadtxt(way+'/k_e.dat',unpack=True)[1,:]
+        self.h=love_lm(np.expand_dims(self.h_e,axis=1),model_p)
+        self.k=love_lm(np.expand_dims(self.k_e,axis=1),model_p)
+        self.k_ve=np.loadtxt(way+'/k_ve.dat',unpack=True)[1:,:]
+        self.h_ve=np.loadtxt(way+'/h_ve.dat',unpack=True)[1:,:]
 
-        self.h=love_lm(np.expand_dims(np.loadtxt(way+'h_e.dat',unpack=True)[1,:],axis=1),model_p)
-        self.k=love_lm(np.expand_dims(np.loadtxt(way+'k_e.dat',unpack=True)[1,:],axis=1),model_p)
-        self.k_ve=np.loadtxt(way+'k_ve.dat',unpack=True)[1:-1,:]
-        self.h_ve=np.loadtxt(way+'h_ve.dat',unpack=True)[1:-1,:]
-
-        love_time=np.loadtxt(way+'time.dat',unpack=True)
+        self.love_time=np.loadtxt(way+'/time.dat',unpack=True)
         #indices=np.linspace(0,len(love_time),1)
-        indices_love=np.zeros((len(model_p.grid.time_step),),dtype=int)
-        for i in range(0,len(model_p.grid.time_step)):
-            indices_love[i]=np.where(model_p.grid.time_step[i]==love_time)[0]
+        # indices_love=np.zeros((len(model_p.grid.time_step),),dtype=int)
+        # for i in range(0,len(model_p.grid.time_step)):
+        #     indices_love[i]=np.where(model_p.grid.time_step[i]==love_time)[0]
         
 
-        self.k_ve=self.k_ve[indices_love,:]
-        self.h_ve=self.h_ve[indices_love,:]
+        # self.k_ve=self.k_ve[indices_love,:]
+        # self.h_ve=self.h_ve[indices_love,:]
 
         self.beta_l = np.zeros((len(model_p.grid.time_step)-1,len(model_p.grid.time_step)-1,model_p.maxdeg+1)) 
         self.beta_konly_l = np.zeros((len(model_p.grid.time_step)-1,len(model_p.grid.time_step)-1))
@@ -157,24 +158,27 @@ class LOVE(object):
 
         for t_j in range (1,len(model_p.grid.time_step)):
             for t_n in range(1,t_j):
-                self.beta_l[t_j-1,t_n-1,:]=self.k_ve[t_n-t_j,:model_p.maxdeg+1]-self.h_ve[t_n-t_j,:model_p.maxdeg+1]
-                self.beta_konly_l[t_j-1,t_n-1]=self.k_ve[t_n-t_j,1]-self.h_ve[t_n-t_j,1]
-        
-        # Load the Tide Love Numbers
+                dt_n=np.where(np.round((model_p.time_step[t_n-1]-model_p.time_step[t_j-1]),2)==self.love_time)[0]
+                self.beta_l[t_j-1,t_n-1,1:]=self.k_ve[dt_n,:model_p.maxdeg][0].squeeze()-self.k_e[:model_p.maxdeg]-(self.h_ve[dt_n,:model_p.maxdeg][0].squeeze()-self.h_e[:model_p.maxdeg])
+                self.beta_konly_l[t_j-1,t_n-1]=self.k_ve[dt_n,1]-self.k_e[0]-(self.h_ve[dt_n,1]-self.h_e[0])
 
-        self.h_tide=love_lm(np.expand_dims(np.loadtxt(way+'h_e_T.dat',unpack=True)[1,:],axis=1),model_p)
-        self.k_tide=love_lm(np.expand_dims(np.loadtxt(way+'k_e_T.dat',unpack=True)[1,:],axis=1),model_p)
-        self.k_tide_ve=np.loadtxt(way+'k_ve_T.dat',unpack=True)[1:-1,:]
-        self.h_tide_ve=np.loadtxt(way+'h_ve_T.dat',unpack=True)[1:-1,:]
+        # Load the Tide Love Numbers
+        self.h_tide_e=np.loadtxt(way+'/h_e_T.dat',unpack=True)[1,:]
+        self.k_tide_e=np.loadtxt(way+'/k_e_T.dat',unpack=True)[1,:]
+        self.h_tide=love_lm(np.expand_dims(self.h_tide_e,axis=1),model_p)
+        self.k_tide=love_lm(np.expand_dims(self.k_tide_e,axis=1),model_p)
+        self.k_tide_ve=np.loadtxt(way+'/k_ve_T.dat',unpack=True)[1:-1,:]
+        self.h_tide_ve=np.loadtxt(way+'/h_ve_T.dat',unpack=True)[1:-1,:]
 
         self.beta_tide = np.zeros((len(model_p.grid.time_step)-1,len(model_p.grid.time_step)-1,model_p.maxdeg+1)) 
         self.beta_konly_tide = np.zeros((len(model_p.grid.time_step)-1,len(model_p.grid.time_step)-1))
 
         for t_j in range (1,len(model_p.grid.time_step)):
             for t_n in range(1,t_j):
-                self.beta_tide[t_j-1,t_n-1,:]=self.k_tide_ve[t_n-t_j,:model_p.maxdeg+1]-self.h_tide_ve[t_n-t_j,:model_p.maxdeg+1]
-                self.beta_konly_tide[t_j-1,t_n-1]=self.k_tide_ve[t_n-t_j,1]-self.h_tide_ve[t_n-t_j,1]
-
+                dt_n=np.where(np.round((model_p.time_step[t_n-1]-model_p.time_step[t_j-1]),2)==self.love_time)[0]
+                self.beta_tide[t_j-1,t_n-1,1:]=self.k_tide_ve[dt_n,:model_p.maxdeg][0].squeeze()-self.k_tide_e[:model_p.maxdeg]-(self.h_tide_ve[dt_n,:model_p.maxdeg][0].squeeze()-self.h_tide_e[:model_p.maxdeg])
+                self.beta_konly_tide[t_j-1,t_n-1]=self.k_tide_ve[dt_n,1]-self.k_tide_e[0]-(self.h_tide_ve[dt_n,1]-self.h_tide_e[0])
+        
         self.E = 1 + self.k - self.h
         self.E_T = 1 + self.k_tide - self.h_tide
         self.T = sphericalobject(get_tlm(model_p.maxdeg,model_p),'coeff')
@@ -198,14 +202,20 @@ class LOVE(object):
     
     def calc_beta_G(self,model_p):
         self.beta_G_l = np.zeros((len(model_p.grid.time_step)-1,len(model_p.grid.time_step)-1,model_p.maxdeg+1)) 
-        for t_j in range (1,len(model_p.grid.time_step)):
+        k_e=np.loadtxt(model_p.love_way+'/k_e.dat',unpack=True)[1,:]
+        for t_j in range (1,model_p.time_step_number):
             for t_n in range(1,t_j):
-                self.beta_G_l[t_j-1,t_n-1,:]=self.k_ve[t_n-t_j,:model_p.maxdeg+1]
-        self.beta_G_l=np.array(self.beta_l)[:,:,self.beta_G_counter.astype(int)[:-1]-1]
+                #print(np.where(np.round(model_p.time_step[t_n]-model_p.time_step[t_j],2)))
+                #print(t_j,t_n,np.where(np.round((model_p.time_step[t_n]-model_p.time_step[t_j]),2)==self.love_time)[0])
+                self.beta_G_l[t_j-1,t_n-1,:]=self.k_ve[np.where(np.round((model_p.time_step[t_n-1]-model_p.time_step[t_j-1]),2)==self.love_time)[0],:model_p.maxdeg+1][0].squeeze()-k_e[:model_p.maxdeg+1]
+        self.beta_G_l=np.array(self.beta_G_l)[:,:,self.beta_counter.astype(int)[:-1]-1]
 
     def calc_beta_R(self,model_p):
         self.beta_R_l = np.zeros((len(model_p.grid.time_step)-1,len(model_p.grid.time_step)-1,model_p.maxdeg+1)) 
-        for t_j in range (1,len(model_p.grid.time_step)):
+        h_e=np.loadtxt(model_p.love_way+'/h_e.dat',unpack=True)[1,:]
+        for t_j in range (1,model_p.time_step_number):
             for t_n in range(1,t_j):
-                self.beta_R_l[t_j-1,t_n-1,:]=self.k_ve[t_n-t_j,:model_p.maxdeg+1]
+                #print(np.where(np.round(model_p.time_step[t_n]-model_p.time_step[t_j],2)))
+                #print(t_j,t_n,np.where(np.round((model_p.time_step[t_n]-model_p.time_step[t_j]),2)==self.love_time)[0])
+                self.beta_R_l[t_j-1,t_n-1,:]=self.h_ve[np.where(np.round((model_p.time_step[t_n-1]-model_p.time_step[t_j-1]),2)==self.love_time)[0],:model_p.maxdeg+1][0].squeeze()-h_e[:model_p.maxdeg+1]
         self.beta_R_l=np.array(self.beta_R_l)[:,:,self.beta_counter.astype(int)[:-1]-1]

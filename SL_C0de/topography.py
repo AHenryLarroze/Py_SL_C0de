@@ -116,3 +116,11 @@ class spherical_topo(sphericalobject):
             #plt.pcolor(self.topo[t_it,:,:])
             #plt.colorbar()
             #plt.show() 
+    
+    def zeros(self,model_p):
+        self.topo_pres=np.zeros((model_p.grid.lats.size,model_p.grid.elons.size))
+        self.topo_initial=self.topo_pres - model_p.ice.ice[-1,:,:]-model_p.sed.sed[0,:,:]+model_p.ice.ice[0,:,:]
+        self.topo=np.zeros((len(model_p.grid.time_step),model_p.grid.nlats,model_p.grid.nlons))
+        for i in range(1,len(model_p.grid.time_step)):
+            self.topo[i,:,:]=self.topo_pres - model_p.ice.ice[0,:,:]-model_p.sed.sed[i,:,:]+model_p.ice.ice[i,:,:]
+        return self

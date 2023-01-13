@@ -74,7 +74,7 @@ class LOAD(object):
         create_GRID() 
     """
     
-    def __init__(self,model_p,load_number=3,load_name=['ice','water','sediment']):
+    def __init__(self,model_p):
         """
             Parameters
             ----------
@@ -82,12 +82,12 @@ class LOAD(object):
         N=int((model_p.maxdeg+1)*(model_p.maxdeg+2)/2)
         self.N=N
         self.delL=sphericalobject(np.zeros((N,)),'coeff')
-        self.sdelL=np.zeros((model_p.time_step_number,N))+1j
+        self.sdelL=np.zeros((model_p.time_step_number,N))+0j
         self.delL_prev=sphericalobject(np.zeros((N,)),'coeff')
-        self.sdelI=np.zeros((len(model_p.grid.time_step)-1,3))+1j
-        self.sdelm=np.zeros((len(model_p.grid.time_step)-1,3))+1j
+        self.sdelI=np.zeros((len(model_p.grid.time_step)-1,3))+0j
+        self.sdelm=np.zeros((len(model_p.grid.time_step)-1,3))+0j
         self.delLa=sphericalobject(np.zeros((self.N,)),'coeff')
-        self.sdelLa=np.zeros((model_p.time_step_number,self.N))+1j
+        self.sdelLa=np.zeros((model_p.time_step_number,self.N))+0j
         self.delLa_prev= sphericalobject(np.zeros((self.N,)),'coeff')
         self.V_lm=sphericalobject(np.zeros((N,)),'coeff')
         self.V_lm_T=sphericalobject(np.zeros((N,)),'coeff')

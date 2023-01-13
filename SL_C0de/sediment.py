@@ -81,3 +81,6 @@ class spherical_sed(sphericalobject):
         self.grd=self.sed[0,:,:]-self.sed[t_it,:,:] # calculate the difference between actual sediment thickness and the one at t_it
         self.isgrd=True # because a grid was created, update the isgrd parameter.
         return self
+    
+    def zeros(self,model_p):
+        self.sed=np.zeros((model_p.time_step_number+1,model_p.grid.lats.size,model_p.grid.elons.size))

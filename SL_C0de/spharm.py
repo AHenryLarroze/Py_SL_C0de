@@ -95,8 +95,10 @@ def get_coeffs(a_lm,n):
         a_n = a_lm[gauss_sum:gauss_sum+n+1]
     return a_n
 
-def calc_Y_lm(N,theta,phi):
-    return pysh.expand.spharm(N,theta,phi,packed=True)
+def calc_at_point(C_lm,model_p,theta,phi):
+    model_p.Y_lm=(pysh.expand.spharm(model_p.maxdeg,theta,phi,packed=True)[0]+pysh.expand.spharm(model_p.maxdeg,theta,phi,packed=True)[1]*1j)/2
+    model_p.Y_lm[0]=model_p.Y_lm[0]*math.sqrt(2)
+    return np.dot(C_lm,model_p.Y_lm)*math.sqrt(2)*2
 
 # def grd_to_coeff(grd,N,P_lm,w): # extract the shape of the grid
 #     F_ym=np.fft.fft(grd,axis=1,norm='backward') # use the fourrier transform to sum over the exponential

@@ -142,3 +142,11 @@ class spherical_ice(sphericalobject):
         self.grd=self.ice_corrected[t_it,:,:]-self.ice_corrected[0,:,:] # calculate the difference of ice thickness between actual and the one at t_it.
         self.isgrd=True
         return self
+    
+    def zeros(self,model_p) :
+        # for each time step interpolate the ice grid on the Gaussian grid defined in GRID class
+        # In this version i created a function called par.py wich isa parallelised version of the for loop of the upper version. 
+        # It need to define a pool object to precharge the core calculator.
+        #workers = int(cpu_count()/2)# half of the core are used by the code.
+        self.ice=np.zeros((model_p.time_step_number+1,model_p.grid.lats.size,model_p.grid.elons.size))
+        self.ice_corrected=self.ice.copy()

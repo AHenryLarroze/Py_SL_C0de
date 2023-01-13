@@ -56,12 +56,11 @@ class SL_model(world_plot):
         create_GRID() 
     """
     
-    def __init__(self,g=9.80616,maxdeg=64,M_e=5.9742*10**24,omega=7.292*10**(-5),k_hydro=0.934,G=6.67408*10**(-11),k_f=0.942,a = 6371000,C=8.034*10**37,k_max=10,epsilon=10**-4,topo_it_max=10,nb_workers=6,ice_way='ice6g_data',topo_way='topo_SL',sed_way='Irrawady_sedimentationgrid',love_way='VM5.l40.um316.lm5.1024'):
+    def __init__(self,g=9.80616,maxdeg=64,M_e=5.9742*10**24,omega=7.292*10**(-5),k_hydro=0.934,G=6.67408*10**(-11),k_f=0.942,a = 6371000,C=8.034*10**37,k_max=10,epsilon=1,topo_it_max=10,del_topo=10**(-1),nb_workers=6, data_way=r'C:/Users/ahenry01/Desktop/Python_code/SL_C0de_data/',ice_way='ice6g_data',topo_way='topo_SL',sed_way='Irrawady_sedimentationgrid',love_way='VM5.l40.um316.lm5.1024',time_step=np.array([26,25,24,23,22,21,20.5,20,19.5,19,18.5,18,17.5,17,16.5,16,15.5,15,14.5,14,13.5,13,12.5,12,11.5,11,10.5,10,9.5,9,8.5,8,7.5,7,6.5,6,5.5,5,4.5,4,3.5,3,2.5,2,1.5,1,0.5,0])):
         """
             Parameters
             ----------
         """
-        mp.set_start_method('spawn')
         self.rotation=True
         self.g = g # gravitational constant of earth m**2/s
         self.maxdeg=maxdeg # maximum degree of the spherical harmonic used
@@ -76,50 +75,106 @@ class SL_model(world_plot):
         self.k_max = k_max # maximum number of convergence iteration for the resolution of the sea level equation at 1 time
         self.epsilon = epsilon # convergence criterion for the convergence iteration of the sea level equation at 1 time
         self.topo_it_max = topo_it_max # maximum numbre of iteration for the convergence of the initial topography
+        self.del_topo=del_topo
         self.nb_workers=nb_workers
         self.pool = Pool(self.nb_workers)
-        self.ice_way=ice_way
-        self.sed_way=sed_way
-        self.love_way=love_way
-        self.topo_way=topo_way
+        self.ice_way=data_way+ice_way
+        self.sed_way=data_way+sed_way
+        self.love_way=data_way+love_way
+        self.topo_way=data_way+topo_way
+        self.time_step=time_step
+        self.time_step_number=len(self.time_step)-1
+        self.P_lm=legendre(self.maxdeg,self.pool) #Calculate the Legendre associated functions for the Gaussian grid
+        self.x, self.w= GaussQuad(self.maxdeg) # calculate the Gaussian grid parameters
+        self.grid=GRID(self)
+        self.create_parameters()
         #self.init_grided_parameters()
 
     def set_from_file(self,way):
         with open(way+'.pkl', 'rb') as handle:
-            data = pickle.load(handle)
-        self.g=data['g']
-        self.M_e=data['M_e']
-        self.omega=data['omega']
-        self.k_hydro=data['k_hydro']
-        self.G=data['G']
-        self.k_f=data['k_f']
-        self.a=data['a']
-        self.CminA=data['CminA']
-        self.C=data['C']
-        self.maxdeg=data['maxdeg']
-        self.rotation=data['rotation']
-        self.k_max=data['k_max']
-        self.epsilon=data['epsilon']
-        self.topo_it_max=data['topo_it_max']
-        self.nb_workers=data['nb_workers']
-        self.time_step=data['time_step']
-        self.ice_way=data['ice_way']
-        self.sed_way=data['sed_way']
-        self.love_way=data['love_way']
-        self.topo_way=data['topo_way']
-        self.init_grided_parameters()
-        self.sed.rho=data['rho_sed']
-        self.oc.rho=data['rho sea']
-        self.ice.rho=data['rho_ice']
-        self.grid.time_step=self.time_step
-        self.ice.ice_corrected=data['ice_corrected']
-        self.SL.delS.saved=data['delS']
-        self.SL.sdelS.saved=data['sdelS']
-        self.topo.topo=data['topo']
+            self.data = pickle.load(handle)
+        self.g=self.data['g']
+        self.M_e=self.data['M_e']
+        self.omega=self.data['omega']
+        self.k_hydro=self.data['k_hydro']
+        self.G=self.data['G']
+        self.k_f=self.data['k_f']
+        self.a=self.data['a']
+        self.CminA=self.data['CminA']
+        self.C=self.data['C']
+        self.maxdeg=self.data['maxdeg']
+        self.rotation=self.data['rotation']
+        self.k_max=self.data['k_max']
+        self.epsilon=self.data['epsilon']
+        self.topo_it_max=self.data['topo_it_max']
+        self.nb_workers=self.data['nb_workers']
+        self.time_step=self.data['time_step']
+        self.ice_way=self.data['ice_way']
+        self.sed_way=self.data['sed_way']
+        self.love_way=self.data['love_way'][:-1]
+        self.topo_way=self.data['topo_way']
+        # self.init_parameters()
+        # self.sed.rho=data['rho_sed']
+        # self.oc.rho=data['rho sea']
+        # self.ice.rho=data['rho_ice']
+        # self.grid.time_step=self.time_step
+        # self.ice.ice_corrected=data['ice_corrected']
+        # self.SL.delS.saved=data['delS']
+        # self.SL.sdelS.saved=data['sdelS']
+        # self.topo.topo=data['topo']
 
 
     def create_GRID(self):
         self.grid=GRID(self)
+    
+    def create_ocean(self,topo):
+        self.oc=spherical_ocean_function().evaluate_ocean(topo).grdtocoeff(self)
+        self.oc.update_oc_0()# initialize the grid at t=t_it(t_it=0)
+        self.oc.area=self.oc.coeff[0]
+    
+    def create_LOAD(self):
+        return LOAD(self)
+
+    def init_grided_parameters_Benchmark(self):
+        print('Grid creation')
+        self.P_lm=legendre(self.maxdeg,self.pool) #Calculate the Legendre associated functions for the Gaussian grid
+        self.x, self.w= GaussQuad(self.maxdeg) # calculate the Gaussian grid parameters
+        self.grid=GRID(self)
+
+        #Create all grid parameters
+        self.create_parameters()
+
+        print('Ice loading')
+        # create a better object for the input and prepare the input for the functions
+        self.ice.zeros(self)
+
+        print('Sed loading')
+        self.sed.zeros(self)
+
+        print('Topography load')
+        self.topo.zeros(self)
+
+        print('Ocean initialisation')
+        self.oc=spherical_ocean_function().evaluate_ocean(self.topo.topo_pres).grdtocoeff(self)
+        self.oc.update_oc_0()# initialize the grid at t=t_it(t_it=0)
+        self.oc.area=self.oc.coeff[0]
+
+        print('Initialize Load')
+        self.load=LOAD(self,load_number=4,load_name=['ice','water','sediment','Disk'])
+
+    def init_parameters(self):
+        self.P_lm=legendre(self.maxdeg,self.pool) #Calculate the Legendre associated functions for the Gaussian grid
+        self.x, self.w= GaussQuad(self.maxdeg) # calculate the Gaussian grid parameters
+
+        self.create_GRID() #create the grid framework
+
+        self.create_parameters() #Create all grid parameters
+
+
+        self.ice.quick_load(self.grid,self.pool,self.ice_way) #set the ice self
+        self.sed.load(self,self.sed_way) # set the sedimentation self
+        self.topo.load(self,self.topo_way) # set the topography self, this function need the sediment and ice self ! 
+        #Disk_load=self.grid.disk(self,0,180,1,100)
 
     def init_grided_parameters(self): 
 
@@ -154,7 +209,7 @@ class SL_model(world_plot):
         self.oc.area=self.oc.coeff[0]
 
         print('Initialize Load')
-        self.load=LOAD(self)
+        self.load=LOAD(self,rho=[self.ice.rho,self.oc.rho,self.sed.rho])
 
         
 
@@ -228,7 +283,7 @@ class SL_model(world_plot):
             #print('oc',oc.coeff.shape,'TO',SL.TO.coeff.shape,'TO_prev',SL.TO.prev.shape,'ICE',ice.coeff.shape,'SED',sed.coeff.shape)
             self.SL.sdelS.modify(self.oc.prev/self.oc.prev[0]*(-self.ice.rho/self.oc.rho*self.ice.sdeli_00 + self.SL.TO.coeff[0]-self.SL.TO.prev[0])-self.SL.TO.coeff-self.SL.TO.prev,'coeff')
         self.SL.delS.modify(self.SL.delS.prev + self.SL.sdelS.coeff,'coeff')
-        self.load.modify(t_it,self.oc.rho*self.SL.delS.coeff+self.ice.rho*self.ice.coeff+self.sed.rho*self.sed.coeff)
+        self.load.modify(t_it,self)
         # calculate viscous contribution
         # beta contains the viscous love numbers for time t_it,
         # row index goes over the time increments, column
@@ -292,11 +347,19 @@ class SL_model(world_plot):
             self.delR_e[t_it,:]=self.love.T.coeff*self.love.h.coeff*delL[t_it,:]
             self.load.calc_viscuous_load(self,t_it,sdelL,self.love.beta_R_l)
             self.delR_v[t_it,:]=self.love.T.coeff*self.load.V_lm.coeff
-    
 
-    def save_model(self) :
+    def create_parameters(self):
+        self.ice=self.grid.create_ICE() # adapt the load method of the spherical_ice class to the data you are using
+        self.sed = self.grid.create_SED()
+        self.SL=self.grid.create_SL()
+        self.grid.time_step=self.time_step
+        self.love=self.grid.create_LOVE(self,self.love_way)
+        self.topo = self.grid.create_TOPO() # adapt the load method of the spherical_topo class to the data you are using
+        self.load=self.create_LOAD()
+
+    def save_model(self,output_way=r'C:/Users/ahenry01/Desktop/Python_code/SL_C0de_output/',subname='') :
         
-        Data_dict={'g' : self.g,'M_e' : self.M_e,'omega' : self.omega,'k_hydro' : self.k_hydro, 'G' : self.G,'k_f' : self.k_f, 'a' : self.a, 'CminA' : self.CminA, 'C' : self.C, 'maxdeg' : self.maxdeg, 'rotation' : self.rotation, 'k_max' : self.k_max, 'epsilon' : self.epsilon, 'topo_it_max': self.topo_it_max, 'nb_workers' : self.nb_workers, 'time_step' : self.grid.time_step, 'sed_way' : 'Irrawady_sedimentationgrid', 'rho_sed' : self.sed.rho, 'ice_way' : 'ice6g_data', 'ice_corrected' : self.ice.ice_corrected, 'rho_ice' : self.ice.rho, 'delS' : self.SL.delS.saved, 'sdelS' : self.SL.sdelS.saved, 'rho_sea' : self.oc.rho,  'love_way' : 'VM5.l40.um316.lm5.1024/', 'topo_way' : 'topo_SL', 'topo' : self.topo.topo}
+        Data_dict={'g' : self.g,'M_e' : self.M_e,'omega' : self.omega,'k_hydro' : self.k_hydro, 'G' : self.G,'k_f' : self.k_f, 'a' : self.a, 'CminA' : self.CminA, 'C' : self.C, 'maxdeg' : self.maxdeg, 'rotation' : self.rotation, 'k_max' : self.k_max, 'epsilon' : self.epsilon, 'topo_it_max': self.topo_it_max, 'nb_workers' : self.nb_workers, 'time_step' : self.grid.time_step, 'sed_way' : self.sed_way, 'rho_sed' : self.sed.rho, 'ice_way' : self.ice_way, 'ice_corrected' : self.ice.ice_corrected, 'rho_ice' : self.ice.rho, 'delS' : self.SL.delS.saved, 'sdelS' : self.SL.sdelS.saved, 'rho_sea' : self.oc.rho,  'love_way' : self.love_way, 'topo_way' : self.topo_way, 'topo' : self.topo.topo}
 
         # datetime object containing current date and time
         now = datetime.now()
@@ -304,5 +367,5 @@ class SL_model(world_plot):
         # dd/mm/YY H:M:S
         dt_string = now.strftime("%d.%m.%Y_%H.%M.%S")
 
-        with open('result_'+dt_string+'.pkl', 'wb') as f:
+        with open(output_way+subname+'result_'+dt_string+'.pkl', 'wb') as f:
             pickle.dump(Data_dict, f)

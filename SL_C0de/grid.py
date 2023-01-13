@@ -2,6 +2,7 @@ from spharm import GaussQuad
 import numpy as np
 import math
 from scipy import interpolate
+from spharm import sphericalobject
 from sediment import spherical_sed
 from ice import spherical_ice
 from topography import spherical_topo
@@ -122,3 +123,11 @@ class GRID(object):
         
         def create_SL(self):
             return spherical_sea_level(self)
+
+        def disk(self,model_p,lat,lon,radius,high):
+            disk=sphericalobject(np.array([0]))
+            disk.disk=np.zeros((model_p.time_step_number+1,model_p.grid.lats.size,model_p.grid.elons.size))
+            lon_g,lat_g=np.meshgrid(model_p.grid.elons,model_p.grid.lats)
+            disk.disk[:,((lon-lon_g)**2+(lat-lat_g)**2)<radius]=high
+            disk.disk[:2,:,:]=disk.disk[:2,:,:]*0
+            return disk

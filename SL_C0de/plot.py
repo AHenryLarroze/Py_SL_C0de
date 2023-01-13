@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 import plotly.graph_objs as go
 from plotly.offline import plot
 from scipy import interpolate
-from spharm import calc_Y_lm
+from spharm import calc_at_point
+from matplotlib import colors
 
 def degree2radians(degree):
   # convert degrees to radians
@@ -34,20 +35,15 @@ def interp_on(grd,lon,lat,inlon,inlat):
     grd=np.reshape(grd,(inlat.shape[0],inlon.shape[0]))
     return grd
 
-def calc_at_point(C_lm,model_p,theta,phi):
-    model_p.Y_lm=calc_Y_lm(model_p.maxdeg,theta,phi)[0]/2
-    model_p.Y_lm[0]=model_p.Y_lm[0]*math.sqrt(2)
-    return np.dot(C_lm,model_p.Y_lm)
-
-def write_saved_to_csv(model_p,saved,way,name):
-    lat,lon=np.meshgrid(model_p.lats_res,model_p.elons_res)
+def write_saved_to_csv(self_p,saved,way,name):
+    lat,lon=np.meshgrid(self_p.lats_res,self_p.elons_res)
 
     time=0.5
-    ind=np.where(model_p.grid.time_step==time)
+    ind=np.where(self_p.grid.time_step==time)
 
     z=saved
     z=z[ind,:]
-    z=sphericalobject(z.transpose().squeeze(),'coeff').coefftogrd_hd(model_p)
+    z=sphericalobject(z.transpose().squeeze(),'coeff').coefftogrd_hd(self_p)
 
     z=z.transpose().reshape((z.size,1),order='A')
     x=lon.reshape((lon.size,1))
@@ -77,13 +73,13 @@ class world_plot(object):
             self.lats_res=self.grid.lats
             self.elons_res=self.grid.elons
 
-    def check_model_loaded(self):
+    def check_self_loaded(self):
         if not('grid' in self.__dict__) : 
-            logging.error('error: ', "no model created in this object please use SL_model and SL_model.init_grided_parameters()")
+            logging.error('error: ', "no self created in this object please use SL_self and SL_self.init_grided_parameters()")
             sys.exit(1)
         
     def plot_RSL(self,time_plot,vmin=-1000,vmax=1000) :
-        self.check_model_loaded()
+        self.check_self_loaded()
         if not('RSL' in self.SL.__dict__):
             self.calc_RSL()
         if not('P_lm_res' in self.__dict__):
@@ -97,24 +93,132 @@ class world_plot(object):
         plt.contour(self.grid.elons,self.grid.lats,self.topo.topo[ind,:,:].squeeze(),levels=[0])
         plt.show()
     
-    def plot_map(self,c,time_plot,vmin=None,vmax=None,cmap='seismic'):
-        self.check_model_loaded()
+    def plot_map(self,c,time_plot,vmin=None,vmax=None,cmap='seismic',lat=[-90,90],lon=[0,360],ax=None,fig=None,title='',colorbar_title=''):
+        self.check_self_loaded()
         ind=np.where(self.grid.time_step==time_plot)
-        D=sphericalobject(c[ind,:].squeeze(),'coeff').coefftogrd_hd(self)
-        if vmin==None :
-            vmin=np.min(D)
-            vmax=np.max(D)
-            v=np.max(np.abs(np.array([vmin,vmax])))
-            plt.pcolor(self.elons_res,self.lats_res,D,cmap=cmap,vmin=-v,vmax=v)
-        else :
-            plt.pcolor(self.elons_res,self.lats_res,D,cmap=cmap,vmin=vmin,vmax=vmax)
-        plt.colorbar()
+        ind=ind[0][0]
+        if not('local_topo' in self.__dict__):
+            lat_min=np.absolute(self.grid.lats-lat[0]).argmin()
+            lat_max=np.absolute(self.grid.lats-lat[1]).argmin()
+            if lat_min>lat_max :
+                temps=lat_max
+                lat_max=lat_min
+                lat_min=temps
+            lon_min=np.absolute(self.grid.elons-lon[0]).argmin()
+            lon_max=np.absolute(self.grid.elons-lon[1]).argmin()
+            self.local_topo=self.topo.topo_pres[lat_min:lat_max,lon_min:lon_max]
+            self.lati_topo=self.grid.lats[lat_min:lat_max]
+            self.long_topo=self.grid.elons[lon_min:lon_max]
+        if ax==None :
+            fig,ax=plt.subplots()
+        if len(c.shape)==2 :
+            D_tot=sphericalobject(c[ind,:],'coeff').coefftogrd_hd(self)
+            lat_min=np.absolute(self.lats_res-lat[0]).argmin()
+            lat_max=np.absolute(self.lats_res-lat[1]).argmin()
+            if lat_min>lat_max :
+                temps=lat_max
+                lat_max=lat_min
+                lat_min=temps
+            lon_min=np.absolute(self.elons_res-lon[0]).argmin()
+            lon_max=np.absolute(self.elons_res-lon[1]).argmin()
+            D=D_tot[lat_min:lat_max,lon_min:lon_max]
+            lati=self.lats_res[lat_min:lat_max]
+            long=self.elons_res[lon_min:lon_max]
+            long,lati=np.meshgrid(long,lati)
+            divnorm=colors.TwoSlopeNorm(vcenter=0.)
+            if vmin==None :
+                vmin=np.min(D)
+                vmax=np.max(D)
+                v=np.max(np.abs(np.array([vmin,vmax])))
+                sp=ax.pcolor(long,lati,D,cmap=cmap,norm=divnorm)
+            else :
+                v=np.max(np.abs(np.array([vmin,vmax])))
+                sp=ax.pcolor(long,lati,D,cmap=cmap,norm=divnorm)
+            fig.colorbar(sp,label=colorbar_title)
+            if 'topo' in self.topo.__dict__:
+                ax.contour(self.long_topo,self.lati_topo,self.local_topo,levels=[0])
+        elif len(c.shape)==3:
+            D=c[ind,:,:].squeeze()
+            if vmin==None :
+                vmin=np.min(D)
+                vmax=np.max(D)
+                v=np.max(np.abs(np.array([vmin,vmax])))
+                ax.pcolor(self.grid.elons,self.grid.lats,D,cmap=cmap,vmin=-v,vmax=v)
+            else :
+                ax.pcolor(self.grid.elons,self.grid.lats,D,cmap=cmap,vmin=vmin,vmax=vmax)
+            fig.colorbar()
+            plt.axis('equal')
+            if 'topo' in self.topo.__dict__:
+                plt.contour(self.grid.elons,self.grid.lats,self.topo.topo[ind,:,:].squeeze(),levels=[0])
+        plt.title(title)
+        plt.grid()
         plt.axis('equal')
-        plt.contour(self.grid.elons,self.grid.lats,self.topo.topo[ind,:,:].squeeze(),levels=[0])
-        plt.show()
+        return ax,D_tot,D,fig
+
+    def plot_map_derivation(self,c,time_plot,vmin=None,vmax=None,cmap='seismic',lat=[-90,90],lon=[0,360],ax=None,fig=None,title='',colorbar_title=''):
+        self.check_self_loaded()
+        ind=np.where(self.grid.time_step==time_plot)
+        ind=ind[0][0]
+        if not('local_topo' in self.__dict__):
+            lat_min=np.absolute(self.grid.lats-lat[0]).argmin()
+            lat_max=np.absolute(self.grid.lats-lat[1]).argmin()
+            if lat_min>lat_max :
+                temps=lat_max
+                lat_max=lat_min
+                lat_min=temps
+            lon_min=np.absolute(self.grid.elons-lon[0]).argmin()
+            lon_max=np.absolute(self.grid.elons-lon[1]).argmin()
+            self.local_topo=self.topo.topo_pres[lat_min:lat_max,lon_min:lon_max]
+            self.lati_topo=self.grid.lats[lat_min:lat_max]
+            self.long_topo=self.grid.elons[lon_min:lon_max]
+        if ax==None :
+            fig,ax=plt.subplots()
+        if len(c.shape)==2 :
+            D_tot=sphericalobject((c[ind,:]-c[ind-1,:])/(self.time_step[ind]-self.time_step[ind-1])/1000,'coeff').coefftogrd_hd(self)
+            lat_min=np.absolute(self.lats_res-lat[0]).argmin()
+            lat_max=np.absolute(self.lats_res-lat[1]).argmin()
+            if lat_min>lat_max :
+                temps=lat_max
+                lat_max=lat_min
+                lat_min=temps
+            lon_min=np.absolute(self.elons_res-lon[0]).argmin()
+            lon_max=np.absolute(self.elons_res-lon[1]).argmin()
+            D=D_tot[lat_min:lat_max,lon_min:lon_max]
+            lati=self.lats_res[lat_min:lat_max]
+            long=self.elons_res[lon_min:lon_max]
+            long,lati=np.meshgrid(long,lati)
+            divnorm=colors.TwoSlopeNorm(vcenter=0.)
+            if vmin==None :
+                vmin=np.min(D)
+                vmax=np.max(D)
+                v=np.max(np.abs(np.array([vmin,vmax])))
+                sp=ax.pcolor(long,lati,D,cmap=cmap,norm=divnorm)
+            else :
+                v=np.max(np.abs(np.array([vmin,vmax])))
+                sp=ax.pcolor(long,lati,D,cmap=cmap,norm=divnorm)
+            fig.colorbar(sp,label=colorbar_title)
+            if 'topo' in self.topo.__dict__:
+                ax.contour(self.long_topo,self.lati_topo,self.local_topo,levels=[0])
+        elif len(c.shape)==3:
+            D=c[ind,:,:]-c[ind-1,:,:]
+            if vmin==None :
+                vmin=np.min(D)
+                vmax=np.max(D)
+                v=np.max(np.abs(np.array([vmin,vmax])))
+                sp=ax.pcolor(self.grid.elons,self.grid.lats,D,cmap=cmap,vmin=-v,vmax=v)
+            else :
+                sp=ax.pcolor(self.grid.elons,self.grid.lats,D,cmap=cmap,vmin=vmin,vmax=vmax)
+            fig.colorbar(sp,label=colorbar_title)
+            plt.axis('scaled')
+            if 'topo' in self.topo.__dict__:
+                plt.contour(self.grid.elons,self.grid.lats,self.topo.topo_pres.squeeze(),levels=[0])
+        plt.title(title)
+        plt.grid()
+        plt.axis('equal')
+        return ax,D_tot,D,fig
 
     def plot_ice(self,time_plot,vmin=None,vmax=None):
-        self.check_model_loaded()
+        self.check_self_loaded()
         ind=np.where(self.grid.time_step==time_plot)
         if vmin==None :
             plt.pcolor(self.grid.elons,self.grid.lats,self.ice.ice[ind,:,:].squeeze(),cmap='Blues',vmin=vmin,vmax=vmax)
@@ -126,7 +230,7 @@ class world_plot(object):
         plt.show()
 
     def plot_topo(self,time_plot,vmin=None,vmax=None):
-        self.check_model_loaded()
+        self.check_self_loaded()
         ind=np.where(self.grid.time_step==time_plot)
         if vmin!=None :
             plt.pcolor(self.grid.elons,self.grid.lats,self.topo.topo[ind,:,:].squeeze(),cmap='jet',vmin=vmin,vmax=vmax)
@@ -137,15 +241,29 @@ class world_plot(object):
         plt.contour(self.grid.elons,self.grid.lats,self.topo.topo[ind,:,:].squeeze(),levels=[0])
         plt.show()
 
-    def plot_at_point(self,C_lm,theta,phi):
-        y=np.zeros(self.time_step_number)
+    def plot_at_point(self,C_lm,theta,phi,ax=None):
+        y=np.zeros(self.time_step_number)+0j
+        if ax==None:
+            ax=plt.subplot()
         for i in range(self.time_step_number):
-            y[i]=calc_at_point(C_lm[i,:],self,theta,phi)
-        plt.plot(self.grid.time_step[1:],y)
+            y[i]=np.real(calc_at_point(C_lm[i,:],self,theta,phi))
+        ax.plot(self.grid.time_step[1:],y)
         plt.show()
+        return ax,y
+
+    
+    def plot_at_point_derivation(self,C_lm,theta,phi,ax=None):
+        y=np.zeros(self.time_step_number)+0j
+        if ax==None:
+            ax=plt.subplot()
+        for i in range(1,self.time_step_number):
+            y[i]=calc_at_point((C_lm[i,:]-C_lm[i-1,:])/(self.time_step[i]-self.time_step[i-1])/1000,self,theta,phi)
+        ax.plot(self.grid.time_step[1:],y)
+        plt.show()
+        return ax,y
 
     def plot_3D_at_time(self,data,time_plot,vmin=None,vmax=None):
-        self.check_model_loaded()
+        self.check_self_loaded()
         if not('P_lm_res' in self.__dict__):
             self.init_resolution_plot()
 

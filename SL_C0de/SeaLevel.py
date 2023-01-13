@@ -74,7 +74,20 @@ class spherical_sea_level(object):
         self.sdelS_new=0
         self.delSL=sphericalobject(np.zeros((grid.maxdeg,grid.maxdeg*2)))
         self.saved=np.array([])
-        
+
+    def calc_sdelS(self,model_p,k,topo_it=0):
+        if k == 0 and topo_it==0:
+            #print('oc',oc.coeff.shape,'TO',SL.TO.coeff.shape,'TO_prev',SL.TO.prev.shape,'ICE',ice.coeff.shape,'SED',sed.coeff.shape)
+            model_p.SL.sdelS.modify(model_p.oc.prev/model_p.oc.prev[0]*(-model_p.ice.rho/model_p.oc.rho*model_p.ice.sdeli_00 + model_p.SL.TO.coeff[0]-model_p.SL.TO.prev[0])-model_p.SL.TO.coeff-model_p.SL.TO.prev,'coeff')
+        model_p.SL.delS.modify(model_p.SL.delS.prev + model_p.SL.sdelS.coeff,'coeff')
+
+    def calc_sdelS_new(self,model_p):
+        self.delSLcurl_fl.modify(model_p.love.E.coeff * model_p.love.T.coeff *model_p.load.delL.coeff+model_p.love.T.coeff*model_p.load.V_lm.coeff+1/model_p.g*model_p.love.E_T.coeff*model_p.load.delLa.coeff+1/model_p.g*model_p.load.V_lm_T.coeff,'coeff')
+        self.delSLcurl.modify(self.delSLcurl_fl.coeff - model_p.ice.coeff+ -model_p.sed.coeff,'coeff').coefftogrd(model_p)
+        self.RO.modify(self.delSLcurl.grd*model_p.oc.grd).grdtocoeff(model_p)
+        self.delPhi_g = np.real(1/model_p.oc.coeff[0] * (- model_p.ice.rho/model_p.oc.rho*model_p.ice.coeff[0] - self.RO.coeff[0] + self.TO.coeff[0]))
+        self.sdelS_new=self.RO.coeff + self.delPhi_g*model_p.oc.coeff -  self.TO.coeff - self.delS.prev
+    
     def save(self): # is it still usefull ? Check in code
         if self.saved.shape[0]==0:
             self.saved=np.array([self.delSL.grd.copy()])
