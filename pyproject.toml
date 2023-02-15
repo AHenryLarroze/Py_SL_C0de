@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "slcode"
+version = "0.4.0"
+authors = [
+  { name="HENRY Adrien", email="adrien.henry@univ-lr.fr" },
+]
+description = "SL_C0de is a python library based on the matlab code SL_code. This module is used to calculate GIA over the world but alse the sediment isostasy. It include function to calculate radial symetric auto gravitational earth visco-elastic response. This module also include the possibility to resolve the Sea level equation based on the publication of Mitrovica and Austermann ... ajouter des refs. The aim of this library is to be easy to include new sources of load and link to other python library."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: No_license",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/AHenryLarroze/Py_SL_C0de"
+"Bug Tracker" = "https://github.com/AHenryLarroze/Py_SL_C0de/issues"

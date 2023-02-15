@@ -2,7 +2,6 @@ from spharm import sphericalobject
 import numpy as np
 import sys
 import logging
-import par_Load as par
 import math
 
 def calc_rot_visc(L,model_p,t_it):
@@ -103,27 +102,13 @@ class LOAD(object):
         self.delLa_prev.modify(self.delLa.coeff.copy(),'coeff')
     
     def calc_viscuous_load(self,model_p,t_it,sdelL,beta):
-        # for name in self.load_name:
-        #     results=model_p.pool.starmap(par.f_V_lm,zip(model_p.love.beta_R_l.transpose(),[t_it for i in range(int((model_p.maxdeg+1)*(model_p.maxdeg+2)/2))],np.array([self.sdelL[i][name].coeff for i in range(t_it)]).transpose()))
-        #     self.V_lm_R[name].modify(np.concatenate(results),'coeff')
-        #     results=model_p.pool.starmap(par.f_V_lm,zip(model_p.love.beta_G_l.transpose(),[t_it for i in range(model_p.time_step_number)],np.array([self.sdelL[i][name].coeff for i in range(t_it)]).transpose()))
-        #     self.V_lm_G[name].modify(np.concatenate(results),'coeff')
         results=model_p.pool.starmap(par.f_V_lm,zip(beta.transpose(),[t_it for i in range(int((model_p.maxdeg+1)*(model_p.maxdeg+2)/2))],sdelL.transpose()))
         self.V_lm.modify(results,'coeff')
     
     def calc_rotational_potential(self,model_p,t_it):
-        # delLa,sdelI,sdelm=calc_rot_visc(self,model_p,t_it,name)
         calc_rot_visc(self,model_p,t_it)
-        # self.delLa[name].modify(delLa,'coeff')
-        # self.sdelI[name].modify(sdelI,'coeff')
-        # self.sdelm[name].modify(sdelm,'coeff')
         self.sdelLa[t_it-1]=self.delLa.coeff-self.delLa_prev.coeff
     
     def calc_viscuous_load_T(self,model_p,t_it,sdelLa):
-        # for name in self.load_name:
-        #     results=model_p.pool.starmap(par.f_V_lm_T,zip(model_p.love.beta_R_tide.transpose(),[t_it for i in range(int((model_p.maxdeg+1)*(model_p.maxdeg+2)/2))],np.array([self.sdelLa[name].coeff for i in range(t_it)]).transpose()))
-        #     self.V_lm_R_T[name].modify(np.concatenate(results),'coeff')
-        #     results=model_p.pool.starmap(par.f_V_lm_T,zip(model_p.love.beta_G_tide.transpose(),[t_it for i in range(model_p.time_step_number)],np.array([self.sdelLa[name].coeff for i in range(t_it)]).transpose()))
-        #     self.V_lm_G_T[name].modify(np.concatenate(results),'coeff')
         results=model_p.pool.starmap(par.f_V_lm_T,zip(model_p.love.beta_tide.transpose()[:6],[t_it for i in range(6)],sdelLa.transpose()[:6]))
         self.V_lm_T.modify(np.concatenate((results,np.zeros((int((model_p.maxdeg+1)*(model_p.maxdeg+2)/2-6),))+1j)),'coeff')

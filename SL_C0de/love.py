@@ -1,76 +1,75 @@
 import numpy as np
 import numpy.matlib as npmlib #used to add repmat 
 from spharm import sphericalobject
-import par_love as par
 
 def love_lm(num,grid, group='m'):
-  '''
+    '''
     Exrtact from love numbers the h_lm spherical coefficient. 
-    
-        Parameters : 
-            num (np.array): love number coefficient of the size of the entry file
-            grid (object): output of the class GRID
-            
-        See the documentation of the cited class object for more information on different parameters used in the function.
-        
-        Returns : 
-            h_lm (np.array): array of the love number transformed of size 1, maxdeg. 
-        
-        Added fields : 
-  '''
-  h=np.concatenate((np.zeros((1,1)),num)) # a 0 coefficient is added at the beginning of the love numbers !!!! WHY ? !!!!
-  h_lm=np.array([]) # initialisation of the h_lm coefficient matrix
 
-#   for n in range (grid.maxdeg+1): # we work over the maxdeg + 1 degree !!!! I must understand why !!!! 
-#         h_add=npmlib.repmat(h[n],1,n+1) # reproduce the love number coefficient for n+1 time
-#         if h_lm.shape[0]==0 : # if ther is nothing in h_lm
-#             h_lm=h_add #set h_lm as h_add
-#         else : 
-#             h_lm= np.concatenate((h_lm,h_add),1) # add h_add to h_lm 
-  results=grid.pool.starmap(par.f_love_lm,zip(h,[n for n in range(grid.maxdeg+1)]))
-  h_lm=np.concatenate(results,axis=1)
-  return h_lm.transpose() # because the output is of the wrong shape we correct it by transposing the matrix
+    Parameters : 
+        num (np.array): love number coefficient of the size of the entry file
+        grid (object): output of the class GRID
+        
+    See the documentation of the cited class object for more information on different parameters used in the function.
+
+    Returns : 
+        h_lm (np.array): array of the love number transformed of size 1, maxdeg. 
+
+    Added fields : 
+    '''
+    h=np.concatenate((np.zeros((1,1)),num)) # a 0 coefficient is added at the beginning of the love numbers !!!! WHY ? !!!!
+    h_lm=np.array([]) # initialisation of the h_lm coefficient matrix
+
+    #   for n in range (grid.maxdeg+1): # we work over the maxdeg + 1 degree !!!! I must understand why !!!! 
+    #         h_add=npmlib.repmat(h[n],1,n+1) # reproduce the love number coefficient for n+1 time
+    #         if h_lm.shape[0]==0 : # if ther is nothing in h_lm
+    #             h_lm=h_add #set h_lm as h_add
+    #         else : 
+    #             h_lm= np.concatenate((h_lm,h_add),1) # add h_add to h_lm 
+    results=grid.pool.starmap(par.f_love_lm,zip(h,[n for n in range(grid.maxdeg+1)]))
+    h_lm=np.concatenate(results,axis=1)
+    return h_lm.transpose() # because the output is of the wrong shape we correct it by transposing the matrix
 
 def get_tlm(maxdeg,earth, group='l'):
-  '''
+    '''
     Generate the T spherical harmonic coefficient. Retrouver d'où viennet ces coeff. 
-    
-        Parameters : 
-            maxdeg (int): maximum degree of spherical harmonic defined in the model parameters. 
-            earth (object): output of the class World_Model_Parameter. 
-            
-        See the documentation of the cited class object for more information on different parameters used in the function.
+
+    Parameters : 
+        maxdeg (int): maximum degree of spherical harmonic defined in the model parameters. 
+        earth (object): output of the class World_Model_Parameter. 
         
-        Returns : 
-            T_lm (np.array): array of size maxdeg + 1 
-        
-        Added fields : 
-  '''
-  T_lm=np.array([]) # preset the output
-  T = np.zeros(maxdeg+1) # preset an array of the size maxdeg who will obtaine the coefficient and then be added to T_lm
-  const = 4*np.pi*earth.a**3/earth.M_e # setting the tide constant for earth !!!! CHECK !!!!
-  for n in range(maxdeg+1) :
-        T[n]=const/(2*n+1) # for each nth add to T the earth constant moduladed by the nth step
-        T_add=npmlib.repmat(T[n],1,n+1) # prepare T_add as the repetition of T
-        if n==0 :
-            T_lm=T_add # if there is nothing in T_lm preset T_lm as T_add
-        else :
-            T_lm=np.concatenate((T_lm,T_add),1) # else add T_add to T_lm
-  return np.squeeze(T_lm) # we have to squeeze the array so that the requested indices are directly on the good axis
+    See the documentation of the cited class object for more information on different parameters used in the function.
+
+    Returns : 
+        T_lm (np.array): array of size maxdeg + 1 
+
+    Added fields : 
+    '''
+    T_lm=np.array([]) # preset the output
+    T = np.zeros(maxdeg+1) # preset an array of the size maxdeg who will obtaine the coefficient and then be added to T_lm
+    const = 4*np.pi*earth.a**3/earth.M_e # setting the tide constant for earth !!!! CHECK !!!!
+    for n in range(maxdeg+1) :
+            T[n]=const/(2*n+1) # for each nth add to T the earth constant moduladed by the nth step
+            T_add=npmlib.repmat(T[n],1,n+1) # prepare T_add as the repetition of T
+            if n==0 :
+                T_lm=T_add # if there is nothing in T_lm preset T_lm as T_add
+            else :
+                T_lm=np.concatenate((T_lm,T_add),1) # else add T_add to T_lm
+    return np.squeeze(T_lm) # we have to squeeze the array so that the requested indices are directly on the good axis
 
 def calc_beta_counter(self):
     '''
     define the degree of the spherical harmonic for each beta coefficient 
     
-        Parameters : 
-            self (object): output of the class LOVE
-            
-        See the documentation of the cited class object for more information on different parameters used in the function.
+    Parameters : 
+        self (object): output of the class LOVE
         
-        Returns : 
-        
-        Added fields : 
-            beta_counter : np.array ((maxdeg+1)*(maxdeg+2)/2)
+    See the documentation of the cited class object for more information on different parameters used in the function.
+    
+    Returns : 
+    
+    Added fields : 
+        beta_counter : np.array ((maxdeg+1)*(maxdeg+2)/2)
     '''
     self.beta_counter = np.ones((self.h.shape[0]+1,));
     l_it = 1
@@ -91,17 +90,11 @@ class LOVE(object):
 
     Attributes
     ----------
-        !!!! PREM_maxdeg insert a check to block the resolution of the model under the maximum precision of the PREM model !!!!
         mode_found : np.array (PREM_maxdeg)
-            !!!! c'est quoi ? !!!! 
         k_amp : np.array(PREM_maxdeg, maximum(mode_found))
-            !!!! c'est quoi ? !!!!
         h_amp : np.array(PREM_maxdeg, maximum(mode_found))
-            !!!! c'est quoi ? !!!!
         k_amp_tide : np.array(PREM_maxdeg, maximum(mode_found))
-            !!!! c'est quoi ? !!!!
         h_amp_tide : np.array(PREM_maxdeg, maximum(mode_found))
-            !!!! c'est quoi !!!!
         spoles : np.array(PREM_maxdeg, maximum(mode_found))
         k_el : np.array(PREM_maxdeg)
         k_el_tide : np.array(PREM_maxdeg)
@@ -112,18 +105,11 @@ class LOVE(object):
         E : np.array (maxdeg+1, maxdeg+1) !!!! Corriger ce truc avec le maxdeg peut être le caller mieux !!!!
         T : np.array (maxdeg+1, maxdeg+1) !!!! Corriger ce truc avec le maxdeg peut être le caller mieux !!!!
         E_T : np.array (maxdeg+1, maxdeg+1) !!!! Corriger ce truc avec le maxdeg peut être le caller mieux !!!!
-        !!!! vérifier le contenu, ça devient compliquer avec ce bazar 
         beta_l : 
         beta_k_only :
         beta_tide :
         beta_konly_tide :
         beta_counter :
-        !!!!
-        
-    Methods
-    -------
-        pyspharm2shtools()
-            A method to convert the spherical harmonic coefficient to the shape used in pyshtools.   
 
     """
     def __init__(self,model_p,way):
