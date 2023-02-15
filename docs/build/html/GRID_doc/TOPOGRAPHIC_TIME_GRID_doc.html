@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TOPOGRAPHIC_TIME_GRID &mdash; SL_C0de 0.4.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="spharm" href="../spharm_doc.html" />
+    <link rel="prev" title="OCEAN_TIME_GRID" href="OCEAN_TIME_GRID_doc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> SL_C0de
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../developer_guide.html">Developer guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../SL_model_doc.html">SL_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../LOAD_doc.html">LOAD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../love_doc.html">love</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../Grid_doc.html">Grid</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="GRID_class_doc.html">GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIME_GRID_doc.html">TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEDIMENT_TIME_GRID_doc.html">SEDIMENT_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ICE_TIME_GRID_doc.html">ICE_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OCEAN_TIME_GRID_doc.html">OCEAN_TIME_GRID</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">TOPOGRAPHIC_TIME_GRID</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#class"><strong>CLASS</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1"><strong>METHODS</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../spharm_doc.html">spharm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SeaLevel_doc.html">SeaLevel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plot_doc.html">plot</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SL_C0de</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../developer_guide.html">Developer guide</a></li>
+          <li class="breadcrumb-item"><a href="../Grid_doc.html">Grid</a></li>
+      <li class="breadcrumb-item active">TOPOGRAPHIC_TIME_GRID</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/GRID_doc/TOPOGRAPHIC_TIME_GRID_doc.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="topographic-time-grid">
+<h1>TOPOGRAPHIC_TIME_GRID<a class="headerlink" href="#topographic-time-grid" title="Permalink to this heading">¶</a></h1>
+<section id="class">
+<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="grid.TOPOGRAPHIC_TIME_GRID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grid.</span></span><span class="sig-name descname"><span class="pre">TOPOGRAPHIC_TIME_GRID</span></span><a class="headerlink" href="#grid.TOPOGRAPHIC_TIME_GRID" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class used to represent the topographic grid</p>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>topo_pres<span class="classifier">np.array (maxdeg, maxdeg x2)</span></dt><dd><p>The present topography gaussian grid</p>
+</dd>
+<dt>topo_initial<span class="classifier">np.array (maxdeg, maxdeg x2)</span></dt><dd><p>The topography at the begining of the modelization (maxdeg, maxdeg x2)</p>
+</dd>
+<dt>topo<span class="classifier">np.array (n_time_step, maxdeg, maxdeg x2)</span></dt><dd><p>The topography threw time</p>
+</dd>
+<dt>topo_0<span class="classifier">np.array (maxdeg, maxdeg x2)</span></dt><dd><p>Gaussian grid of the topography at the time of run update_topo_0. Used to save the initial topography after it’s modification by the load.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>load(grid,,ice,sed)</dt><dd><p>Load the topographic data from the file topo_SL. Create the topography variation by including the ice thickness and the sediment thickness</p>
+</dd>
+<dt>update_topo_0()</dt><dd><p>update the topo_0 attribute.</p>
+</dd>
+<dt>ice_correction(ice,grid,oc)</dt><dd><p>correct the ice and the topography from the land attached ice variation.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</dd></dl>
+
+</section>
+<section id="id1">
+<h2><strong>METHODS</strong><a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="grid.TOPOGRAPHIC_TIME_GRID.load">
+<span class="sig-prename descclassname"><span class="pre">grid.TOPOGRAPHIC_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SL_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">way</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TOPOGRAPHIC_TIME_GRID.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the topography and adapt it with the ice and sediment thickness.</p>
+<dl class="simple">
+<dt>Parameters<span class="classifier"></span></dt><dd><p>grid (object): output of the class GRID
+ice (object): output of the class spherical_ice
+sed (object): output of the class spherical_sed</p>
+</dd>
+</dl>
+<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
+<p>Returns :</p>
+<dl>
+<dt>Added fields<span class="classifier"></span></dt><dd><dl class="simple">
+<dt>topo_pres (np.array): matrix of the present topography with shape maxdeg, maxdeg x 2. This grid is </dt><dd><p>defined to compare with the topography at the end of the simulation.</p>
+</dd>
+</dl>
+<p>topo_initial (np.array): matrix of the topography at the begining of the modelisation, with shape maxdeg, maxdeg x 2.
+topo (np.array):matrix of the topography threw time with shape time step, maxdeg, maxdeg x 2.
+grd (np.array): graussian grid set to the topography at the beginning of the simulation, maxdeg, maxdeg x 2.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="grid.TOPOGRAPHIC_TIME_GRID.update_topo_0">
+<span class="sig-prename descclassname"><span class="pre">grid.TOPOGRAPHIC_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">update_topo_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TOPOGRAPHIC_TIME_GRID.update_topo_0" title="Permalink to this definition">¶</a></dt>
+<dd><p>update the topography 0 wich is the topography at the beginning of the simulation. This function is used to update
+the initial topography after each simulation to restart a loop over it. This way there is a convergence and we take in account the GIA.</p>
+<p>Parameters :</p>
+<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
+<p>Returns :</p>
+<dl class="simple">
+<dt>Added fields<span class="classifier"></span></dt><dd><p>topo_0 (np.array): A matrix of the topography at the bigining of the simulation of shape maxdeg, maxdeg x 2.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="OCEAN_TIME_GRID_doc.html" class="btn btn-neutral float-left" title="OCEAN_TIME_GRID" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../spharm_doc.html" class="btn btn-neutral float-right" title="spharm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, HENRY Adrien.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
