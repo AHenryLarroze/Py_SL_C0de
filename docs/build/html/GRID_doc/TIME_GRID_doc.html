@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TIME_GRID &mdash; SL_C0de 0.4.0 documentation</title>
@@ -12,16 +12,11 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="SEDIMENT_TIME_GRID" href="SEDIMENT_TIME_GRID_doc.html" />
-    <link rel="prev" title="GRID" href="GRID_class_doc.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -29,42 +24,40 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> SL_C0de
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SL_C0de
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../developer_guide.html">Developer guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../SL_model_doc.html">SL_model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../LOAD_doc.html">LOAD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../love_doc.html">love</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../Grid_doc.html">Grid</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="GRID_class_doc.html">GRID</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">TIME_GRID</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#class"><strong>CLASS</strong></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#methods"><strong>Methods</strong></a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">TIME_GRID</a><ul>
+<li><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
+<li><a class="reference internal" href="#grid.TIME_GRID"><code class="docutils literal notranslate"><span class="pre">TIME_GRID</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="SEDIMENT_TIME_GRID_doc.html">SEDIMENT_TIME_GRID</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ICE_TIME_GRID_doc.html">ICE_TIME_GRID</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OCEAN_TIME_GRID_doc.html">OCEAN_TIME_GRID</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TOPOGRAPHIC_TIME_GRID_doc.html">TOPOGRAPHIC_TIME_GRID</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../spharm_doc.html">spharm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../SeaLevel_doc.html">SeaLevel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plot_doc.html">plot</a></li>
+<li><a class="reference internal" href="#methods"><strong>Methods</strong></a><ul>
+<li><a class="reference internal" href="#grid.TIME_GRID.interp_on_time_and_space"><code class="docutils literal notranslate"><span class="pre">interp_on_time_and_space()</span></code></a></li>
+<li><a class="reference internal" href="#grid.TIME_GRID.grid_from_step"><code class="docutils literal notranslate"><span class="pre">grid_from_step()</span></code></a></li>
+<li><a class="reference internal" href="#grid.TIME_GRID.coeff_from_step"><code class="docutils literal notranslate"><span class="pre">coeff_from_step()</span></code></a></li>
+<li><a class="reference internal" href="#grid.TIME_GRID.zeros_time"><code class="docutils literal notranslate"><span class="pre">zeros_time()</span></code></a></li>
+<li><a class="reference internal" href="#grid.TIME_GRID.disk_time"><code class="docutils literal notranslate"><span class="pre">disk_time()</span></code></a></li>
+<li><a class="reference internal" href="#grid.TIME_GRID.update_0"><code class="docutils literal notranslate"><span class="pre">update_0()</span></code></a></li>
 </ul>
 </li>
 </ul>
-
+</li>
+</ul>
+</div>
         </div>
       </div>
     </nav>
@@ -78,9 +71,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
-          <li class="breadcrumb-item"><a href="../developer_guide.html">Developer guide</a></li>
-          <li class="breadcrumb-item"><a href="../Grid_doc.html">Grid</a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">TIME_GRID</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/GRID_doc/TIME_GRID_doc.rst.txt" rel="nofollow"> View page source</a>
@@ -127,7 +118,7 @@
 <h2><strong>Methods</strong><a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="grid.TIME_GRID.interp_on_time_and_space">
-<span class="sig-prename descclassname"><span class="pre">grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">interp_on_time_and_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Thickness_divide'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TIME_GRID.interp_on_time_and_space" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">interp_on_time_and_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_to_interp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Thickness_divide'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TIME_GRID.interp_on_time_and_space" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function is used for interpolation upon time and space it call the interpolation function of the GRID parameter.</p>
 <section id="id1">
 <h3>Attributes<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
@@ -206,10 +197,7 @@
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="GRID_class_doc.html" class="btn btn-neutral float-left" title="GRID" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="SEDIMENT_TIME_GRID_doc.html" class="btn btn-neutral float-right" title="SEDIMENT_TIME_GRID" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

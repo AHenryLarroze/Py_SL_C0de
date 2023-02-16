@@ -19,6 +19,8 @@ SL_C0de
    :maxdepth: 2
    :caption: Contents:
 
+   usage
+   developer_guide
 
 
 Indices and tables
@@ -27,9 +29,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`   
-
-.. toctree::
-   :maxdepth: 2
-
-   usage
-   developer_guide

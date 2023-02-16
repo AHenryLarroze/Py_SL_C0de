@@ -1,0 +1,1 @@
+conda activate doc_dev & py -m build & py -m twine upload --repository testpypi dist/* & ./docs/make html 

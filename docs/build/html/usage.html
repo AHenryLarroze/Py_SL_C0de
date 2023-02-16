@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Usage &mdash; SL_C0de 0.4.0 documentation</title>
@@ -12,9 +12,6 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -29,21 +26,24 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> SL_C0de
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SL_C0de
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-</ul>
-</li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#installation">INSTALLATION</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developer_guide.html">Developer guide</a></li>
 </ul>
 
@@ -60,7 +60,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Usage</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
@@ -73,13 +73,35 @@
              
   <section id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h1>
+</section>
 <section id="installation">
-<span id="id1"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
-<p>To use,SL_C0de, first install it using pip:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>SL_C0de
+<h1>INSTALLATION<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>THe code is developped on windows for the moment. We want to export it on other OS but for the moment we focus on the packages.</p>
+</div>
+<p>download</p>
+<p>To install the library, run in command line :
+.. code-block:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(.venv) $ conda create -n SL_C0de
+(.venv) $ conda activate SL_C0de
+(.venv) $ conda install pip
+(.venv) $ pip install --index-url https://test.pypi.org/simple/ --no-deps slcode
 </pre></div>
 </div>
-</section>
+<p>To install the dependencies, download the requirements.txt on <a class="reference external" href="https://github.com/AHenryLarroze/Py_SL_C0de">https://github.com/AHenryLarroze/Py_SL_C0de</a> and run inside the file :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(.venv) $ pip install -r requirements
+(.venv) $ conda install -c conda-forge stripy
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>you need to be in the activated environment to install the packages localy</p>
+</div>
+<p>For testing the module. You can donwload the script file in <a class="reference external" href="https://github.com/AHenryLarroze/Py_SL_C0de">https://github.com/AHenryLarroze/Py_SL_C0de</a>. You will also need cartopy to install it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(.venv) $ conda install -c conda-forge cartopy
+</pre></div>
+</div>
 </section>
 
 
