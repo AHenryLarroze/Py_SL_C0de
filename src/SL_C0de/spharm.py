@@ -8,64 +8,8 @@ import numpy.matlib as npmlib #used to add repmat
 import sys
 import logging
 import pyshtools as pysh
+import pyshtools.expand as expand
 import itertools
-
-
-def GaussQuad(N):
-    '''
-    Calculate the Gaussian grid parameters for the computation of the gaussian quadrature.
-    
-        Parameters : 
-            N : int 
-                The number of latitude in the grid. It's equal to the maximum degree
-            
-        See the documentation of the cited class object for more information on different parameters used in the function.
-        
-        Returns : 
-        
-        Added fields : 
-            w (np.array): The weight of the node in the gaussian grid
-            x (np.array):The nodes coefficient in the gaussian grid
-    '''
-    beta=0.5/np.sqrt(1-(2*np.linspace(1,N-1,N-1))**(-2))
-    T=np.diag(beta,1)+np.diag(beta,-1)
-    D,V=np.linalg.eig(T)
-    x=D
-    i=np.argsort(x)
-    x=x[i]
-    w=2*V[0,i]**2
-    return x,w
-
-
-# def legendre(N):
-#     x,w=GaussQuad(N) # compute the parameter of the gaussian grid
-#     P_lm=[np.expand_dims(np.array([]),axis=0) for i in range(N+1)]# initialize the legendre polynôme !!!! calculer ces polynômes plutot que le faire chaque fois ira plus vite !!!!
-#     for l in range (N+1):
-#         # precalculate the normalization, like the Matlab code, we use the fully normalize version of the Legendre Polynôme
-#         m=np.linspace(0,l,l+1,dtype=int)
-#         #c=np.expand_dims(((-1)**(l))*np.sqrt((l+1/2)*(scsp.factorial(l-m))/scsp.factorial(l+m)),axis=1)
-#         for i in range(len(x)): 
-#             if i==0 : # if it's the first order of the degree we initialize the array
-#                 #print('c',c.shape)
-#                 #print('leg',np.expand_dims(pysh.legendre.legendre_lm(l,np.linspace(0,l,l+1,dtype=int),x[i],normalization='unnorm',csphase=-1),axis=1).shape)
-#                 #P_lm[l]=c*np.expand_dims(pysh.legendre.legendre_lm(l,np.linspace(0,l,l+1,dtype=int),x[len(x)-i-1],normalization='4pi',csphase=-1),axis=1)
-#                 P_lm[l]=np.expand_dims(pysh.legendre.legendre_lm(l,np.linspace(0,l,l+1,dtype=int),x[len(x)-i-1],normalization='4pi',csphase=-1),axis=1)
-#             else :
-#                 #P_lm[l]=np.concatenate((P_lm[l],c*np.expand_dims(pysh.legendre.legendre_lm(l,np.linspace(0,l,l+1,dtype=int),x[len(x)-i-1],normalization='4pi',csphase=-1),axis=1)),axis=1) # use the pyshtools function to calclate the legendre polynôme
-#                 P_lm[l]=np.concatenate((P_lm[l],np.expand_dims(pysh.legendre.legendre_lm(l,np.linspace(0,l,l+1,dtype=int),x[len(x)-i-1],normalization='4pi',csphase=-1),axis=1)),axis=1)
-#         #P_lm[l]=P_lm[l].transpose() # The output of concatenate is of the wrong shape so we transpose the P_lm
-#     return P_lm
-
-
-def legendre(N,pool):
-    x,w=GaussQuad(N) # compute the parameter of the gaussian grid
-    P_lm=[0 for i in range (N+1)]
-    P_lm_shtools=np.zeros((N,N+1,N+1))
-    results=pool.starmap(par.f_legendre,zip(itertools.repeat(N),x))
-    P_lm_shtools=np.array([results[i] for i in range(N)])
-    for i in range(N+1):
-        P_lm[i]=P_lm_shtools[:,i,:i+1].transpose()
-    return P_lm
     
 def get_coeffs(a_lm,n):
     if n == 0 :
@@ -118,7 +62,7 @@ class sphericalobject(object):
            change the grid or coeff attribute with gc depending on t value    
     """
     
-    def __init__(self,grd,t='grd'):
+    def __init__(self,grd=None,coeff=None,maxdeg=None):
         """
         Parameters
         ----------
@@ -128,17 +72,16 @@ class sphericalobject(object):
             value defining the type of the grd input, can be 'grd' or 'coeff' (default 'grd')
         """
         
-        if t=='grd' : # initialize the grid if the entry is a grid
+        if coeff is None : # initialize the grid if the entry is a grid
             self.grd=grd.copy()
-            self.isgrd=True
-            self.iscoeff=False
-        elif t=='coeff': # initialize the coefficient if the entry is a coefficient
-            self.coeff=grd.copy()
-            self.isgrd=False
-            self.iscoeff=True
-        self.saved=np.array([]) # initialize the save of the spherical harmonic object
+            self.maxdeg=grd.shape[0]
+        elif grd is None: # initialize the coefficient if the entry is a coefficient
+            self.coeff=coeff.copy()
+            self.maxdeg=int(abs((-1+math.sqrt(1+8*len(coeff)))/2))
+        else :
+            self.maxdeg=maxdeg
         
-    def grdtocoeff(self,model_p):
+    def grdtocoeff(self):
         '''
         Convert a Gaussian grid into spherical harmonic coefficient array using a numerical method to create spherical harmonic coefficient
         self.coeff is updated usig these output.
@@ -155,25 +98,14 @@ class sphericalobject(object):
         Added fields : 
 
         '''
-        if self.isgrd: # if there is a grid convert the gaussian grid to spherical coefficient.
-            nlat,nlon=self.grd.shape # extract the shape of the grid
-            F_ym=np.fft.fft(self.grd,axis=1) # use the fourrier transform to sum over the exponential
-            ind_a=0
-            self.coeff=np.zeros((int((nlat+1)*(nlat+2)/2),))*1j # initialize the spherical harmonic coefficient vector
-            # for l in range(0,nlat+1): # calculate for all degree the spherical harmonic coefficient
-            #     self.coeff[ind_a:ind_a+l+1]=np.sum(model_p.P_lm[l][:l+1,:].transpose()*npmlib.repmat(np.expand_dims(model_p.w,axis=0).transpose(),1,l+1)*F_ym[:,:l+1],axis=0)
-            #     ind_a+=l+1
-            results=model_p.pool.starmap(par.f_grdtocoeff,zip([l for l in range(nlat+1)],model_p.P_lm,itertools.repeat(model_p.w),itertools.repeat(F_ym)))
-            self.coeff=np.concatenate(results)
-            # apply a coerrection to the coefficient
-            self.coeff = self.coeff/(2*nlat)/math.sqrt(2)
-            self.iscoeff=True # Set the spherical harmonic coefficient test to true.
-        else : # else there is no grid and then return an error.
-            logging.error('error: ', "No map created for this spherical object. Check if you have created the object with map or haven't run the coefftogrd() method")
-            sys.exit(1)
+        zero , w = expand.SHGLQ(self.maxdeg)
+        self.coeff=expand.SHExpandGLQ(self.grd,w,zero)
+        self.coeff=pysh.shio.SHCilmToCindex(self.coeff)
+        self.coeff=self.coeff[0]+self.coeff[1]*1j
+        self.iscoeff=True
         return self
                                                                                   
-    def coefftogrd(self,model_p):
+    def coefftogrd(self):
         '''
         Convert spherical harmonic coefficient into a gird array using shtools.
         The output of pysh.SHCoeff are converted to real.
@@ -190,28 +122,16 @@ class sphericalobject(object):
         
         Added fields : 
 
-        '''
-        if self.iscoeff :# if there is spherical coefficient convert the spherical coefficient to a gaussian grid.
-            m=self.coeff.shape[0]
-            N=int((math.sqrt(1+8*m)-1)/2-1) 
-            #P_lm,w=legendre(N)
-            F_ym=np.zeros((N,N*2))*1j
-            # for l in range(N+1):
-            #     F_ym[:,:l+1] = F_ym[:,:l+1] + model_p.P_lm[l][:l+1,:].transpose()*npmlib.repmat(get_coeffs(self.coeff,l),N,1)
-            results=model_p.pool.starmap(par.f_coefftogrd,zip([l for l in range(N+1)],model_p.P_lm,itertools.repeat(self.coeff),itertools.repeat(N)))
-            for l in range(N+1):
-                F_ym[:,:l+1]=F_ym[:,:l+1]+results[l]
-            F_ym[:,N:] = np.conj(F_ym[:,N:0:-1])
-            F_yx = np.fft.ifft(F_ym,axis=1) 
-            self.grd = F_yx*(2*N)*math.sqrt(2)
-            self.grd=np.real(self.grd)
-            self.isgrd=True 
-        else : # else there is no coefficient and then return an error.
-            logging.error('error: ', "No coeff created for this spherical object. Check if you have created the object with coeff or haven't run the grdtocoeff() method")
-            sys.exit(1)
+        '''       
+        zero , w = expand.SHGLQ(self.maxdeg)
+        coeff=np.stack((self.coeff.real,self.coeff.imag))
+        coeff=pysh.shio.SHCindexToCilm(coeff)
+        self.grd=expand.MakeGridGLQ(coeff,zero,extend=1)
+        self.isgrd=True
+
         return self
-
-    def coefftogrd_hd(self,model_p):
+    
+    def coefftogrdhd(self,max_calc_deg):
         '''
         Convert spherical harmonic coefficient into a gird array using shtools.
         The output of pysh.SHCoeff are converted to real.
@@ -229,22 +149,13 @@ class sphericalobject(object):
         Added fields : 
 
         '''
-        if self.iscoeff :# if there is spherical coefficient convert the spherical coefficient to a gaussian grid.
-            #P_lm,w=legendre(N)
-            self.coeff=np.concatenate((self.coeff,np.zeros((int((model_p.maxdeg_hd+1)*(model_p.maxdeg_hd+2)/2)-len(self.coeff),))))
-            F_ym=np.zeros((model_p.maxdeg_hd,model_p.maxdeg_hd*2))*1j
-            for l in range(model_p.maxdeg_hd+1):
-                F_ym[:,:l+1] = F_ym[:,:l+1] + model_p.P_lm_res[l][:l+1,:].transpose()*npmlib.repmat(get_coeffs(self.coeff,l),model_p.maxdeg_hd,1)
-            F_ym[:,model_p.maxdeg_hd:] = np.conj(F_ym[:,model_p.maxdeg_hd:0:-1]) 
-            F_yx = np.fft.ifft(F_ym,axis=1) 
-            grd = F_yx*(2*model_p.maxdeg_hd)*math.sqrt(2)
-            grd=np.real(grd)
-        else : # else there is no coefficient and then return an error.
-            logging.error('error: ', "No coeff created for this spherical object. Check if you have created the object with coeff or haven't run the grdtocoeff() method")
-            sys.exit(1)
-        return grd
+        
+        zero , w = expand.SHGLQ(max_calc_deg)
+        coeff=np.stack((self.coeff.real,self.coeff.imag))
+        coeff=pysh.shio.SHCindexToCilm(coeff)
+        return expand.MakeGridGLQ(coeff,zero,lmax=max_calc_deg,extend=1)
     
-    def multiply(self,flm2):
+    def multiply(self,coeff2):
         '''
         This function is no longer used !!!!    
         
@@ -264,17 +175,14 @@ class sphericalobject(object):
 
         '''
         # convert two spherical coefficient into gaussian grid.
-        flm1=np.array([np.real(self.coeff),np.imag(self.coeff)])# for the object
-        Clm1=pysh.shio.SHctor(flm1)
-        flm2=np.array([np.real(flm2),np.imag(flm2)])# for the matrix in entry
-        Clm2=pysh.shio.SHctor(flm2)
-        grd1=pysh.SHCoeffs.from_array(Clm1).expand(grid='GLQ', lat=None, colat=None, lon=None, degrees=True, zeros=None, lmax=None, lmax_calc=None, extend=True, backend=None, nthreads=0).to_array()
-        grd2=pysh.SHCoeffs.from_array(Clm2).expand(grid='GLQ', lat=None, colat=None, lon=None, degrees=True, zeros=None, lmax=None, lmax_calc=None, extend=True, backend=None, nthreads=0).to_array()                                         
-        grd=grd1*grd2 # multiply the two grids.
-        # reconvert the resulting gaussian grid into spherical harmonic coefficient using pyshtools.
-        Clm=pysh.SHGrid.from_array(grd,'GLQ').expand(normalization='4pi', csphase=1, lmax_calc=None, backend=None, nthreads=0).to_array()
-        flm= pysh.shio.SHrtoc(Clm)
-        return flm[0,:,:]+1j*flm[1,:,:]
+        coeff1=np.stack((self.coeff.real,self.coeff.imag))
+        coeff1=pysh.shio.SHCindexToCilm(coeff1)
+        coeff2=np.stack((coeff2.real,coeff2.imag))
+        coeff2=pysh.shio.SHCindexToCilm(coeff2)
+        coeff=pysh.expand.SHMultiply(coeff1,coeff2)
+        coeff=pysh.shio.SHCilmToCindex(coeff)
+        coeff=coeff[0]+coeff[1]*1j
+        return coeff[:int((self.maxdeg*(self.maxdeg+1))/2)]
     
     def save_prev(self):
         '''
@@ -291,71 +199,9 @@ class sphericalobject(object):
             prev (np.array): a copy of the self.coeff spherical coeffcient matrix of size maxdeg, maxdeg !!!! A vérifier !!!!
 
         '''
-        if self.iscoeff : # if there is spherical coefficient for this object copy these coefficient to self.prev
+        if not(self.coeff is None) : # if there is spherical coefficient for this object copy these coefficient to self.prev
             self.prev=self.coeff.copy()
         else : # else retrun an error
             logging.error('error: ', "No coeff created for this spherical object. Check if you have created the object with coeff or haven't run the grdtocoeff() method")
-            sys.exit(1)
-        return self
-    
-    def save(self):  
-        '''
-        Create a 3D matrix containing the spherical coefficient of each time this function is activated or add a copy of the
-        spherical coefficient to the already existing matrix.
-    
-        Parameters : 
-            flm2 (np.array): the harmonic coefficient matrix of size maxdeg, maxdeg !!!! A vérifier !!!!!
-             
-        See the documentation of the cited class object for more information on different parameters used in the function.
-        
-        Returns : 
-            flm[0,:,:]+1j*flm[1,:,:] (np.array): the harmonic coefficient matrix resulting of the multiplication of the two grids. 
-            size maxdeg, maxdeg !!!! A vérifier !!!!
-            
-        Added fields : 
-
-        '''
-        if self.iscoeff : # if there is spherical coeffcient created
-            if self.saved.shape[0]==0: # if the matrix don't exist create one
-                self.saved=np.array([self.coeff])
-            else : # else add to the matrix the spherical coefficient of the object
-                self.saved=np.concatenate((self.saved,np.array([self.coeff.copy()])),axis=0)
-        else : # else retrun an error
-            logging.error('error: ', "No coeff created for this spherical object. Check if you have created the object with coeff or haven't run the grdtocoeff() method")
-            sys.exit(1)
-        return self
-    
-    def modify(self,gc,t='grd'):
-        '''
-        Modify the coeff or grid field of the object depending on the t variable. 
-        Default value for t is grd. 
-    
-        Parameters : 
-        -------------
-            gc (np.array): spherical coefficient matrix of size maxdeg, maxdeg !!!! A vérifier !!!! or
-                           Gaussian grid of the data of size maxdeg, maxdegx2. 
-            t (str): str
-                string value to set the type of the gc entry. 'grd' for grid, 'coeff' for spherical coefficient.
-             
-        See the documentation of the cited class object for more information on different parameters used in the function.
-            
-        Added fields : 
-        --------------
-            grd (np.array): array of size maxdeg, maxdeg. !!!! A vérifier !!!!
-            coeff (np.array): array of spherical coefficient of size maxdeg,maxdeg. !!!! A vérifier !!!!
-            iscoeff (bool): boolean value, true if there is a coefficient false otherwise
-            isgrd (bool): boolean value, true if there is a grid false otherwise
-
-        '''
-        if t=='grd':# if t is 'grd' modify self.grd with gc and update the iscoeff and isgrd field to false and true respectively.
-            self.grd=gc.copy()
-            self.iscoeff=False
-            self.isgrd=True
-        elif t=='coeff': # if t is 'coeff' modify self.coeff with gc and update the iscoeff and isgrd field to true and false respectively.
-            self.coeff=gc.copy()
-            self.isgrd=False
-            self.iscoeff=True
-        else : # else there is no recgnize value of t and then return an error.
-            logging.error('error: ', "Wrong entry for t parameter. Verify the entry is 'grd' or 'coeff'.")
             sys.exit(1)
         return self

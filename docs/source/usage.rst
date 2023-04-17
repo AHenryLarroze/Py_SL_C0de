@@ -22,7 +22,8 @@ To install the dependencies, download the requirements.txt on https://github.com
 .. code-block::
 
     (.venv) $ pip install -r requirements
-    (.venv) $ conda install -c conda-forge stripy
+
+You also need the stripy package. This package have unstable deployment. Try to install this package with pip and conda. 
 
 .. note:: you need to be in the activated environment to install the packages localy
 

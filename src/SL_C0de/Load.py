@@ -73,23 +73,24 @@ class LOAD(object):
         create_GRID() 
     """
     
-    def __init__(self,model_p):
+    def __init__(self,maxdeg,time_step):
         """
             Parameters
             ----------
         """
-        N=int((model_p.maxdeg+1)*(model_p.maxdeg+2)/2)
+        time_step_number=len(time_step)
+        N=int((maxdeg+1)*(maxdeg+2)/2)
         self.N=N
-        self.delL=sphericalobject(np.zeros((N,)),'coeff')
-        self.sdelL=np.zeros((model_p.time_step_number,N))+0j
-        self.delL_prev=sphericalobject(np.zeros((N,)),'coeff')
-        self.sdelI=np.zeros((len(model_p.grid.time_step)-1,3))+0j
-        self.sdelm=np.zeros((len(model_p.grid.time_step)-1,3))+0j
-        self.delLa=sphericalobject(np.zeros((self.N,)),'coeff')
-        self.sdelLa=np.zeros((model_p.time_step_number,self.N))+0j
-        self.delLa_prev= sphericalobject(np.zeros((self.N,)),'coeff')
-        self.V_lm=sphericalobject(np.zeros((N,)),'coeff')
-        self.V_lm_T=sphericalobject(np.zeros((N,)),'coeff')
+        self.delL=sphericalobject(coeff=np.zeros((N,)))
+        self.sdelL=np.zeros((time_step_number,N))+0j
+        self.delL_prev=sphericalobject(coeff=np.zeros((N,)))
+        self.sdelI=np.zeros((time_step_number-1,3))+0j
+        self.sdelm=np.zeros((time_step_number-1,3))+0j
+        self.delLa=sphericalobject(coeff=np.zeros((self.N,)))
+        self.sdelLa=np.zeros((time_step_number,self.N))+0j
+        self.delLa_prev= sphericalobject(coeff=np.zeros((self.N,)))
+        self.V_lm=sphericalobject(coeff=np.zeros((N,)))
+        self.V_lm_T=sphericalobject(coeff=np.zeros((N,)))
 
 
     def modify(self,t_it,delL):
@@ -101,9 +102,11 @@ class LOAD(object):
         self.delL_prev.modify(self.delL.coeff.copy(),'coeff')
         self.delLa_prev.modify(self.delLa.coeff.copy(),'coeff')
     
-    def calc_viscuous_load(self,model_p,t_it,sdelL,beta):
-        results=model_p.pool.starmap(par.f_V_lm,zip(beta.transpose(),[t_it for i in range(int((model_p.maxdeg+1)*(model_p.maxdeg+2)/2))],sdelL.transpose()))
-        self.V_lm.modify(results,'coeff')
+    def calc_viscuous_load(self,sdelL,beta,t_it):
+        if t_it==0 :
+            self.V_lm.coeff=beta[0,0]*sdelL
+        else :
+            self.V_lm.coeff=(beta[t_it,:t_it]*sdelL).sum(0)
     
     def calc_rotational_potential(self,model_p,t_it):
         calc_rot_visc(self,model_p,t_it)
