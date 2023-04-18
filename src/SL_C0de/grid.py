@@ -318,7 +318,7 @@ class TIME_GRID(GRID,sphericalobject):
                     to_merge-=1
                 return grd_interpolated[::-1,:]
             else :
-                print('no such grid type avaiable. try samples or structured')
+                print('no such grid type avaiable. try local or global')
 
     def interp_on_time_and_space(self,grid_to_interp,grid_time_step,grid_lon,grid_lat,interp_type='Thickness_divide',backend=False,grid_type='global'):
         """
@@ -380,7 +380,7 @@ class TIME_GRID(GRID,sphericalobject):
         return self
     
     def timegrdtotimecoeff(self):
-        for i in range(self.time_step_number):
+        for i in range(self.time_step_number-1):
             self.grd=self.height_time_grid[i,:,:]
             self.height_time_coeff[i,:]=self.grdtocoeff().coeff
         return self
@@ -461,7 +461,7 @@ class TIME_GRID(GRID,sphericalobject):
         ax.pcolor(elons,lats,self.height_time_grid[time_step,:,:])
 
     def save(self,save_way=''):
-        ncgrid=Dataset(save_way+self.time_grid_name+'.nc','w','NETCDF4_CLASSIC')
+        ncgrid=Dataset(save_way+'/'+self.time_grid_name+'.nc','w','NETCDF4_CLASSIC')
         ncgrid.title=self.time_grid_name
         ncgrid.createDimension('lon',self.nlons)
         ncgrid.createDimension('lat',self.nlats)
@@ -477,7 +477,7 @@ class TIME_GRID(GRID,sphericalobject):
         time=ncgrid.createVariable('time', np.float32, ('time',))
         time.units = 'kyr'
         time.long_name = 'time'
-        time[:]=self.time_step[:-1]
+        time[:]=self.time_step[1:]
         thickness=ncgrid.createVariable('thickness',np.float32,('time','lat','lon'))
         thickness.units='m'
         thickness.long_name='layer_thickness'

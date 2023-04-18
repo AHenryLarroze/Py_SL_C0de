@@ -1,5 +1,0 @@
-numpy
-pyshtools
-scipy
-matplotlib
-plotly
