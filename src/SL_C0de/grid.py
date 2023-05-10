@@ -8,6 +8,7 @@ import stripy
 from netCDF4 import Dataset
 import pyshtools as pysh
 from .Load import LOAD
+import math
 
 from scipy import io
 
@@ -177,7 +178,16 @@ class GRID(object):
             A method used to generate a zero array with the caracteristics of the grid. 
             '''
             return np.zeros((tx,self.lats.size,self.elons.size))
-
+        
+        def along_transect(self,coord=('lat_start','lon_start','lat_stop','lon_stop'),point_density=None,point_distance=None):
+            if not(point_density is None):
+                theta=np.arange(coord[0],coord[2],int((coord[0]-coord[2])/point_density))
+                phi=np.arange(coord[1],coord[3],int((coord[1]-coord[3])/point_density))
+            if not(point_distance is None):
+                theta=np.arange(coord[0],coord[2],point_distance)
+                phi=np.arange(coord[1],coord[3],point_distance)
+            Y_lm=(pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[0]+pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[1]*1j)
+            return (Y_lm*self.coeff).sum(0)
 
 class TIME_GRID(GRID,sphericalobject):
     """
@@ -198,7 +208,7 @@ class TIME_GRID(GRID,sphericalobject):
 
     """
 
-    def __init__(self,time_step=np.array([1,2]),maxdeg=64,height_time_grid=None,mass_time_grid=None,mass_time_coeff=None,height_time_coeff=None,rho=0,grid_name='time_grid',from_file=(False,)):
+    def __init__(self,time_step=np.array([1,2]),maxdeg=64,height_time_grid=None,mass_time_grid=None,mass_time_coeff=None,height_time_coeff=None,rho=0,grid_name='time_grid',from_file=(False,),superinit=False):
         if not(from_file[0]) :
             self.maxdeg=maxdeg
             super().__init__()
@@ -220,39 +230,42 @@ class TIME_GRID(GRID,sphericalobject):
             self.height_time_coeff=np.zeros((self.time_step_number-1,int(maxdeg*(maxdeg+1)/2)))+0j
             self.mass_time_coeff=np.zeros((self.time_step_number-1,int(maxdeg*(maxdeg+1)/2)))+0j
 
-            if height_time_grid!=None:
+            if not(height_time_grid is None):
                 self.height_time_grid=height_time_grid
                 self.mass_time_grid=height_time_grid*rho
                 self.grd_0=self.mass_time_grid[0,:,:]
-            elif mass_time_grid!=None:
+            elif not(mass_time_grid is None):
                 self.mass_time_grid=mass_time_grid
                 self.grd_0=self.mass_time_grid[0,:,:]
-            elif height_time_coeff!=None:
+            elif not(height_time_coeff is None):
                 self.height_time_coeff=height_time_coeff
                 self.mass_time_coeff=height_time_coeff*rho
-                self.coeff_0=self.mass_time_coeff[0,:,:]
-            elif mass_time_coeff!=None:
+                self.coeff_0=self.mass_time_coeff[0,:]
+            elif not(mass_time_coeff is None):
                 self.mass_time_coeff=mass_time_coeff
-                self.coeff_0=self.mass_time_coeff[0,:,:]
+                self.coeff_0=self.mass_time_coeff[0,:]
 
         elif from_file[0] :
-            ncgrid = Dataset(from_file[1]+'.nc',mode='r',format='NETCDF4_CLASSIC') 
-            self.maxdeg=len(ncgrid['lat'][:].data)
+            self.ncgrid = Dataset(from_file[1]+'.nc',mode='r',format='NETCDF4_CLASSIC') 
+            self.time_grid_name=self.ncgrid.title
+            self.maxdeg=len(self.ncgrid['lat'][:].data)
             super().__init__()
 
-            self.time_step=ncgrid['time'][:].data
+            self.time_step=self.ncgrid['time'][:].data
             self.time_step_number=len(self.time_step)
+            self.maxdeg=self.ncgrid.dimensions['maxdeg'].size
 
-            self.rho=rho
+            self.rho=self.ncgrid['rho'][:].data
 
-            self.height_time_grid=ncgrid['thickness'][:].data
+            self.height_time_grid=self.ncgrid['thickness'][:].data
             self.mass_time_grid=np.zeros((self.time_step_number,self.nlats,self.nlons))
-            self.height_time_coeff=np.zeros((self.time_step_number,int(self.maxdeg*(self.maxdeg+1)/2)))+0j
+            self.height_time_coeff=self.ncgrid['coeff_real'][:].data+self.ncgrid['coeff_imag'][:].data*1j
             self.mass_time_coeff=np.zeros((self.time_step_number,int(self.maxdeg*(self.maxdeg+1)/2)))+0j
 
             self.mass_time_grid=self.height_time_grid*rho
 
-            ncgrid.close()
+            if not(superinit):
+                self.ncgrid.close()
 
     def interp_on_time(self,grid_to_interp,grid_time_step,model_time_step,interp_type='Thickness_divide',backend='False',grid_type='regular'):
         """
@@ -386,7 +399,7 @@ class TIME_GRID(GRID,sphericalobject):
         return self
     
     def timecoefftotimegrd(self):
-        for i in range(self.time_step_number):
+        for i in range(self.time_step_number-1):
             self.coeff=self.height_time_coeff[i,:]
             self.height_time_grid[i,:,:]=self.coefftogrd().grd
         return self
@@ -460,29 +473,66 @@ class TIME_GRID(GRID,sphericalobject):
         elons,lats=np.meshgrid(self.elons,self.lats)
         ax.pcolor(elons,lats,self.height_time_grid[time_step,:,:])
 
-    def save(self,save_way=''):
-        ncgrid=Dataset(save_way+'/'+self.time_grid_name+'.nc','w','NETCDF4_CLASSIC')
-        ncgrid.title=self.time_grid_name
-        ncgrid.createDimension('lon',self.nlons)
-        ncgrid.createDimension('lat',self.nlats)
-        ncgrid.createDimension('time',self.time_step_number-1)
-        lat=ncgrid.createVariable('lat', np.float32, ('lat',))
+    def Point_time(self,theta,phi):
+        Y_lm=(pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[0]+pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[1]*1j)
+        return (np.repeat(Y_lm,self.height_time_coeff.shape[0],axis=1)*self.height_time_coeff).sum(1)
+    
+    def along_transect(self,coord=('lat_start','lon_start','lat_stop','lon_stop'),point_density=None,point_distance=None):
+        transect=np.array([])
+        for t_it in range(self.height_time_coeff.shape[0]):
+            self.coeff_from_step(t_it)
+            transect.append(super().along_transect(self,coord,point_density,point_distance))
+        return transect
+
+    def save(self,save_way='',supersave=False):
+
+        self.ncgrid=Dataset(save_way+'/'+self.time_grid_name+'.nc','w','NETCDF4_CLASSIC')
+        self.ncgrid.title=self.time_grid_name
+
+        self.ncgrid.createDimension('maxdeg',self.maxdeg)
+        self.ncgrid.createDimension('maxdeg_order',(self.maxdeg)*(self.maxdeg+1)/2)
+        self.ncgrid.createDimension('lon',self.nlons)
+        self.ncgrid.createDimension('lat',self.nlats)
+        self.ncgrid.createDimension('time_diff',self.time_step_number-1)
+        self.ncgrid.createDimension('time_step',self.time_step_number)
+
+        lat=self.ncgrid.createVariable('lat', np.float32, ('lat',))
         lat.units = 'degrees_north'
         lat.long_name = 'latitude'
         lat[:]=self.lats
-        lon=ncgrid.createVariable('lon', np.float32, ('lon',))
+
+        lon=self.ncgrid.createVariable('lon', np.float32, ('lon',))
         lon.units = 'degrees_east'
         lon.long_name = 'longitude'
         lon[:]=self.elons
-        time=ncgrid.createVariable('time', np.float32, ('time',))
+
+        time=self.ncgrid.createVariable('time', np.float32, ('time_step',))
         time.units = 'kyr'
         time.long_name = 'time'
-        time[:]=self.time_step[1:]
-        thickness=ncgrid.createVariable('thickness',np.float32,('time','lat','lon'))
+        time[:]=self.time_step
+
+        thickness=self.ncgrid.createVariable('thickness',np.float32,('time_diff','lat','lon'))
         thickness.units='m'
         thickness.long_name='layer_thickness'
         thickness[:,:,:]=self.height_time_grid
-        ncgrid.close()
+
+        coeff_real=self.ncgrid.createVariable('coeff_real',np.float32,('time_diff','maxdeg_order'))
+        coeff_real.units='m'
+        coeff_real.long_name='layer thickness in spherical harmonics'
+        coeff_real[:,:]=np.real(self.height_time_coeff)
+
+        coeff_imag=self.ncgrid.createVariable('coeff_imag',np.float32,('time_diff','maxdeg_order'))
+        coeff_imag.units='m'
+        coeff_imag.long_name='layer thickness in spherical harmonics'
+        coeff_imag[:,:]=np.imag(self.height_time_coeff)
+
+        rho=self.ncgrid.createVariable('rho',np.float32)
+        rho.units='kg/m3'
+        rho.long_name='density of the considered grid'
+        rho[:]=self.rho
+        
+        if not(supersave) :
+            self.ncgrid.close()
 
 class SEDIMENT_TIME_GRID(TIME_GRID):
     """
@@ -501,11 +551,18 @@ class SEDIMENT_TIME_GRID(TIME_GRID):
         ----------
         """
         # preset the grid and coefficient to none. The sediment density is set to 2300 
-        super().__init__(time_step,maxdeg,height_time_grid,mass_time_grid,height_time_coeff,mass_time_coeff,rho,grid_name,from_file)
+        super().__init__(time_step,maxdeg,height_time_grid,mass_time_grid,height_time_coeff,mass_time_coeff,rho,grid_name,from_file,superinit=True)
         self.isgrd=False
         self.iscoeff=False
         self.saved=np.array([])
-        self.rho=rho
+        if from_file[0] :
+            self.ncgrid.close()
+
+    def save(self,save_way=''):
+        super().save(save_way,supersave=True)
+        self.ncgrid.close()
+
+
 
 class ICE_TIME_GRID(TIME_GRID):
     """
@@ -538,26 +595,51 @@ class ICE_TIME_GRID(TIME_GRID):
         ----------
         """
         # initialize to false the grid and coefficient (no grid or coefficient pre loaded). The ice volumetric masse is set to 916.7 kg/m3.
-        super().__init__(time_step,maxdeg,height_time_grid,mass_time_grid,height_time_coeff,mass_time_coeff,rho,grid_name,from_file)
-        self.ice=self.height_time_grid
-        self.isgrd=False
-        self.iscoeff=False
+        super().__init__(time_step,maxdeg,height_time_grid,mass_time_grid,height_time_coeff,mass_time_coeff,rho,grid_name,from_file,superinit=True)
+        # self.isgrd=False
+        # self.iscoeff=False
         self.saved=np.array([])
         self.sdeli_00=0
         self.deli_00_prev=0
 
+        if from_file[0] :
+            self.ice=self.ncgrid['ice'][:].data
+            self.ncgrid.close()
+
     def ice_correction(self,topo,oc):
 
-        for t_it in range(self.time_step_number):
-            topo.height_time_grid[t_it,:,:]=topo.height_time_grid[t_it,:,:]-self.height_time_grid[t_it,:,:]+self.ice[t_it,:,:]
-        for t_it in range(self.time_step_number): # to parallelize
-            check1 = OCEAN_TIME_GRID().evaluate_ocean(-topo.height_time_grid[t_it,:,:]+self.ice[t_it,:,:]) # generate the ocean function for ice-topo
-            check2 = OCEAN_TIME_GRID().evaluate_ocean(topo.height_time_grid[t_it,:,:]-self.ice[t_it,:,:]).grd*(OCEAN_TIME_GRID().evaluate_ocean(-self.ice[t_it,:,:]*self.rho-(topo.height_time_grid[t_it,:,:]-self.ice[t_it,:,:])*oc.rho).grd)
-            self.height_time_grid[t_it,:,:] = check1.grd*self.ice[t_it,:,:]+check2*self.ice[t_it,:,:] # add the two part of ice over the check1 nd check2 positive area.
-        for t_it in range(self.time_step_number):    
-            topo.height_time_grid[t_it,:,:]=topo.height_time_grid[t_it,:,:]+self.height_time_grid[t_it,:,:]-self.ice[t_it,:,:]
+        for t_it in range(self.time_step_number-1):
+            if t_it==0 :
+                topo.height_time_grid[t_it,:,:]=topo.height_time_grid[t_it,:,:]-self.height_time_grid[t_it,:,:]+self.ice[t_it,:,:]
+            else :
+                topo.height_time_grid[t_it,:,:]=topo.height_time_grid[t_it,:,:]-self.height_time_grid[:t_it+1,:,:].sum(0)+self.ice[:t_it+1,:,:].sum(0)
+        for t_it in range(self.time_step_number-1): 
+            if t_it==0:
+                check1 = OCEAN_TIME_GRID().evaluate_ocean(-topo.height_time_grid[t_it,:,:]+self.ice[t_it,:,:]) # generate the ocean function for ice-topo
+                check2 = OCEAN_TIME_GRID().evaluate_ocean(topo.height_time_grid[t_it,:,:]-self.ice[t_it,:,:]).grd*(OCEAN_TIME_GRID().evaluate_ocean(-self.ice[t_it,:,:]*self.rho-(topo.height_time_grid[t_it,:,:]-self.ice[t_it,:,:])*oc.rho).grd)
+                self.height_time_grid[t_it,:,:] = check1.grd*self.ice[t_it,:,:]+check2*self.ice[t_it,:,:] # add the two part of ice over the check1 nd check2 positive area.
+            else :
+                check1 = OCEAN_TIME_GRID().evaluate_ocean(-topo.height_time_grid[t_it,:,:]+self.ice[:t_it+1,:,:].sum(0)) # generate the ocean function for ice-topo
+                check2 = OCEAN_TIME_GRID().evaluate_ocean(topo.height_time_grid[t_it,:,:]-self.ice[:t_it+1,:,:].sum(0)).grd*(OCEAN_TIME_GRID().evaluate_ocean(-self.ice[:t_it+1,:,:].sum(0)*self.rho-(topo.height_time_grid[t_it,:,:]-self.ice[:t_it+1,:,:].sum(0))*oc.rho).grd)
+                self.height_time_grid[t_it,:,:] = check1.grd*self.ice[:t_it+1,:,:].sum(0)+check2*self.ice[:t_it+1,:,:].sum(0)-self.height_time_grid[:t_it,:,:].sum(0) # add the two part of ice over the check1 nd check2 positive area.
+        for t_it in range(self.time_step_number-1):    
+            if t_it==0 :
+                topo.height_time_grid[t_it,:,:]=topo.height_time_grid[t_it,:,:]+self.height_time_grid[t_it,:,:]-self.ice[t_it,:,:]
+            else :
+                topo.height_time_grid[t_it,:,:]=topo.height_time_grid[t_it,:,:]+self.height_time_grid[:t_it+1,:,:].sum(0)-self.ice[:t_it+1,:,:].sum(0)
 
+    def save(self,save_way=''):
+        super().save(save_way,supersave=True)
+        ice=self.ncgrid.createVariable('ice',np.float32,('time_diff','lat','lon'))
+        ice.units='m'
+        ice.long_name='initial_ice_thickness'
 
+        if self.__dict__.keys().__contains__('ice'):
+            ice[:,:,:]=self.ice
+        else :
+            ice[:,:,:]=self.height_time_grid.copy()
+
+        self.ncgrid.close()
 
 class OCEAN_TIME_GRID(TIME_GRID):
     """
@@ -588,9 +670,11 @@ class OCEAN_TIME_GRID(TIME_GRID):
         ----------
         """
         # initialize the ocean with no grid and no coefficient. The saved is also initialized. The volumetric mass of water is set to 1000 
-        super().__init__(time_step,maxdeg,height_time_grid,mass_time_grid,height_time_coeff,mass_time_coeff,rho,grid_name,from_file)
+
+        super().__init__(time_step,maxdeg,height_time_grid,mass_time_grid,height_time_coeff,mass_time_coeff,rho,grid_name,from_file,superinit=True)
         self.saved=np.array([])
-        self.rho=rho
+        if from_file[0] :
+            self.ncgrid.close()
         
     def update_0(self):
         self.grd_0=self.grd.copy()
@@ -624,7 +708,7 @@ class OCEAN_TIME_GRID(TIME_GRID):
                 self.height_time_coeff[t_it,:]=self.prev/self.prev[0]*(TO.coeff[0]-TO.prev[0])-TO.coeff-TO.prev
             else :
                 self.height_time_coeff[t_it,:]=self.prev/self.prev[0]*(-ice_time_grid.rho/self.rho*ice_time_grid.height_time_coeff[:t_it+1,:].sum(0) + TO.coeff[0]-TO.prev[0])-TO.coeff-TO.prev
-        chi=20
+        chi=np.inf
         while chi>conv_lim:
             chi=self.sea_level_equation(load,ice_time_grid,sed_time_grid,love_number,TO,t_it)
             conv_it+=1
@@ -640,13 +724,14 @@ class OCEAN_TIME_GRID(TIME_GRID):
             self.height_time_coeff[t_it,:]=RO.coeff + self.delPhi_g*self.coeff -  TO.coeff
         else :
             if t_it == 1 : 
-                load.calc_viscuous_load(ice_time_grid.height_time_coeff[0,:]*ice_time_grid.rho+sed_time_grid.height_time_coeff[0,:]*sed_time_grid.rho+self.height_time_coeff[0,:]*self.rho,love_number.beta_l,0)
+                #load.calc_viscuous_load(ice_time_grid.height_time_coeff[0,:]*ice_time_grid.rho+sed_time_grid.height_time_coeff[0,:]*sed_time_grid.rho+self.height_time_coeff[0,:]*self.rho,love_number.beta_l,0)
+                load.calc_viscuous(np.zeros(ice_time_grid.height_time_coeff[0,:].shape),love_number.beta_l,0)
             else : 
-                load.calc_viscuous_load(ice_time_grid.height_time_coeff[:t_it,:]*ice_time_grid.rho+sed_time_grid.height_time_coeff[:t_it,:]*sed_time_grid.rho+self.height_time_coeff[:t_it,:]*self.rho,love_number.beta_l,t_it)
-            delSLcurl_fl=love_number.E* love_number.T.coeff *(ice_time_grid.height_time_coeff[:t_it+1,:].sum(0)*ice_time_grid.rho+sed_time_grid.height_time_coeff[:t_it+1,:].sum(0)*sed_time_grid.rho+self.height_time_coeff[:t_it+1,:].sum(0)*self.rho)+love_number.T.coeff*load.V_lm.coeff
-            self.delSLcurl=sphericalobject(coeff=delSLcurl_fl - ice_time_grid.height_time_coeff[:t_it+1,:].sum(0)- sed_time_grid.height_time_coeff[:t_it+1,:].sum(0)).coefftogrd()
+                load.calc_viscuous(ice_time_grid.height_time_coeff[1:t_it,:]*ice_time_grid.rho+sed_time_grid.height_time_coeff[1:t_it,:]*sed_time_grid.rho+self.height_time_coeff[1:t_it,:]*self.rho,love_number.beta_l,t_it)
+            delSLcurl_fl=love_number.E* love_number.T.coeff *(ice_time_grid.height_time_coeff[1:t_it+1,:].sum(0)*ice_time_grid.rho+sed_time_grid.height_time_coeff[1:t_it+1,:].sum(0)*sed_time_grid.rho+self.height_time_coeff[1:t_it+1,:].sum(0)*self.rho)+love_number.T.coeff*load.V_lm.coeff
+            self.delSLcurl=sphericalobject(coeff=delSLcurl_fl - ice_time_grid.height_time_coeff[1:t_it+1,:].sum(0)- sed_time_grid.height_time_coeff[1:t_it+1,:].sum(0)).coefftogrd()
             RO=sphericalobject(grd=self.delSLcurl.grd*self.grd).grdtocoeff()
-            self.delPhi_g=np.real(1/self.coeff[0] * (- ice_time_grid.rho/self.rho*ice_time_grid.height_time_coeff[:t_it+1,0].sum() - RO.coeff[0] + TO.coeff[0]))
+            self.delPhi_g=np.real(1/self.coeff[0] * (- ice_time_grid.rho/self.rho*ice_time_grid.height_time_coeff[1:t_it+1,0].sum() - RO.coeff[0] + TO.coeff[0]))
             #print(t_it,':',self.coeff[0])
             if t_it==1:
                 chi = np.abs((np.sum(np.abs(RO.coeff + self.delPhi_g*self.coeff -  TO.coeff - self.height_time_coeff[0,:])) - np.sum(np.abs(self.height_time_coeff[t_it,:]))) / np.sum(np.abs(self.height_time_coeff[t_it,:])))
@@ -686,8 +771,125 @@ class TOPOGRAPHIC_TIME_GRID(TIME_GRID):
         Parameters
         ----------
         """
-        super().__init__(time_step,maxdeg,height_time_grid,mass_time_grid,height_time_coeff,mass_time_coeff,rho,grid_name,from_file)
+        super().__init__(time_step,maxdeg,height_time_grid,mass_time_grid,height_time_coeff,mass_time_coeff,rho,grid_name,from_file,superinit=True)
+        if from_file[0] :
+            self.topo_pres=self.ncgrid['topo_pres'][:].data
+            self.ncgrid.close()
+        
         # initialize coefficient and grid to 0 because no grid or coefficient has been created
-        self.isgrd=False
-        self.iscoeff=False
-        self.saved=np.array([])
+        # self.isgrd=False
+        # self.iscoeff=False
+        #self.saved=np.array([])
+
+    def save(self,save_way=''):
+        super().save(save_way,supersave=True)
+        topo_pres=self.ncgrid.createVariable('topo_pres',np.float32,('lat','lon'))
+        topo_pres.units='m'
+        topo_pres.long_name='present topography'
+
+        if self.__dict__.keys().__contains__('topo_pres'):
+            topo_pres[:,:]=self.topo_pres
+
+        self.ncgrid.close()
+
+
+from .love import get_tlm
+
+class LOAD_TIME_GRID(LOAD,TIME_GRID) :
+    def __init__(self,sdelL=np.array([]),beta_l=np.array([]),E=np.array([]),a=7371000,Me=5000,time_step=np.array([1,2]),maxdeg=64,height_time_grid=None,mass_time_grid=None,mass_time_coeff=None,height_time_coeff=None,rho=0,grid_name='time_grid',from_file=(False,)):
+        TIME_GRID.__init__(self,time_step,maxdeg,height_time_grid,mass_time_grid,height_time_coeff,mass_time_coeff,rho,grid_name,from_file,superinit=True)
+        LOAD.__init__(self,maxdeg,time_step)
+        self.beta_counter=np.repeat(np.arange(0,self.maxdeg),np.arange(1,self.maxdeg+1))
+        if from_file[0]:
+            self.a=self.ncgrid['a'][:].data
+            self.Me=self.ncgrid['Me'][:].data
+            self.viscuous_deformation=self.ncgrid['viscuous_deformation_real'][:].data+self.ncgrid['viscuous_deformation_imag'][:].data*1j
+            self.elastic_deformation=self.ncgrid['elastic_deformation_real'][:].data+self.ncgrid['elastic_deformation_imag'][:].data*1j
+            self.beta_l=self.ncgrid['beta_l'][:].data
+            self.elastic_love=self.ncgrid['elastic_love'][:].data
+            self.load=self.ncgrid['load_real'][:].data+self.ncgrid['load_imag'][:].data*1j
+        else :
+            self.viscuous_deformation=np.zeros((self.time_step_number-2,int(maxdeg*(maxdeg+1)/2)))+0j
+            self.elastic_deformation=np.zeros((self.time_step_number-2,int(maxdeg*(maxdeg+1)/2)))+0j
+            self.load=sdelL[1:,:]
+            self.elastic_love=E[self.beta_counter.astype(int)]
+            self.a=a
+            self.Me=Me
+            self.beta_l=beta_l
+        self.T = sphericalobject(coeff=get_tlm(self.maxdeg-1,self.a,self.Me))
+        self.viscuous_love=self.beta_l[:,:,self.beta_counter.astype(int)]
+
+
+
+    def calc_viscuous_time(self,backend=False) :
+        for t_it in range(1,self.time_step_number-1):
+            if t_it+1==1 :
+                self.calc_viscuous(np.zeros(self.height_time_coeff[0,:].shape),self.viscuous_love,0)
+            else :
+                self.calc_viscuous(self.load[1:t_it,:],self.viscuous_love,t_it)
+            self.viscuous_deformation[t_it-1,:]=self.T.coeff*np.squeeze(self.V_lm.coeff.T)
+            if backend:
+                print(f'viscuous calculation at {self.time_step[t_it]} kyr done')
+    
+    def calc_elastic_time(self):
+        self.elastic_deformation=np.repeat(np.expand_dims(self.T.coeff,axis=0),self.time_step_number-2,axis=0)*np.repeat(np.expand_dims(self.elastic_love,axis=0),self.time_step_number-2,axis=0)*self.load
+
+    def save(self,save_way=''):
+        super().save(save_way,supersave=True)
+
+        self.ncgrid.createDimension('time_no_init',self.time_step_number-2)
+
+        load_real=self.ncgrid.createVariable('load_real',np.float32,('time_no_init','maxdeg_order'))
+        load_real.units='kg'
+        load_real.long_name='load grid used to compute the earth deformation.'
+        load_real[:,:]=np.real(self.load)
+
+        load_imag=self.ncgrid.createVariable('load_imag',np.float32,('time_no_init','maxdeg_order'))
+        load_imag.units='kg'
+        load_imag.long_name='load grid used to compute the earth deformation.'
+        load_imag[:,:]=np.imag(self.load)
+
+        viscuous_deformation_real=self.ncgrid.createVariable('viscuous_deformation_real',np.float32,('time_no_init','maxdeg_order'))
+        viscuous_deformation_real.units='mm/yr'
+        viscuous_deformation_real.long_name='viscuous component of the earth deformation due to load.'
+        viscuous_deformation_real[:,:]=np.real(self.viscuous_deformation)
+
+        viscuous_deformation_imag=self.ncgrid.createVariable('viscuous_deformation_imag',np.float32,('time_no_init','maxdeg_order'))
+        viscuous_deformation_imag.units='mm/yr'
+        viscuous_deformation_imag.long_name='viscuous component of the earth deformation due to load.'
+        viscuous_deformation_imag[:,:]=np.imag(self.viscuous_deformation)
+
+        elastic_deformation_real=self.ncgrid.createVariable('elastic_deformation_real',np.float32,('time_no_init','maxdeg_order'))
+        elastic_deformation_real.units='mm/yr'
+        elastic_deformation_real.long_name='elastic component of the earth deformation due to load.'
+        elastic_deformation_real[:,:]=np.real(self.elastic_deformation)
+
+        elastic_deformation_imag=self.ncgrid.createVariable('elastic_deformation_imag',np.float32,('time_no_init','maxdeg_order'))
+        elastic_deformation_imag.units='mm/yr'
+        elastic_deformation_imag.long_name='elastic component of the earth deformation due to load.'
+        elastic_deformation_imag[:,:]=np.imag(self.elastic_deformation)
+
+        elastic_love=self.ncgrid.createVariable('elastic_love',np.float32,('maxdeg_order'))
+        elastic_love.units='none'
+        elastic_love.long_name='elastic load love numbers used to compute the earth deformation'
+        elastic_love[:]=self.elastic_love
+
+        beta_l=self.ncgrid.createVariable('beta_l',np.float32,('time_diff','time_diff','maxdeg'))
+        beta_l.units='none'
+        beta_l.long_name='viscuous load love numbers used to compute the earth deformation'
+        beta_l[:,:]=self.beta_l
+
+        a=self.ncgrid.createVariable('a',np.float32)
+        a.units='m'
+        a.long_name='earth radius'
+        a=self.a
+
+        Me=self.ncgrid.createVariable('Me',np.float32)
+        Me.units='kg'
+        Me.long_name='earth mass'
+        Me=self.Me
+
+        self.ncgrid.close()
+
+    def clean_memory(self):
+        self.viscuous_love=0

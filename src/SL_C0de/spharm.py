@@ -1,15 +1,10 @@
 import numpy as np
 import math
-from scipy import special as scsp
-from scipy.special import lpmn as legendre_a
-import scipy
-import numpy.matlib as npmlib #used to add repmat 
 #import pyshtools as pysh #pyshtools is still necessary, even if i don't use the expend function (still need the legendre  polynome function)
 import sys
 import logging
 import pyshtools as pysh
 import pyshtools.expand as expand
-import itertools
     
 def get_coeffs(a_lm,n):
     if n == 0 :
@@ -19,11 +14,6 @@ def get_coeffs(a_lm,n):
         # position of current order in a_lm vector
         a_n = a_lm[gauss_sum:gauss_sum+n+1]
     return a_n
-
-def calc_at_point(C_lm,model_p,theta,phi):
-    model_p.Y_lm=(pysh.expand.spharm(model_p.maxdeg,theta,phi,packed=True)[0]+pysh.expand.spharm(model_p.maxdeg,theta,phi,packed=True)[1]*1j)/2
-    model_p.Y_lm[0]=model_p.Y_lm[0]*math.sqrt(2)
-    return np.dot(C_lm,model_p.Y_lm)*math.sqrt(2)*2
 
 class sphericalobject(object):
     """
@@ -150,10 +140,16 @@ class sphericalobject(object):
 
         '''
         
-        zero , w = expand.SHGLQ(max_calc_deg)
+        zero , w = expand.SHGLQ(max_calc_deg-1)
+        x_GL = np.arccos(zero[::-1])*180/math.pi - 90
+        lon_GL = np.linspace(0,360,2*(max_calc_deg)+1)
+        lon_GL = lon_GL[:-1]
+        lat_hd=x_GL
+        lon_hd=lon_GL
+        self.colats = 90 - self.lats
         coeff=np.stack((self.coeff.real,self.coeff.imag))
         coeff=pysh.shio.SHCindexToCilm(coeff)
-        return expand.MakeGridGLQ(coeff,zero,lmax=max_calc_deg,extend=1)
+        return expand.MakeGridGLQ(coeff,zero,lmax=max_calc_deg-1,extend=1),lon_hd,lat_hd[::-1]
     
     def multiply(self,coeff2):
         '''
@@ -183,6 +179,10 @@ class sphericalobject(object):
         coeff=pysh.shio.SHCilmToCindex(coeff)
         coeff=coeff[0]+coeff[1]*1j
         return coeff[:int((self.maxdeg*(self.maxdeg+1))/2)]
+    
+    def calculate_value_at_point(self,phi,theta):
+        Y_lm=(pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[0]+pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[1]*1j)
+        return np.dot(self.coeff,Y_lm)
     
     def save_prev(self):
         '''

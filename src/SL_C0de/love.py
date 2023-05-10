@@ -1,6 +1,7 @@
 import numpy as np
 from numpy.matlib import repmat #used to add repmat 
 from .spharm import sphericalobject
+import math
 
 def love_lm(num,maxdeg):
     '''
@@ -116,12 +117,12 @@ class LOVE(object):
         self.time_step=time_step
         self.maxdeg=maxdeg
         self.time_step_number=len(time_step)
-        self.h_e=np.loadtxt(way+'/h_e.dat',unpack=True)[1,:maxdeg]
-        self.k_e=np.loadtxt(way+'/k_e.dat',unpack=True)[1,:maxdeg]
+        self.h_e=np.loadtxt(way+'/h_e.dat',unpack=True)[1,:maxdeg]/(4*math.pi)
+        self.k_e=np.loadtxt(way+'/k_e.dat',unpack=True)[1,:maxdeg]/(4*math.pi)
         self.h=np.repeat(self.h_e,np.arange(1,maxdeg+1,1))
         self.k=np.repeat(self.k_e,np.arange(1,maxdeg+1,1))
-        self.k_ve=np.loadtxt(way+'/k_ve.dat',unpack=True)
-        self.h_ve=np.loadtxt(way+'/h_ve.dat',unpack=True)
+        self.k_ve=np.loadtxt(way+'/k_ve.dat',unpack=True)/(4*math.pi)
+        self.h_ve=np.loadtxt(way+'/h_ve.dat',unpack=True)/(4*math.pi)
 
         self.love_time=np.loadtxt(way+'/time.dat',unpack=True)
 
@@ -141,8 +142,10 @@ class LOVE(object):
         k_e=np.concatenate((np.zeros((1,)),self.k_e))
         h_e=np.concatenate((np.zeros((1,)),self.h_e))
         self.beta_G_l=k_ve[time_interval_tri,:maxdeg].squeeze()-k_e[:maxdeg]
+        #self.beta_G_l=k_ve[time_interval_tri+1,:maxdeg].squeeze()-k_ve[time_interval_tri,:maxdeg].squeeze()
         self.beta_G_l[time_interval_tri<=0]=self.beta_G_l[time_interval_tri<=0]*0
         self.beta_R_l=h_ve[time_interval_tri,:maxdeg].squeeze()-h_e[:maxdeg]
+        #self.beta_R_l=h_ve[time_interval_tri+1,:maxdeg].squeeze()-h_ve[time_interval_tri,:maxdeg].squeeze()
         self.beta_R_l[time_interval_tri<=0]=self.beta_R_l[time_interval_tri<=0]*0
         self.beta_l=self.beta_G_l-self.beta_R_l
         self.beta_konly_l=self.k_ve[time_interval_tri,1]-self.k_e[0]-(self.h_ve[time_interval_tri,1]-self.h_e[0])
@@ -168,25 +171,39 @@ class LOVE(object):
         self.T = sphericalobject(coeff=get_tlm(maxdeg-1,a,Me))
 
         calc_beta_counter(self,maxdeg)
-        self.beta_G_l=np.array(self.beta_G_l)[:,:,self.beta_counter.astype(int)]
-        self.beta_R_l=np.array(self.beta_R_l)[:,:,self.beta_counter.astype(int)]
-        self.beta_l=np.array(self.beta_l)[:,:,self.beta_counter.astype(int)]
+        #self.beta_G_l=np.array(self.beta_G_l)[:,:,self.beta_counter.astype(int)]
+        #self.beta_R_l=np.array(self.beta_R_l)[:,:,self.beta_counter.astype(int)]
         self.beta_konly_l=np.array(self.beta_konly_l)
-        self.beta_tide=np.array(self.beta_tide)[:,:,self.beta_counter.astype(int)]
-        self.beta_konly_tide=np.array(self.beta_konly_tide)
+        #self.beta_tide=np.array(self.beta_tide)[:,:,self.beta_counter.astype(int)]
+        #self.beta_konly_tide=np.array(self.beta_konly_tide)
     
-    def calc_beta_G(self,model_p):
-        self.beta_G_l = np.zeros((len(model_p.grid.time_step)-1,len(model_p.grid.time_step)-1,model_p.maxdeg+1)) 
-        k_e=np.loadtxt(model_p.love_way+'/k_e.dat',unpack=True)[1,:]
-        for t_j in range (1,model_p.time_step_number):
-            for t_n in range(1,t_j):
-                self.beta_G_l[t_j-1,t_n-1,:]=self.k_ve[np.where(np.round((model_p.time_step[t_n-1]-model_p.time_step[t_j-1]),2)==self.love_time)[0],:model_p.maxdeg+1][0].squeeze()-k_e[:model_p.maxdeg+1]
-        self.beta_G_l=np.array(self.beta_G_l)[:,:,self.beta_counter.astype(int)[:-1]-1]
+    def calc_beta_G(self):
+        self.beta_l=0
+        self.beta_R=0
+        self.beta_G=np.array(self.beta_G_l)[:,:,self.beta_counter.astype(int)]
+        # self.beta_G_l = np.zeros((len(model_p.grid.time_step)-1,len(model_p.grid.time_step)-1,model_p.maxdeg+1)) 
+        # k_e=np.loadtxt(model_p.love_way+'/k_e.dat',unpack=True)[1,:]
+        # for t_j in range (1,model_p.time_step_number):
+        #     for t_n in range(1,t_j):
+        #         self.beta_G_l[t_j-1,t_n-1,:]=self.k_ve[np.where(np.round((model_p.time_step[t_n-1]-model_p.time_step[t_j-1]),2)==self.love_time)[0],:model_p.maxdeg+1][0].squeeze()-k_e[:model_p.maxdeg+1]
+        # self.beta_G_l=np.array(self.beta_G_l)[:,:,self.beta_counter.astype(int)[:-1]-1]
 
-    def calc_beta_R(self,model_p):
-        self.beta_R_l = np.zeros((len(model_p.grid.time_step)-1,len(model_p.grid.time_step)-1,model_p.maxdeg+1)) 
-        h_e=np.loadtxt(model_p.love_way+'/h_e.dat',unpack=True)[1,:]
-        for t_j in range (1,model_p.time_step_number):
-            for t_n in range(1,t_j):
-                self.beta_R_l[t_j-1,t_n-1,:]=self.h_ve[np.where(np.round((model_p.time_step[t_n-1]-model_p.time_step[t_j-1]),2)==self.love_time)[0],:model_p.maxdeg+1][0].squeeze()-h_e[:model_p.maxdeg+1]
-        self.beta_R_l=np.array(self.beta_R_l)[:,:,self.beta_counter.astype(int)[:-1]-1]
+    def calc_beta_R(self):
+        self.beta_l=0
+        self.beta_G=0
+        self.beta_R=np.array(self.beta_R_l)[:,:,self.beta_counter.astype(int)]
+        # self.beta_R_l = np.zeros((len(model_p.grid.time_step)-1,len(model_p.grid.time_step)-1,model_p.maxdeg+1)) 
+        # h_e=np.loadtxt(model_p.love_way+'/h_e.dat',unpack=True)[1,:]
+        # for t_j in range (1,model_p.time_step_number):
+        #     for t_n in range(1,t_j):
+        #         self.beta_R_l[t_j-1,t_n-1,:]=self.h_ve[np.where(np.round((model_p.time_step[t_n-1]-model_p.time_step[t_j-1]),2)==self.love_time)[0],:model_p.maxdeg+1][0].squeeze()-h_e[:model_p.maxdeg+1]
+        # self.beta_R_l=np.array(self.beta_R_l)[:,:,self.beta_counter.astype(int)[:-1]-1]
+
+    def calc_beta(self):
+        self.beta_l=self.beta_G_l-self.beta_R_l
+        self.beta_l=np.array(self.beta_l)[:,:,self.beta_counter.astype(int)]
+    
+    def clean_memory(self):
+        self.beta_l=0
+        self.beta_R=0
+        self.beta_G=0
