@@ -151,23 +151,23 @@ class LOVE(object):
         self.beta_konly_l=self.k_ve[time_interval_tri,1]-self.k_e[0]-(self.h_ve[time_interval_tri,1]-self.h_e[0])
 
 
-        # Load the Tide Love Numbers
-        self.h_tide_e=np.loadtxt(way+'/h_e_T.dat',unpack=True)[1,:maxdeg]
-        self.k_tide_e=np.loadtxt(way+'/k_e_T.dat',unpack=True)[1,:maxdeg]
-        self.h_tide=np.repeat(self.h_tide_e,np.arange(1,maxdeg+1,1))
-        self.k_tide=np.repeat(self.k_tide_e,np.arange(1,maxdeg+1,1))
-        self.k_tide_ve=np.loadtxt(way+'/k_ve_T.dat',unpack=True)[1:-1,:]
-        self.h_tide_ve=np.loadtxt(way+'/h_ve_T.dat',unpack=True)[1:-1,:]
+        # # Load the Tide Love Numbers
+        # self.h_tide_e=np.loadtxt(way+'/h_e_T.dat',unpack=True)[1,:maxdeg]
+        # self.k_tide_e=np.loadtxt(way+'/k_e_T.dat',unpack=True)[1,:maxdeg]
+        # self.h_tide=np.repeat(self.h_tide_e,np.arange(1,maxdeg+1,1))
+        # self.k_tide=np.repeat(self.k_tide_e,np.arange(1,maxdeg+1,1))
+        # self.k_tide_ve=np.loadtxt(way+'/k_ve_T.dat',unpack=True)[1:-1,:]
+        # self.h_tide_ve=np.loadtxt(way+'/h_ve_T.dat',unpack=True)[1:-1,:]
 
-        k_tide_ve=np.concatenate((np.zeros((self.k_ve.shape[0],1)),self.k_ve),axis=1)
-        h_tide_ve=np.concatenate((np.zeros((self.h_ve.shape[0],1)),self.h_ve),axis=1)
-        k_tide_e=np.concatenate((np.zeros((1,)),self.k_e))
-        h_tide_e=np.concatenate((np.zeros((1,)),self.h_e))
-        self.beta_tide=k_tide_ve[time_interval_tri,:maxdeg+1].squeeze()-k_tide_e[:maxdeg+1]-(h_tide_ve[time_interval_tri,:maxdeg+1].squeeze()-h_tide_e[:maxdeg+1])
-        self.beta_konly_tide=self.k_tide_ve[time_interval_tri,1]-self.k_tide_e[0]-(self.h_tide_ve[time_interval_tri,1]-self.h_tide_e[0])
+        # k_tide_ve=np.concatenate((np.zeros((self.k_ve.shape[0],1)),self.k_ve),axis=1)
+        # h_tide_ve=np.concatenate((np.zeros((self.h_ve.shape[0],1)),self.h_ve),axis=1)
+        # k_tide_e=np.concatenate((np.zeros((1,)),self.k_e))
+        # h_tide_e=np.concatenate((np.zeros((1,)),self.h_e))
+        # self.beta_tide=k_tide_ve[time_interval_tri,:maxdeg+1].squeeze()-k_tide_e[:maxdeg+1]-(h_tide_ve[time_interval_tri,:maxdeg+1].squeeze()-h_tide_e[:maxdeg+1])
+        # self.beta_konly_tide=self.k_tide_ve[time_interval_tri,1]-self.k_tide_e[0]-(self.h_tide_ve[time_interval_tri,1]-self.h_tide_e[0])
         
         self.E = 1 + self.k - self.h
-        self.E_T = 1 + self.k_tide - self.h_tide
+        #self.E_T = 1 + self.k_tide - self.h_tide
         self.T = sphericalobject(coeff=get_tlm(maxdeg-1,a,Me))
 
         calc_beta_counter(self,maxdeg)

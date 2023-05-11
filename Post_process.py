@@ -5,7 +5,7 @@ from SL_C0de.grid import TOPOGRAPHIC_TIME_GRID
 
 Input_way='C:/Users/ahenry01/Desktop/Python_code/Output_grid/VM5a_122'
 
-Output_way=Input_way+'/'
+Output_way=Input_way+'/postprocess'
 
 ocean_time_grid=OCEAN_TIME_GRID(from_file=(True,Input_way+'/OCEAN_122_512'))
 ice_time_grid=ICE_TIME_GRID(from_file=(True,Input_way+'/ice_ICE6G_122_512'))
@@ -34,25 +34,24 @@ ice_load_time_grid=LOAD_TIME_GRID(sdelL=ice_time_grid.height_time_coeff*ice_time
 ice_load_time_grid.calc_elastic_time()
 ice_load_time_grid.calc_viscuous_time(backend=True)
 ice_load_time_grid.save(save_way=Output_way)
-ice_load_time_grid.clean_memory()
+ice_load_time_grid=0
 
 sediment_load_time_grid=LOAD_TIME_GRID(sdelL=sed_time_grid.height_time_coeff*sed_time_grid.rho,beta_l=beta_l,E=love_number.h_e,a=a,Me=Me,time_step=ice_time_grid.time_step,maxdeg=ice_time_grid.maxdeg,grid_name='SEDIMENT_LOAD_122_512')
 sediment_load_time_grid.calc_elastic_time()
 sediment_load_time_grid.calc_viscuous_time(backend=True)
 sediment_load_time_grid.save(save_way=Output_way)
-sediment_load_time_grid.clean_memory()
-
+sediment_load_time_grid=0
 ocean_load_time_grid=LOAD_TIME_GRID(sdelL=ocean_time_grid.height_time_coeff*ocean_time_grid.rho,beta_l=beta_l,E=love_number.h_e,a=a,Me=Me,time_step=ice_time_grid.time_step,maxdeg=ice_time_grid.maxdeg,grid_name='OCEAN_LOAD_122_512')
 ocean_load_time_grid.calc_elastic_time()
 ocean_load_time_grid.calc_viscuous_time(backend=True)
 ocean_load_time_grid.save(save_way=Output_way)
-ocean_load_time_grid.clean_memory()
+ocean_load_time_grid=0
 
 total_load_time_grid=LOAD_TIME_GRID(sdelL=sdelL_total,beta_l=beta_l,E=love_number.h_e,a=a,Me=Me,time_step=ice_time_grid.time_step,maxdeg=ice_time_grid.maxdeg,grid_name='TOTAL_LOAD_122_512')
 total_load_time_grid.calc_elastic_time()
 total_load_time_grid.calc_viscuous_time(backend=True)
 total_load_time_grid.save(save_way=Output_way)
-total_load_time_grid.clean_memory()
+total_load_time_grid=0
 
 #Calculating the geoïd deformation
 
@@ -62,25 +61,25 @@ ice_geoid_time_grid=LOAD_TIME_GRID(sdelL=ice_time_grid.height_time_coeff*ice_tim
 ice_geoid_time_grid.calc_elastic_time()
 ice_geoid_time_grid.calc_viscuous_time(backend=True)
 ice_geoid_time_grid.save(save_way=Output_way)
-ice_geoid_time_grid.clean_memory()
+ice_geoid_time_grid=0
 
 sediment_geoid_time_grid=LOAD_TIME_GRID(sdelL=sed_time_grid.height_time_coeff*sed_time_grid.rho,beta_l=beta_l,E=love_number.k_e,a=a,Me=Me,time_step=ice_time_grid.time_step,maxdeg=ice_time_grid.maxdeg,grid_name='SEDIMENT_GEOID_122_512')
 sediment_geoid_time_grid.calc_elastic_time()
 sediment_geoid_time_grid.calc_viscuous_time(backend=True)
 sediment_geoid_time_grid.save(save_way=Output_way)
-sediment_geoid_time_grid.clean_memory()
+sediment_geoid_time_grid=0
 
 ocean_geoid_time_grid=LOAD_TIME_GRID(sdelL=ocean_time_grid.height_time_coeff*ocean_time_grid.rho,beta_l=beta_l,E=love_number.k_e,a=a,Me=Me,time_step=ice_time_grid.time_step,maxdeg=ice_time_grid.maxdeg,grid_name='OCEAN_GEOID_122_512')
 ocean_geoid_time_grid.calc_elastic_time()
 ocean_geoid_time_grid.calc_viscuous_time(backend=True)
 ocean_geoid_time_grid.save(save_way=Output_way)
-ocean_geoid_time_grid.clean_memory()
+ocean_geoid_time_grid=0
 
 total_geoid_time_grid=LOAD_TIME_GRID(sdelL=sdelL_total,beta_l=beta_l,E=love_number.k_e,a=a,Me=Me,time_step=ice_time_grid.time_step,maxdeg=ice_time_grid.maxdeg,grid_name='TOTAL_GEOID_122_512')
 total_geoid_time_grid.calc_elastic_time()
 total_geoid_time_grid.calc_viscuous_time(backend=True)
 total_geoid_time_grid.save(save_way=Output_way)
-total_geoid_time_grid.clean_memory()
+total_geoid_time_grid=0
 
 # Calculate the subsidence induced by the ocean replaced by sediment :
 # I have to crop the sediment grid by the ocean grid. 
@@ -108,7 +107,7 @@ oceanic_sediment_load_time_grid.load=oceanic_sediment_time_grid.height_time_coef
 oceanic_sediment_load_time_grid.calc_elastic_time()
 oceanic_sediment_load_time_grid.calc_viscuous_time(backend=True)
 oceanic_sediment_load_time_grid.save(save_way=Output_way)
-oceanic_sediment_load_time_grid.clean_memory()
+oceanic_sediment_load_time_grid=0
 
 beta_l=love_number.beta_G_l # Load the ocean love numbers
 
@@ -118,4 +117,4 @@ oceanic_sediment_geoid_time_grid.load=oceanic_sediment_time_grid.height_time_coe
 oceanic_sediment_geoid_time_grid.calc_elastic_time()
 oceanic_sediment_geoid_time_grid.calc_viscuous_time(backend=True)
 oceanic_sediment_geoid_time_grid.save(save_way=Output_way)
-oceanic_sediment_geoid_time_grid.clean_memory()
+oceanic_sediment_geoid_time_grid=0
