@@ -18,9 +18,10 @@ step=0.5
 time_step=np.arange(start=stop,stop=-step,step=-step)
 
 
-Input_way='C:/Users/ahenry01/Desktop/Python_code/Output_grid/VM5a_122'
+Input_way='F:/SL_C0de/AYEYARWADY/Test/VM5a.l32.um21.lm22.699'
 
-topo_time_grid=TOPOGRAPHIC_TIME_GRID(from_file=(True,Input_way+'/topo_topo_SL_122_512'))
+topo_time_grid=TOPOGRAPHIC_TIME_GRID(from_file=(True,Input_way+'/topo_topo_SL_AYS2_26_512'))
+
 
 grd=topo_time_grid
 
@@ -44,7 +45,7 @@ color_topo=[(68,79,137),(68,79,137),(68,101,137),(68,101,137),(38,117,207),(38,1
 color_topo=[(c[0]/255,c[1]/255,c[2]/255) for c in color_topo]
 levels_topo=[-8000,-7000,-6000,-5000,-4000,-3000,-2000,-1000,-200,-100,-10,0,10,50,100,200,1000,2000,3000,4000,5000]
 
-for t_it in range (grd.time_step_number):
+for t_it in range (grd.time_step_number-1):
 
 
     
@@ -68,8 +69,9 @@ for t_it in range (grd.time_step_number):
     plt.close()
 
 frames=[]
-for t_it in range (grd.time_step_number):
+for t_it in range (grd.time_step_number-1):
     image = imageio.v2.imread(f'temp_gif/at_{grd.time_step[t_it]}.png')
     frames.append(image)
 
-imageio.mimsave('Topography_local_122.gif',frames,duration = 100) 
+imageio.mimsave(Input_way+'Topography_local_122.gif',frames,duration = 100) 
+

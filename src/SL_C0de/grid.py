@@ -181,13 +181,17 @@ class GRID(object):
         
         def along_transect(self,coord=('lat_start','lon_start','lat_stop','lon_stop'),point_density=None,point_distance=None):
             if not(point_density is None):
-                theta=np.arange(coord[0],coord[2],int((coord[0]-coord[2])/point_density))
-                phi=np.arange(coord[1],coord[3],int((coord[1]-coord[3])/point_density))
+                theta=np.linspace(coord[0],coord[2],point_density)
+                phi=np.linspace(coord[1],coord[3],point_density)
             if not(point_distance is None):
                 theta=np.arange(coord[0],coord[2],point_distance)
                 phi=np.arange(coord[1],coord[3],point_distance)
-            Y_lm=(pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[0]+pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[1]*1j)
-            return (Y_lm*self.coeff).sum(0)
+            i=0
+            Y_lm=np.expand_dims(pysh.expand.spharm(self.maxdeg-1,theta[i],phi[i],packed=True)[0]+pysh.expand.spharm(self.maxdeg-1,theta[i],phi[i],packed=True)[1]*1j,axis=1)
+            
+            for i in range(1,len(phi)):
+                Y_lm=np.concatenate((Y_lm,np.expand_dims((pysh.expand.spharm(self.maxdeg-1,theta[i],phi[i],packed=True)[0]+pysh.expand.spharm(self.maxdeg-1,theta[i],phi[i],packed=True)[1]*1j),axis=1)),axis=1)
+            return (Y_lm*np.repeat(np.expand_dims(self.coeff,axis=1),point_density,axis=1)).sum(0)
 
 class TIME_GRID(GRID,sphericalobject):
     """
@@ -477,12 +481,25 @@ class TIME_GRID(GRID,sphericalobject):
         Y_lm=(pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[0]+pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[1]*1j)
         return (np.repeat(Y_lm,self.height_time_coeff.shape[0],axis=1)*self.height_time_coeff).sum(1)
     
-    def along_transect(self,coord=('lat_start','lon_start','lat_stop','lon_stop'),point_density=None,point_distance=None):
-        transect=np.array([])
-        for t_it in range(self.height_time_coeff.shape[0]):
+    def along_transect(self,coord=('lat_start','lon_start','lat_stop','lon_stop'),point_density=None,point_distance=None,backend=False):
+        if not(point_density is None):
+            theta=np.linspace(coord[0],coord[2],point_density)
+            phi=np.linspace(coord[1],coord[3],point_density)
+        if not(point_distance is None):
+            theta=np.arange(coord[0],coord[2],point_distance)
+            phi=np.arange(coord[1],coord[3],point_distance)
+        i=0
+        Y_lm=np.expand_dims(pysh.expand.spharm(self.maxdeg-1,theta[i],phi[i],packed=True)[0]+pysh.expand.spharm(self.maxdeg-1,theta[i],phi[i],packed=True)[1]*1j,axis=1)
+        for i in range(1,len(phi)):
+            Y_lm=np.concatenate((Y_lm,np.expand_dims((pysh.expand.spharm(self.maxdeg-1,theta[i],phi[i],packed=True)[0]+pysh.expand.spharm(self.maxdeg-1,theta[i],phi[i],packed=True)[1]*1j),axis=1)),axis=1)
+        self.coeff_from_step(0)
+        transect=np.expand_dims((Y_lm*np.repeat(np.expand_dims(self.coeff,axis=1),point_density,axis=1)).sum(0),axis=1)
+        for t_it in range(1,self.height_time_coeff.shape[0]):
+            if backend :
+                print(t_it)
             self.coeff_from_step(t_it)
-            transect.append(super().along_transect(self,coord,point_density,point_distance))
-        return transect
+            transect=np.concatenate((transect,np.expand_dims((Y_lm*np.repeat(np.expand_dims(self.coeff,axis=1),point_density,axis=1)).sum(0),axis=1)),axis=1)
+        return np.real(transect)+np.imag(transect)
 
     def save(self,save_way='',supersave=False):
 
@@ -805,7 +822,7 @@ class LOAD_TIME_GRID(LOAD,TIME_GRID) :
             self.Me=self.ncgrid['Me'][:].data
             self.viscuous_deformation=self.ncgrid['viscuous_deformation_real'][:].data+self.ncgrid['viscuous_deformation_imag'][:].data*1j
             self.elastic_deformation=self.ncgrid['elastic_deformation_real'][:].data+self.ncgrid['elastic_deformation_imag'][:].data*1j
-            self.beta_l=self.ncgrid['beta_l'][:].data
+            #self.beta_l=self.ncgrid['beta_l'][:].data
             self.elastic_love=self.ncgrid['elastic_love'][:].data
             self.load=self.ncgrid['load_real'][:].data+self.ncgrid['load_imag'][:].data*1j
         else :
@@ -874,10 +891,10 @@ class LOAD_TIME_GRID(LOAD,TIME_GRID) :
         elastic_love.long_name='elastic load love numbers used to compute the earth deformation'
         elastic_love[:]=self.elastic_love
 
-        beta_l=self.ncgrid.createVariable('beta_l',np.float32,('time_diff','time_diff','maxdeg'))
-        beta_l.units='none'
-        beta_l.long_name='viscuous load love numbers used to compute the earth deformation'
-        beta_l[:,:]=self.beta_l
+        # beta_l=self.ncgrid.createVariable('beta_l',np.float32,('time_diff','time_diff','maxdeg'))
+        # beta_l.units='none'
+        # beta_l.long_name='viscuous load love numbers used to compute the earth deformation'
+        # beta_l[:,:]=self.beta_l
 
         a=self.ncgrid.createVariable('a',np.float32)
         a.units='m'

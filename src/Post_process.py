@@ -103,11 +103,11 @@ def calculate_sediment_ocean_interaction(love_number,ice_time_grid,sed_time_grid
 
 
 Input_way='C:/Users/ahenry01/Desktop/Python_code/Interpolated_grid'
-sed_time_grid=SEDIMENT_TIME_GRID(from_file=(True,Input_way+'/SED/sed_AYS2_26_512'))
+sed_time_grid=SEDIMENT_TIME_GRID(from_file=(True,Input_way+'/SED/sed_AYS1_26_512'))
 sed_time_grid.timegrdtotimecoeff()
 
 
-Input_way='F:/SL_C0de/AYEYARWADY/26kyr/'
+Input_way='F:/SL_C0de/AYEYARWADY/26kyr_AYS1/'
 
 
 earth_model_name_list=os.listdir(Input_way)
@@ -121,8 +121,11 @@ for earth_model_name in earth_model_name_list :
     if not(os.path.exists(Output_way)):
         os.mkdir(Output_way)
 
-    ocean_time_grid=OCEAN_TIME_GRID(from_file=(True,Input_way+earth_model_name+'/OCEAN_AYS2_26_512'))
+    ocean_time_grid=OCEAN_TIME_GRID(from_file=(True,Input_way+earth_model_name+'/OCEAN_AYS1_26_512'))
+    ocean_time_grid.height_time_coeff=ocean_time_grid.height_time_coeff[:52,:]
+    #print(ocean_time_grid.height_time_coeff.shape)
     ice_time_grid=ICE_TIME_GRID(from_file=(True,Input_way+earth_model_name+'/ice_ICE6G_26_512'))
+    #print(ice_time_grid.time_step_number)
 
 
     from SL_C0de.love import LOVE
@@ -140,7 +143,7 @@ for earth_model_name in earth_model_name_list :
     calculate_deformation(love_number,ice_time_grid,sed_time_grid,ocean_time_grid,a,Me,Output_way)
 
     #Loading the topography to compute the ocean function at each time step
-    topo_time_grid=TOPOGRAPHIC_TIME_GRID(from_file=(True,Input_way+earth_model_name+'/topo_topo_SL_AYS2_26_512'))
+    topo_time_grid=TOPOGRAPHIC_TIME_GRID(from_file=(True,Input_way+earth_model_name+'/topo_topo_SL_AYS1_26_512'))
 
     print('Oceanic sediment calculation')
     calculate_sediment_ocean_interaction(love_number,ice_time_grid,sed_time_grid,ocean_time_grid,a,Me,topo_time_grid,Output_way)
