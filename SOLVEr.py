@@ -9,33 +9,34 @@ import sys
 np.set_printoptions(threshold=sys.maxsize)
 
 maxdeg=512
-stop=122 # define the number of time steps
-step=1
+stop=26 # define the number of time steps
+step=0.5
 time_step=np.arange(start=stop,stop=-step,step=-step)
 
 Input_way='C:/Users/ahenry01/Desktop/Python_code/Interpolated_grid'
 love_way='C:/Users/ahenry01/Desktop/Python_code/SL_C0de_data'
-love_cat='/variable_lm_32'
-love_file='/VM5a.l32.um21.lm22.949'
+love_cat='/variable_lm'
+love_file='/VM5a.l60.um21.lm22.949'
+
 
 ice_time_grid=ICE_TIME_GRID(from_file=(True,Input_way+'/ICE/ice_ICE6G_26_512'))
-sed_time_grid=SEDIMENT_TIME_GRID(from_file=(True,Input_way+'/SED/sed_AYS2_26_512'))
-topo_time_grid=TOPOGRAPHIC_TIME_GRID(from_file=(True,Input_way+'/TOPO/topo_topo_SL_AYS2_26_512'))
+sed_time_grid=SEDIMENT_TIME_GRID(from_file=(True,Input_way+'/SED/sed_AYS1_26_512'))
+topo_time_grid=TOPOGRAPHIC_TIME_GRID(from_file=(True,Input_way+'/TOPO/topo_topo_SL_AYS1_26_512'))
 
-Output_way='C:/Users/ahenry01/Desktop/Python_code/Output_grid'
+Output_way='F:/SL_C0de/AYEYARWADY/26kyr_AYS1'
 
 # Initiate the base elements
 from SL_C0de.spharm import sphericalobject
 from SL_C0de.Load import LOAD
 
-ocean_time_grid=OCEAN_TIME_GRID(time_step,maxdeg,grid_name='OCEAN_AYS2_26_512')
+ocean_time_grid=OCEAN_TIME_GRID(time_step,maxdeg,grid_name='OCEAN_AYS1_26_512')
 ocean_time_grid.time_step_number=ocean_time_grid.time_step_number
 
 ice_time_grid.timegrdtotimecoeff()
 sed_time_grid.timegrdtotimecoeff()
 
 love_number=LOVE(maxdeg,love_way+love_cat+love_file,time_step,6371000,5.9742e24)
-love_number.calc_beta
+love_number.calc_beta()
 TO=sphericalobject(coeff=np.zeros(ice_time_grid.height_time_coeff[0,:].shape))
 
 load=LOAD(maxdeg,ice_time_grid.time_step)
