@@ -6,12 +6,14 @@
 
 ### install the main package : 
 
-.. code-block::
-    
+```
+{
     (.venv) $ conda create -n SL_C0de 
     (.venv) $ conda activate SL_C0de
     (.venv) $ conda install pip      
     (.venv) $ pip install -i https://test.pypi.org/simple/ --no-deps slcode==0.4.1
+}
+```
 
 ### install requirements : 
 
