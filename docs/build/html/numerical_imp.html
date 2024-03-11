@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Numerical implementation &mdash; SL_C0de 0.4.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Developer guide" href="developer_guide.html" />
+    <link rel="prev" title="Mathematical Theory" href="Theory.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SL_C0de
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Numerical implementation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sea-level-equation-resolution">Sea Level equation resolution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sea-level-equation-resolution-implementation">Sea level equation Resolution implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resolution-of-sle-including-the-deconvolution">Resolution of SLE including the deconvolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#convergence-parameter">Convergence parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#inner-convergence-on-sle">Inner convergence on SLE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#outer-convergence-criterion">Outer convergence criterion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#grounded-ice-correction">Grounded ice correction</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#computation-of-ground-and-geoid-subsidence-from-different-load-source">Computation of ground and geoid subsidence from different load source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#elastic-components-of-sle">Elastic components of SLE :</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#viscous-components-of-the-sle">Viscous components of the SLE :</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#true-sediment-subsidence">True sediment subsidence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relative-sea-level-variations">Relative sea level variations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#input-data-format">Input data format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mass-grid-format">Mass grid format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-of-love-numbers">Implementation of Love numbers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide.html">Developer guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SL_C0de</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Numerical implementation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/numerical_imp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="numerical-implementation">
+<h1>Numerical implementation<a class="headerlink" href="#numerical-implementation" title="Permalink to this heading"></a></h1>
+<img alt="_images/workflow.png" src="_images/workflow.png" />
+<p id="iteration-desc">The numerical implementation is using the derived impletation of <span id="id1">[<a class="reference internal" href="index.html#id3" title="A. V. Dalca, K. L. Ferrier, J. X. Mitrovica, J. T. Perron, G. A. Milne, and J. R. Creveling. On postglacial sea level—III. Incorporating sediment redistribution. Geophysical Journal International, 194(1):45–60, July 2013. doi:10.1093/gji/ggt089.">Dalca <em>et al.</em>, 2013</a>]</span> from <span id="id2">[<a class="reference internal" href="index.html#id5" title="Roblyn A. Kendall, Jerry X. Mitrovica, and Glenn A. Milne. On post-glacial sea level - II. Numerical formulation and comparative results on spherically symmetric models. Geophysical Journal International, 161(3):679–706, June 2005. doi:10.1111/j.1365-246X.2005.02553.x.">Kendall <em>et al.</em>, 2005</a>]</span>. This implementation is using two iteration counter, <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>. <span class="math notranslate nohighlight">\(j\)</span> is associated to the time iteration and at each iteration the implementation iterate a convergence to find the best solution of the SLE where the counter is <span class="math notranslate nohighlight">\(i\)</span>. The <span class="math notranslate nohighlight">\(i\)</span> counter will be called the inner iteration. From <span class="math notranslate nohighlight">\(\delta S^{i=1}_j\)</span> to <span class="math notranslate nohighlight">\(\delta S^{i=\infty}_j\)</span> to will calculate the best solution of SLE. The numerical implementation require a third counter, <span class="math notranslate nohighlight">\(k\)</span> called outer iteration, where the loop over the whole considered time is covered to improve first guess of initial topography, <span class="math notranslate nohighlight">\(T_0^{k=1}\)</span> until the convergence (<span class="math notranslate nohighlight">\(T_0^{k=\infty}\)</span>).</p>
+<p>The SLE is rewrite to :</p>
+<div class="math notranslate nohighlight">
+\[\Delta \mathcal{SL}_j = \int_{-\infty}^{t_j} \iint_\Omega \Delta L (\Theta ^\prime, \Psi ^\prime,t ^\prime) \cdot [\frac{\Phi(\gamma, t_j - t^\prime)}{g} - \Gamma(\gamma,t_j-t^\prime)] \mathrm{d} \Omega ^\prime \mathrm{d} t^\prime - \Delta H_j - \Delta I_j\]</div>
+<section id="sea-level-equation-resolution">
+<h2>Sea Level equation resolution<a class="headerlink" href="#sea-level-equation-resolution" title="Permalink to this heading"></a></h2>
+<section id="sea-level-equation-resolution-implementation">
+<span id="sle-res"></span><h3>Sea level equation Resolution implementation<a class="headerlink" href="#sea-level-equation-resolution-implementation" title="Permalink to this heading"></a></h3>
+<p>We introduce the variation of ocean thickness :</p>
+<div class="math notranslate nohighlight">
+\[\delta S^{i,k}_j=-\Delta S^{i=\infty,k}_{j-1} + \Delta \mathcal{SL}^{i-1,k}_j C^{k-1}_j + \frac{\Delta \Phi (t_j)^{i-1,k}}{g} C^{k-1}_j - T_0^{k-1}[C_j^{k-1} - C_0^{k-1}]\]</div>
+<p>If the last step of the outer iteration was completed, <span class="math notranslate nohighlight">\(k-1\)</span>. The topography is updated :</p>
+<div class="math notranslate nohighlight">
+\[T_j^{k-1} = T_p  + \Delta SL_p^{i=\infty,k-1} - \Delta SL_j^{i=\infty,k-1}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(T_p\)</span> is the present day topography, we substract to the present day topography the earth movement. The resulting ocean function deduced from the reformulation of the topography is :</p>
+<div class="math notranslate nohighlight" id="oc-func">
+\[\begin{split}C_j^{k-1} =
+\begin{cases}
+    1 &amp; \text{if } T_j^{k-1} &lt;0 \\
+    0 &amp; \text{if } T_j^{k-1} \geq 0
+\end{cases}\end{split}\]</div>
+<p>The sea level can be then estimated using a new estimation of the sea level change for the kth iteration.</p>
+<div class="math notranslate nohighlight">
+\[\Delta \mathcal{SL}^{i-1,k}_j = \Delta \mathcal{G}^{i-1,k}_j - (\Delta R^{i-1,k}_j+\Delta H_j + \Delta I_j^{k-1})\]</div>
+<p>for the first inner iteration <span class="math notranslate nohighlight">\(i=1\)</span>, the initial variation of ocean thickness is predefine. The spatially invariant component is resulting from the variable ocean surface.</p>
+<div class="math notranslate nohighlight">
+\[\frac{\Delta \Phi ^{i-1,k}_j}{g} = \frac{-1}{\mathcal{A}^{k-1}_j} \frac{\rho_I}{\rho_w}\iint_\Omega\Delta I_j^{k-1} d\Omega - \frac{-1}{\mathcal{A}^{k-1}_j} \iint_\Omega \Delta \mathcal{SL}_j^{i-1,k} C_j^{k-1} d\Omega + \iint_\Omega T_0^{k-1}[C_j^{k-1} - C_0^{k-1}] d\Omega\]</div>
+<p>With</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{A}^{k-1}_j=\iint_\Omega C_j^{k-1} d\Omega\]</div>
+</section>
+<section id="resolution-of-sle-including-the-deconvolution">
+<h3>Resolution of SLE including the deconvolution<a class="headerlink" href="#resolution-of-sle-including-the-deconvolution" title="Permalink to this heading"></a></h3>
+<p id="spec-sol">The implementation in iteration result in a modification of the geoid and ground displacement :</p>
+<div class="math notranslate nohighlight">
+\[\Delta \chi_j= \sum_{lm} T_l \sum_{n=0}^{j-1} \delta M_{lm} (t_n) Y_{lm}(\Theta,\Psi) \cdot I G F\left(\gamma, t_j-t_n \right)\]</div>
+<p>This applied to the SLE equation, by linearity of the IGFs:</p>
+<div class="math notranslate nohighlight">
+\[[\Delta \mathcal{SL}_{lm,j}]^{i-1,k}=T_l E_l \Delta M_{lm,j}^{k,i} + T_l \sum_{n=0}^{j-1} \beta (l,t_n,t_j)\delta M_{lm,n}^{k,i} +\frac{1}{g}E^T_l([\Delta \Lambda_{lm,j-1}]^{i=\infty,k} + [\delta \Lambda_{lm,j}]^{i-1,k})+ \frac{1}{g} \sum^{j-1}_{n=0} \beta^T(l,t_n,t_j)[\delta \Lambda_{lm,j}]^{i=\infty,k} - \Delta H_{lm,n}-[\Delta I_{lm,n}]^{k-1}\]</div>
+<p>where <span class="math notranslate nohighlight">\(E_l = 1 + k_l^E - h_l^E\)</span>, <span class="math notranslate nohighlight">\(\beta(l,t_n,t_j)=k_l^V(t_j-t_n)-h_l^V(t_j-t_n)\)</span> and <span class="math notranslate nohighlight">\(T_l = \frac{4\pi a^2}{2l+1}\)</span></p>
+<p>In SL_C0de, <span class="math notranslate nohighlight">\(T_l \sum_{n=0}^{j-1} \beta (l,t_n,t_j)\delta M_{lm,n}^{k,i}\)</span> is resolved in matrix produce. This result in a strong allocation of RAM as the <span class="math notranslate nohighlight">\(\beta (l,t_n,t_j)\)</span> are stored in a matrix of size (time,time,(maximum degree + 1)(maximum degree +2)/2). The resulting time gain is very important.</p>
+<p>The conservation formula become :</p>
+<div class="math notranslate nohighlight">
+\[\frac{\Delta \Phi_j}{g} = \frac{1}{C_{00,j}}(-\frac{\rho_i}{rho_w}\Delta I_{00,j}-RO_{00,j}+TO_{00,0})\]</div>
+<p>Where <span class="math notranslate nohighlight">\(RO_j = \Delta \mathcal{SL}_j C_j\)</span> and <span class="math notranslate nohighlight">\(TO_j=T_0[C_j-C_0]\)</span>.</p>
+</section>
+<section id="convergence-parameter">
+<h3>Convergence parameter<a class="headerlink" href="#convergence-parameter" title="Permalink to this heading"></a></h3>
+<section id="inner-convergence-on-sle">
+<h4>Inner convergence on SLE<a class="headerlink" href="#inner-convergence-on-sle" title="Permalink to this heading"></a></h4>
+<p id="conv">We define a convergence criterion :</p>
+<div class="math notranslate nohighlight">
+\[\xi^{i,k}_j=|\frac{\sum_{l,m}|[\delta S_{lm}(t_j)]^{i,k}|-\sum_{l,m}|[\delta S_{lm}(t_j)]^{i-1,k}|}{\sum_{l,m}|[\delta S_{lm}(t_j)]^{i-1,k}|}|\]</div>
+<p>Convergence for the SLE is limited by the convergence criterion : <span class="math notranslate nohighlight">\(\xi_j^{i,k}\)</span>. We suppose that <span class="math notranslate nohighlight">\(\xi_j^{i,k} &lt; \epsilon_1\)</span> when</p>
+<div class="math notranslate nohighlight">
+\[[\delta S_{lm}(t_j)]^{i,k}=[\delta S_{lm}(t_j)]^{i=\infty,k}\]</div>
+</section>
+<section id="outer-convergence-criterion">
+<h4>Outer convergence criterion<a class="headerlink" href="#outer-convergence-criterion" title="Permalink to this heading"></a></h4>
+</section>
+</section>
+<section id="grounded-ice-correction">
+<h3>Grounded ice correction<a class="headerlink" href="#grounded-ice-correction" title="Permalink to this heading"></a></h3>
+<p id="ice-corr">The marine grounded ice is dependent of RSL variations. The ice is grounded if it satisfies :</p>
+<div class="math notranslate nohighlight">
+\[I_j &gt; (SL_j + I_j)\frac{\rho_w}{\rho_I}\]</div>
+<p>At each topographic iteration (<span class="math notranslate nohighlight">\(k\)</span>) we update the grounded ice.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}I_j^k =
+\begin{cases}
+    Ice\;Height &amp; SL_j^{k-1} + Ice\;Height &lt; 0 \\
+    Ice\;Height &amp; SL_j^{k-1} + Ice\;Height &gt; 0 \\
+     &amp; and\;Ice\;Height &gt; SL_j^{k-1},\frac{\rho_w}{\rho_I-\rho_w} \\
+    0 &amp; elsewhere
+\end{cases}\end{split}\]</div>
+</section>
+</section>
+<section id="computation-of-ground-and-geoid-subsidence-from-different-load-source">
+<h2>Computation of ground and geoid subsidence from different load source<a class="headerlink" href="#computation-of-ground-and-geoid-subsidence-from-different-load-source" title="Permalink to this heading"></a></h2>
+<p id="g-r-comp">A functionality developed in <span class="math notranslate nohighlight">\(SL_{C0de}\)</span> is the computation of the different component of the SLE separately, by type of Load and by viscous or elastic component. The development of this functionality was motivated by the necessity of exploring the different source of the RSL variation in a more and more complex modelization.</p>
+<section id="elastic-components-of-sle">
+<h3>Elastic components of SLE :<a class="headerlink" href="#elastic-components-of-sle" title="Permalink to this heading"></a></h3>
+<p>We define 4 elastique component in the SLE, the ground displacement <span class="math notranslate nohighlight">\(\Delta R^E_{lm}\)</span>, the geoid displacement <span class="math notranslate nohighlight">\(\Delta G^E_{lm}\)</span>, the rotational ground displacement <span class="math notranslate nohighlight">\(\Delta R^{T,E}_{lm}\)</span> and the rotational geoid displacement <span class="math notranslate nohighlight">\(\Delta G^{T,E}_{lm}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\Delta R^E_{lm,j} = T_l h_l^E \Delta M_{lm,j}^{k,i}\]</div>
+<div class="math notranslate nohighlight">
+\[\Delta G^E_{lm,j} = T_l (1+k_l^E) \Delta M_{lm,j}^{k,i}\]</div>
+<div class="math notranslate nohighlight">
+\[\Delta R^{T,E}_{lm,j}=\frac{1}{g}h^{T,E}_l([\Delta \Lambda_{lm,j-1}]^{i=\infty,k} + [\delta \Lambda_{lm,j}]^{i-1,k})\]</div>
+<div class="math notranslate nohighlight">
+\[\Delta G^{T,E}_{lm,j}=\frac{1}{g}(1+h^{T,E}_l)([\Delta \Lambda_{lm,j-1}]^{i=\infty,k} + [\delta \Lambda_{lm,j}]^{i-1,k})\]</div>
+</section>
+<section id="viscous-components-of-the-sle">
+<h3>Viscous components of the SLE :<a class="headerlink" href="#viscous-components-of-the-sle" title="Permalink to this heading"></a></h3>
+<p>We define also 4 viscous component in the SLE, the ground displacement <span class="math notranslate nohighlight">\(\Delta R^V_{lm}\)</span>, the geoid displacement <span class="math notranslate nohighlight">\(\Delta G^V_{lm}\)</span>, the rotational ground displacement <span class="math notranslate nohighlight">\(\Delta R^{T,V}_{lm}\)</span> and the rotational geoid displacement <span class="math notranslate nohighlight">\(\Delta G^{T,V}_{lm}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\Delta R^V_{lm,j}=  T_l \sum_{n=0}^{j-1} h^V_l(tj-tn)\delta M_{lm,n}^{k,i}\]</div>
+<div class="math notranslate nohighlight">
+\[\Delta G^V_{lm,j}=  T_l \sum_{n=0}^{j-1} k^V_l(tj-tn)\delta M_{lm,n}^{k,i}\]</div>
+<div class="math notranslate nohighlight">
+\[\Delta R^{T,V}_{lm,j}=\frac{1}{g} \sum^{j-1}_{n=0} h^V_l(tj-tn)[\delta \Lambda_{lm,j}]^{i=\infty,k}\]</div>
+<div class="math notranslate nohighlight">
+\[\Delta G^{T,V}_{lm,j}=\frac{1}{g} \sum^{j-1}_{n=0} k^V_l(tj-tn)[\delta \Lambda_{lm,j}]^{i=\infty,k}\]</div>
+</section>
+<section id="true-sediment-subsidence">
+<h3>True sediment subsidence<a class="headerlink" href="#true-sediment-subsidence" title="Permalink to this heading"></a></h3>
+<p id="sed-subs">This library was originally developed to compute effect of sediment on RSL. We considered the pure effect of sediment on RSL but also a corrected effect of sediment from water replacement. The sediment, when they are deposited, replace water and then generates an uplift induced by the diminution of ocean thickness. We choose to correct the sediment from the ocean load.</p>
+<div class="math notranslate nohighlight">
+\[\delta M_{lm,n} = \delta H_{lm,n}C_{lm,n}\rho_w\]</div>
+<p>To estimate effect of sediment on RSL, you must substract the effect of the mass variation described above to the effect of sediment mass variation.</p>
+</section>
+<section id="relative-sea-level-variations">
+<h3>Relative sea level variations<a class="headerlink" href="#relative-sea-level-variations" title="Permalink to this heading"></a></h3>
+<p>We estimate a pure RSL where the sea level is not including variations of sediment thickness and ice thickness.</p>
+<div class="math notranslate nohighlight">
+\[\Delta SL^{i-1,k}_j = \Delta \mathcal{G}^{i-1,k}_j - \Delta R^{i-1,k}_j + \frac{\Delta \Phi ^{i-1,k}_j}{g}\]</div>
+<p>The other estimation is the full RSL :</p>
+<div class="math notranslate nohighlight">
+\[\Delta SL^{i-1,k}_j = \Delta \mathcal{G}^{i-1,k}_j - (\Delta R^{i-1,k}_j+\Delta H_j + \Delta I_j^{k-1}) + \frac{\Delta \Phi ^{i-1,k}_j}{g}\]</div>
+<p>The resulting estimation of RSL can be compared with the ESL (only <span class="math notranslate nohighlight">\(\frac{\Delta \Phi ^{i-1,k}_j}{g}\)</span>).</p>
+</section>
+</section>
+<section id="input-data-format">
+<h2>Input data format<a class="headerlink" href="#input-data-format" title="Permalink to this heading"></a></h2>
+<section id="mass-grid-format">
+<h3>Mass grid format<a class="headerlink" href="#mass-grid-format" title="Permalink to this heading"></a></h3>
+<p id="grid-format">The different mass grid can be input as height grid, converted to mass by a simple multiplication by a defined density or as mass grid directly. The grids can be irregular or regular, they are interpolated over a sphere using stripy. These data are input as the derivative variations over time.</p>
+<p>The topography as initial parameter is the present day topography. The initialization will update the topography according to the ice and sediment thickness.</p>
+</section>
+<section id="implementation-of-love-numbers">
+<h3>Implementation of Love numbers<a class="headerlink" href="#implementation-of-love-numbers" title="Permalink to this heading"></a></h3>
+<p id="love">The <span id="id3">[<a class="reference internal" href="index.html#id3" title="A. V. Dalca, K. L. Ferrier, J. X. Mitrovica, J. T. Perron, G. A. Milne, and J. R. Creveling. On postglacial sea level—III. Incorporating sediment redistribution. Geophysical Journal International, 194(1):45–60, July 2013. doi:10.1093/gji/ggt089.">Dalca <em>et al.</em>, 2013</a>]</span> theory is based on the love number theory which forces us to calculate love numbers. The love numbers exits in two forms, normal mode and decay. They can also include compressible processes. We choose for computation facilities to use the love numbers computed by ALMA3 code <span id="id4">[<a class="reference internal" href="index.html#id7" title="D Melini, C Saliby, and G Spada. On computing viscoelastic Love numbers for general planetary models: the ALMA3 code. Geophysical Journal International, 231(3):1502–1517, August 2022. doi:10.1093/gji/ggac263.">Melini <em>et al.</em>, 2022</a>]</span>. This code is calculating incompressible decay love numbers. Benchmarking on compressible vs incompressible love numbers have demonstrated no significant difference in computed vertical displacement over 256 spherical harmonics degree. We urge you to use this code with a degree higher than 256.</p>
+<p>The code is working with a precise file structure for love numbers :</p>
+<div class="line-block">
+<div class="line">earth_model_name</div>
+<div class="line">├── h_e.dat</div>
+<div class="line">├── h_e_T.dat</div>
+<div class="line">├── h_ve.dat</div>
+<div class="line">├── h_ve_T.dat</div>
+<div class="line">├── k_e.dat</div>
+<div class="line">├── k_e_T.dat</div>
+<div class="line">├── k_ve.dat</div>
+<div class="line">├── k_ve_T.dat</div>
+<div class="line">├── l_e.dat</div>
+<div class="line">├── l_e_T.dat</div>
+<div class="line">├── l_ve.dat</div>
+<div class="line">├── l_ve_T.dat</div>
+<div class="line">└── time.dat</div>
+</div>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Corresponding love number from equation to the file names</span><a class="headerlink" href="#id5" title="Permalink to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>file</p></th>
+<th class="head"><p>Love numbers</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>h_e</p></td>
+<td><p><span class="math notranslate nohighlight">\(h_{\ell}^E\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>h_e_T</p></td>
+<td><p><span class="math notranslate nohighlight">\(h_{\ell}^{T,E}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>h_ve</p></td>
+<td><p><span class="math notranslate nohighlight">\(h_{\ell}^V(t)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>h_ve_T</p></td>
+<td><p><span class="math notranslate nohighlight">\(h_{\ell}^{T,V}(t)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>k_e</p></td>
+<td><p><span class="math notranslate nohighlight">\(k_{\ell}^E\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>k_e_T</p></td>
+<td><p><span class="math notranslate nohighlight">\(k_{\ell}^{T,E}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>k_ve</p></td>
+<td><p><span class="math notranslate nohighlight">\(k_{\ell}^V(t)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>k_ve_T</p></td>
+<td><p><span class="math notranslate nohighlight">\(k_{\ell}^{T,V}(t)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>l_e</p></td>
+<td><p><span class="math notranslate nohighlight">\(l_{\ell}^E\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>l_ve</p></td>
+<td><p><span class="math notranslate nohighlight">\(l_{\ell}^{T,E}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>l_ve</p></td>
+<td><p><span class="math notranslate nohighlight">\(l_{\ell}^V(t)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>l_ve_T</p></td>
+<td><p><span class="math notranslate nohighlight">\(l_{\ell}^{T,V}(t)\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>The time.dat file contains the time at which the viscous decay love numbers are computed. An example file of configurations files for ALMA3 is provided in the code supplementary files.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Add the link to the ALMA3 configuration files.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Theory.html" class="btn btn-neutral float-left" title="Mathematical Theory" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="developer_guide.html" class="btn btn-neutral float-right" title="Developer guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, HENRY Adrien.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

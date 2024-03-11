@@ -3,17 +3,27 @@ GRID
 
 **CLASS**
 ^^^^^^^^^
-.. autoclass:: grid.GRID
+.. autoclass:: SL_C0de.grid.GRID
 
 **Methods**
 ^^^^^^^^^^^
 
-.. autofunction:: grid.GRID.interp_on
+.. autofunction:: SL_C0de.grid.GRID.interp_on
 
 ----
 
-.. autofunction:: grid.GRID.disk 
+.. autofunction:: SL_C0de.grid.GRID.smooth_on
 
 ----
 
-.. autofunction:: grid.GRID.zeros
+.. autofunction:: SL_C0de.grid.GRID.disk 
+
+----
+
+.. autofunction:: SL_C0de.grid.GRID.zeros
+
+----
+
+.. autofunction:: SL_C0de.grid.GRID.along_transect
+
+

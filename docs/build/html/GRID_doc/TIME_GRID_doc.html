@@ -11,12 +11,15 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SEDIMENT_TIME_GRID" href="SEDIMENT_TIME_GRID_doc.html" />
+    <link rel="prev" title="GRID" href="GRID_class_doc.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,26 +41,48 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">TIME_GRID</a><ul>
-<li><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
-<li><a class="reference internal" href="#grid.TIME_GRID"><code class="docutils literal notranslate"><span class="pre">TIME_GRID</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../numerical_imp.html">Numerical implementation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../developer_guide.html">Developer guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../SOLVER_doc.html">SOLVER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spharm_doc.html">spharm</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../Grid_doc.html">Grid</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="GRID_class_doc.html">GRID</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">TIME_GRID</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID"><code class="docutils literal notranslate"><span class="pre">TIME_GRID</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#methods"><strong>Methods</strong></a><ul>
-<li><a class="reference internal" href="#grid.TIME_GRID.interp_on_time_and_space"><code class="docutils literal notranslate"><span class="pre">interp_on_time_and_space()</span></code></a></li>
-<li><a class="reference internal" href="#grid.TIME_GRID.grid_from_step"><code class="docutils literal notranslate"><span class="pre">grid_from_step()</span></code></a></li>
-<li><a class="reference internal" href="#grid.TIME_GRID.coeff_from_step"><code class="docutils literal notranslate"><span class="pre">coeff_from_step()</span></code></a></li>
-<li><a class="reference internal" href="#grid.TIME_GRID.zeros_time"><code class="docutils literal notranslate"><span class="pre">zeros_time()</span></code></a></li>
-<li><a class="reference internal" href="#grid.TIME_GRID.disk_time"><code class="docutils literal notranslate"><span class="pre">disk_time()</span></code></a></li>
-<li><a class="reference internal" href="#grid.TIME_GRID.update_0"><code class="docutils literal notranslate"><span class="pre">update_0()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2"><strong>Methods</strong></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID.interp_on_time"><code class="docutils literal notranslate"><span class="pre">interp_on_time()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID.interp_on_time_and_space"><code class="docutils literal notranslate"><span class="pre">interp_on_time_and_space()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID.grid_from_step"><code class="docutils literal notranslate"><span class="pre">grid_from_step()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID.coeff_from_step"><code class="docutils literal notranslate"><span class="pre">coeff_from_step()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID.timegrdtotimecoeff"><code class="docutils literal notranslate"><span class="pre">timegrdtotimecoeff()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID.timecoefftotimegrd"><code class="docutils literal notranslate"><span class="pre">timecoefftotimegrd()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID.zeros_time"><code class="docutils literal notranslate"><span class="pre">zeros_time()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID.disk_time"><code class="docutils literal notranslate"><span class="pre">disk_time()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID.update_0"><code class="docutils literal notranslate"><span class="pre">update_0()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TIME_GRID.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="SEDIMENT_TIME_GRID_doc.html">SEDIMENT_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ICE_TIME_GRID_doc.html">ICE_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OCEAN_TIME_GRID_doc.html">OCEAN_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TOPOGRAPHIC_TIME_GRID_doc.html">TOPOGRAPHIC_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LOAD_TIME_GRID_doc.html">LOAD_TIME_GRID</a></li>
 </ul>
-</div>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../love_doc.html">love</a></li>
+</ul>
+</li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -72,6 +97,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../developer_guide.html">Developer guide</a></li>
+          <li class="breadcrumb-item"><a href="../Grid_doc.html">Grid</a></li>
       <li class="breadcrumb-item active">TIME_GRID</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/GRID_doc/TIME_GRID_doc.rst.txt" rel="nofollow"> View page source</a>
@@ -83,26 +110,69 @@
            <div itemprop="articleBody">
              
   <section id="time-grid">
-<h1>TIME_GRID<a class="headerlink" href="#time-grid" title="Permalink to this heading">¶</a></h1>
+<h1>TIME_GRID<a class="headerlink" href="#time-grid" title="Permalink to this heading"></a></h1>
 <section id="class">
-<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading">¶</a></h2>
+<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="grid.TIME_GRID">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grid.</span></span><span class="sig-name descname"><span class="pre">TIME_GRID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_step_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TIME_GRID" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class is used to manage the mass grids. These grids have a time dimenssion this way wa can manage the time variation of the mass. We can define the mass grid by it’s mass directly or by coupling a height with a density. If needed you can load spherical harmonics coefficient.</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.</span></span><span class="sig-name descname"><span class="pre">TIME_GRID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([1,</span> <span class="pre">2])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'time_grid'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(False,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">superinit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="id1">TIME_GRID</span> class is used to manage the mass grids. These grids have a time dimenssion this way wa can manage the time variation of the mass. We can define the mass grid by it’s mass directly or by coupling a height with a density. If needed you can load spherical harmonics coefficient.Tis class is inheriting the methods from <a class="reference internal" href="../spharm_doc.html#sphericalobject"><span class="std std-ref">sphericalobject</span></a> and <a class="reference internal" href="GRID_class_doc.html#id1"><span class="std std-ref">GRID</span></a>.</p>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>grid_time_step<span class="classifier">np.array</span></dt><dd><p>This array contains the time step of the data you are importing. They will be use for temporal interpolation.</p>
+<dt>time_step<span class="classifier">np.array([time_step_number,])</span></dt><dd><p>This array contains the time step of the data you are importing. They will be use for temporal interpolation.</p>
 </dd>
-<dt>height_time_grid<span class="classifier">np.array</span></dt><dd><p>This array is the height grid at each time steps defined in grid_time_step</p>
+<dt>maxdeg<span class="classifier">int</span></dt><dd><p>Maximum harmonic coefficient degree of the data. this define the chape of the grid and coefficient arrays</p>
 </dd>
-<dt>mass_time_grid<span class="classifier">np.array</span></dt><dd><p>This array is the mass grid at each time steps defined in grid_time_step</p>
+<dt>height_time_grid<span class="classifier">np.array([maxedg*2,maxdeg])</span></dt><dd><p>This array is the height grid at each time steps defined in grid_time_step</p>
 </dd>
-<dt>height_time_coedd<span class="classifier">np.array</span></dt><dd><p>This array is the height spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+<dt>mass_time_grid<span class="classifier">np.array([maxedg*2,maxdeg])</span></dt><dd><p>This array is the mass grid at each time steps defined in grid_time_step</p>
 </dd>
-<dt>mass_time_coeff<span class="classifier">np.array</span></dt><dd><p>This array is the mass spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+<dt>height_time_coeff<span class="classifier">np.array([(maxdeg+1)(maxedg+2)/2,])</span></dt><dd><p>This array is the height spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+</dd>
+<dt>mass_time_coeff<span class="classifier">np.array([(maxdeg+1)(maxedg+2)/2,])</span></dt><dd><p>This array is the mass spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+</dd>
+<dt>rho<span class="classifier">float</span></dt><dd><p>The density of the considered layer.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In future development the density may vary threw space and time. We’ll have to make a variable object more then a constant density.</p>
+</div>
+<dl class="simple">
+<dt>grid_name<span class="classifier">str</span></dt><dd><p>The name of the grid. We recommand you to choose a specific name for each grid you create. This name is used to save the grid in an nc file with <a class="reference internal" href="#save">save</a>.</p>
+</dd>
+<dt>from_file<span class="classifier">(bool,way)</span></dt><dd><p>This parameter define if the data are new or loaded from a previously saved model in a nc file. If the first element is False, the code will create a blank object, based on provided datas. If the first element is True, the method will get the data from the file way specified in the second element of this attribute.</p>
+</dd>
+<dt>superinit<span class="classifier">bool</span></dt><dd><p>This parameter is used to specify if the object is used as herited method in an initialisation of a child class object.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt><a class="reference internal" href="#interp-on-time">interp_on_time</a> </dt><dd><p>Interpolate a grid over the time considered in the model</p>
+</dd>
+<dt><a class="reference internal" href="#interp-on-time-and-space">interp_on_time_and_space</a> :</dt><dd><p>Interpolate the grid over time and space as in the defined Grid during the initialisation of the class</p>
+</dd>
+<dt><a class="reference internal" href="#grid-from-step">grid_from_step</a> :</dt><dd><p>Get the grid for a defined time iteration</p>
+</dd>
+<dt><a class="reference internal" href="#coeff-from-step">coeff_from_step</a> :</dt><dd><p>Get the spherical harmonics coefficient for a defined time iteration</p>
+</dd>
+<dt><a class="reference internal" href="#timegrdtotimecoeff">timegrdtotimecoeff</a> :</dt><dd><p>Convert the grid into spherical harmonics coefficient for all time steps</p>
+</dd>
+<dt><a class="reference internal" href="#timecoefftotimegrd">timecoefftotimegrd</a> :</dt><dd><p>Convert the spherical harmonics coefficient into grid for all time steps</p>
+</dd>
+<dt><a class="reference internal" href="#zeros-time">zeros_time</a> :</dt><dd><p>Generate a zero grid for all time steps</p>
+</dd>
+<dt><a class="reference internal" href="#disk-time">disk_time</a> :</dt><dd><p>Generate a disk of a specified thickness at a specified location over all time steps</p>
+</dd>
+<dt><a class="reference internal" href="#update-0">update_0</a> :</dt><dd><p>Update the 0 time step data of the grid</p>
+</dd>
+<dt><a class="reference internal" href="#save">save</a> :</dt><dd><p>Save the grid in a specified nc file with the name of the grid</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -114,40 +184,34 @@
 <p>This class is under active developement and not usable right now</p>
 </div>
 </section>
-<section id="methods">
-<h2><strong>Methods</strong><a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="grid.TIME_GRID.interp_on_time_and_space">
-<span class="sig-prename descclassname"><span class="pre">grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">interp_on_time_and_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_to_interp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Thickness_divide'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TIME_GRID.interp_on_time_and_space" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function is used for interpolation upon time and space it call the interpolation function of the GRID parameter.</p>
-<section id="id1">
-<h3>Attributes<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
-<blockquote>
-<div><dl class="simple">
-<dt>time_step<span class="classifier">np.array</span></dt><dd><p>this array define the time step on wich the time grid must be interpolated.</p>
-</dd>
-<dt>interp_type<span class="classifier">str</span></dt><dd><dl class="simple">
-<dt>Select the type of interpolation you want. </dt><dd><ul class="simple">
-<li><p>Thickness_divide : Simply divide the thickness into the different time step. This methods is usefull to preserve the total thickness.</p></li>
-</ul>
-</dd>
-</dl>
-</dd>
-</dl>
-</div></blockquote>
-</section>
-</dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="grid.TIME_GRID.grid_from_step">
-<span class="sig-prename descclassname"><span class="pre">grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">grid_from_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TIME_GRID.grid_from_step" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method is used to get the value of the grid at the defined time step</p>
 <section id="id2">
-<h3>Attributes<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<h2><strong>Methods</strong><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID.interp_on_time">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">interp_on_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_to_interp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Thickness_divide'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'False'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'regular'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID.interp_on_time" title="Permalink to this definition"></a></dt>
+<dd><p>The function <span class="target" id="interp-on-time">interp_on_time</span> is used for interpolation upon time and space it call the interpolation function of the <a class="reference internal" href="GRID_class_doc.html#id1"><span class="std std-ref">GRID</span></a> parameter. This function adapt the order of time and space interpolation to reduce computation time. The temporal interpolation try to preserve the thickness of the overall time. Tis is down by cutting and merging time steps of the original grid to match the model time_step.</p>
+<section id="id3">
+<h3>Attributes<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>t_it<span class="classifier">double</span></dt><dd><p>This is the value of the time step iteration on wich you are trying to retreave the grid. It must inside the time_step interpolation you have used during the initialisation of the time grid.</p>
+<dt>grid_to_interp<span class="classifier">np.array([k,n,m])</span></dt><dd><p>The grid to be interpreted.</p>
+</dd>
+<dt>grid_time_step<span class="classifier">np.array([k,])</span></dt><dd><p>The time value of each time step of the grid model.</p>
+</dd>
+<dt>model_time_step ; np.array([time_step_number,])</dt><dd><p>The time values of the model.</p>
+</dd>
+<dt>interp_type<span class="classifier">str</span></dt><dd><p>No use of this parameter anymore</p>
+</dd>
+<dt>backend<span class="classifier">bool </span></dt><dd><p>Define if the function retur, backends. True it will return the backends, False (default value) don’t give any backend.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="return">
+<h3>Return :<a class="headerlink" href="#return" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>grid_interpolated<span class="classifier">np.array([time_step_number,n,m])</span></dt><dd><p>The interpolated grid over time. Depending of the model parameters.</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -156,11 +220,68 @@
 
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="grid.TIME_GRID.coeff_from_step">
-<span class="sig-prename descclassname"><span class="pre">grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">coeff_from_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TIME_GRID.coeff_from_step" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method is used to get the value of the coefficient at the requested time iteration.</p>
-<section id="id3">
-<h3>Attributes<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID.interp_on_time_and_space">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">interp_on_time_and_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_to_interp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Thickness_divide'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'global'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID.interp_on_time_and_space" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="interp-on-time-and-space">interp_on_time_and_space</span> function is used for interpolation upon time and space it call the interpolation function of the <a class="reference internal" href="GRID_class_doc.html#id1"><span class="std std-ref">GRID</span></a> parameter. This function perform the temporal and spatial interpolation in different order to ameliorate the computation time. If the temporal resolution of the input grid is higher than the model time resolution the temporal resolution will be perform first. The spatial resolution is performed first in the other case.</p>
+<section id="id4">
+<h3>Attributes<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>grid_to_interp<span class="classifier">np.array([k,n,m])</span></dt><dd><p>The grid to be interpreted.</p>
+</dd>
+<dt>grid_time_step<span class="classifier">np.array([k,])</span></dt><dd><p>The time value of each time step of the grid_to_interp.</p>
+</dd>
+<dt>grid_lon<span class="classifier">np.array([n])</span></dt><dd><p>The longitudinal coordinates of the grid_to_interp.</p>
+</dd>
+<dt>grid_lat<span class="classifier">np.array([m])</span></dt><dd><p>The latitudinal coordinate of the grid_to_interp.</p>
+</dd>
+<dt>interp_type<span class="classifier">str</span></dt><dd><p>No use of this parameter anymore</p>
+</dd>
+<dt>backend<span class="classifier">bool </span></dt><dd><p>Define if the function retur, backends. True it will return the backends, False (default value) don’t give any backend.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id5">
+<h3>Return :<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>grid_interpolated<span class="classifier">np.array([time_step_number,maxdeg*2,maxdeg])</span></dt><dd><p>The interpolated grid over time. Depending of the model parameters.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID.grid_from_step">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">grid_from_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID.grid_from_step" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="grid-from-step">grid_from_step</span> method is used to get the value of the grid at the defined time step.</p>
+<section id="id6">
+<h3>Attributes :<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>t_it<span class="classifier">int</span></dt><dd><p>This is the value of the time step iteration on wich you are trying to retreave the grid. It must inside the time_step interpolation you have used during the initialisation of the time grid.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id7">
+<h3>Return :<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID.coeff_from_step">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">coeff_from_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID.coeff_from_step" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="coeff-from-step">coeff_from_step</span> method is used to get the value of the coefficient at the requested time iteration.</p>
+<section id="id8">
+<h3>Attributes :<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
 <dt>t_it<span class="classifier">double</span></dt><dd><p>This is the value of the time step iteration on wich you are trying to retreave the coefficient. It must be inside the time_step interpolation you have used during the initialisation of the time grid.</p>
@@ -168,27 +289,145 @@
 </dl>
 </div></blockquote>
 </section>
+<section id="id9">
+<h3>Return :<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
 </dd></dl>
 
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="grid.TIME_GRID.zeros_time">
-<span class="sig-prename descclassname"><span class="pre">grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">zeros_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step_number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TIME_GRID.zeros_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method is used to define a grid over time with only 0 value</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID.timegrdtotimecoeff">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">timegrdtotimecoeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID.timegrdtotimecoeff" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="timegrdtotimecoeff">timegrdtotimecoeff</span> method transform for each time step the grid into spherical harmonics coefficient.</p>
+<section id="attribute">
+<h3>Attribute :<a class="headerlink" href="#attribute" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="result">
+<h3>Result :<a class="headerlink" href="#result" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
 </dd></dl>
 
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="grid.TIME_GRID.disk_time">
-<span class="sig-prename descclassname"><span class="pre">grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">disk_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TIME_GRID.disk_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method is used to define a grid over time with a disk defined with it’s center coordinate and the height</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID.timecoefftotimegrd">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">timecoefftotimegrd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID.timecoefftotimegrd" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="timecoefftotimegrd">timecoefftotimegrd</span> method transform for each time step the spherical harmonic coefficient into a grid.</p>
+<section id="id10">
+<h3>Attribute :<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="id11">
+<h3>Result :<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
 </dd></dl>
 
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="grid.TIME_GRID.update_0">
-<span class="sig-prename descclassname"><span class="pre">grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">update_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'grd'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TIME_GRID.update_0" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function is used to save the first iterration of the model.</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID.zeros_time">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">zeros_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step_number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID.zeros_time" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="zeros-time">zeros_time</span> method is used to define a grid over time with only 0 value. It is based on <a class="reference internal" href="GRID_class_doc.html#zeros"><span class="std std-ref">GRID.zeros</span></a>.</p>
+<section id="id12">
+<h3>Attribute :<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>time_step_number<span class="classifier">int</span></dt><dd><p>The number of time step on wich we apply the zeros grid.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id13">
+<h3>Return :<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID.disk_time">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">disk_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID.disk_time" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="disk-time">disk_time</span> method is used to define a grid over time with a disk defined with it’s center coordinate and the height. This function is based on <a class="reference internal" href="GRID_class_doc.html#disk"><span class="std std-ref">GRID.disk</span></a>.</p>
+<section id="id14">
+<h3>Attribute :<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>time_step_number<span class="classifier">int</span></dt><dd><p>The number of time step on wich the disk load will be applyed.</p>
+</dd>
+<dt>lat<span class="classifier">double</span></dt><dd><p>The latitude of the center of the disk (°).</p>
+</dd>
+<dt>lon<span class="classifier">double</span></dt><dd><p>The longitude of the center of the disk (°).</p>
+</dd>
+<dt>radius<span class="classifier">double</span></dt><dd><p>The radius of the disk (°).</p>
+</dd>
+<dt>high<span class="classifier">double</span></dt><dd><p>The high of the disk (m).</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id15">
+<h3>Return :<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID.update_0">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">update_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID.update_0" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="update-0">update_0</span> function is used to save the first time iteration of the object before it’s modification to be called at any moment in the code without alteration.</p>
+<section id="id16">
+<h3>Attribute :<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="id17">
+<h3>Return :<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.grid.TIME_GRID.save">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_way</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supersave</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TIME_GRID.save" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="save">save</span> function is used to save the grid and all it’s parameters inside a nc file. Parameters saved are, longitude, latitude, maximum degree, the time steps of the grid, the thickness of the grid, the harmonic coefficient, grid density. The harmonic coefficient, due to complexe data type management of nc, are saved separately in there complexe and real part. The created file will have the name of the grid.</p>
+<section id="id18">
+<h3>Attribute :<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>save_way<span class="classifier">str</span></dt><dd><p>The filepath where the data will be saved. Default value is the current file</p>
+</dd>
+<dt>supersave<span class="classifier">bool</span></dt><dd><p>Define if the save is called as a super method from an object that inherit the function. This precise if this method has to close the nc file (False) of if the herited class will do it (True). Default value is False.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id19">
+<h3>Return :<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
 </dd></dl>
 
 </section>
@@ -197,7 +436,10 @@
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GRID_class_doc.html" class="btn btn-neutral float-left" title="GRID" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SEDIMENT_TIME_GRID_doc.html" class="btn btn-neutral float-right" title="SEDIMENT_TIME_GRID" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

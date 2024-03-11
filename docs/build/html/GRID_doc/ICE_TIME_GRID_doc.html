@@ -11,6 +11,7 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
@@ -43,27 +44,33 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage.html#installation">INSTALLATION</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../numerical_imp.html">Numerical implementation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../developer_guide.html">Developer guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../SL_model_doc.html">SL_model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../LOAD_doc.html">LOAD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../love_doc.html">love</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SOLVER_doc.html">SOLVER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spharm_doc.html">spharm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../Grid_doc.html">Grid</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="GRID_class_doc.html">GRID</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TIME_GRID_doc.html">TIME_GRID</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SEDIMENT_TIME_GRID_doc.html">SEDIMENT_TIME_GRID</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">ICE_TIME_GRID</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#class"><strong>CLASS</strong></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id1"><strong>METHODS</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.ICE_TIME_GRID"><code class="docutils literal notranslate"><span class="pre">ICE_TIME_GRID</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#id2"><strong>METHODS</strong></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.ICE_TIME_GRID.ice_correction"><code class="docutils literal notranslate"><span class="pre">ice_correction()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.ICE_TIME_GRID.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="OCEAN_TIME_GRID_doc.html">OCEAN_TIME_GRID</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TOPOGRAPHIC_TIME_GRID_doc.html">TOPOGRAPHIC_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LOAD_TIME_GRID_doc.html">LOAD_TIME_GRID</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../spharm_doc.html">spharm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../SeaLevel_doc.html">SeaLevel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plot_doc.html">plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../love_doc.html">love</a></li>
 </ul>
 </li>
 </ul>
@@ -95,36 +102,52 @@
            <div itemprop="articleBody">
              
   <section id="ice-time-grid">
-<h1>ICE_TIME_GRID<a class="headerlink" href="#ice-time-grid" title="Permalink to this heading">¶</a></h1>
+<h1>ICE_TIME_GRID<a class="headerlink" href="#ice-time-grid" title="Permalink to this heading"></a></h1>
 <section id="class">
-<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading">¶</a></h2>
+<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="grid.ICE_TIME_GRID">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grid.</span></span><span class="sig-name descname"><span class="pre">ICE_TIME_GRID</span></span><a class="headerlink" href="#grid.ICE_TIME_GRID" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class used to represent the ice grid</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.ICE_TIME_GRID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.</span></span><span class="sig-name descname"><span class="pre">ICE_TIME_GRID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([1,</span> <span class="pre">2])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">916.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'time_grid'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(False,)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.ICE_TIME_GRID" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="id1">ICE_TIME_GRID</span> class is used to represent the ice thickness evolution threw time. This class inherit of <a class="reference internal" href="TIME_GRID_doc.html#id1"><span class="std std-ref">TIME_GRID</span></a>.</p>
 <p>…</p>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>rho<span class="classifier">float</span></dt><dd><p>Density value of the ice</p>
+<dt>time_step<span class="classifier">np.array([time_step_number,])</span></dt><dd><p>This array contains the time step of the data you are importing. They will be use for temporal interpolation.</p>
 </dd>
-<dt>ice<span class="classifier">np.array (nb_time_step, maxdeg, maxdeg x2)</span></dt><dd><p>Ice thickness Gaussian grid</p>
+<dt>maxdeg<span class="classifier">int</span></dt><dd><p>Maximum harmonic coefficient degree of the data. this define the chape of the grid and coefficient arrays</p>
 </dd>
-<dt>ice_corrected<span class="classifier">np.array (np_time_step, maxdeg, maxdeg x2)</span></dt><dd><p>Ice thickness Gaussian grid corrected of the crusted ice</p>
+<dt>height_time_grid<span class="classifier">np.array([maxedg*2,maxdeg])</span></dt><dd><p>This array is the height grid at each time steps defined in grid_time_step</p>
+</dd>
+<dt>mass_time_grid<span class="classifier">np.array([maxedg*2,maxdeg])</span></dt><dd><p>This array is the mass grid at each time steps defined in grid_time_step</p>
+</dd>
+<dt>height_time_coeff<span class="classifier">np.array([(maxdeg+1)(maxedg+2)/2,])</span></dt><dd><p>This array is the height spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+</dd>
+<dt>mass_time_coeff<span class="classifier">np.array([(maxdeg+1)(maxedg+2)/2,])</span></dt><dd><p>This array is the mass spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+</dd>
+<dt>rho<span class="classifier">float</span></dt><dd><p>The density of the considered layer. Default is 916.7 kg/m3.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In future development the density may vary threw space and time. We’ll have to make a variable object more then a constant density.</p>
+</div>
+<dl class="simple">
+<dt>grid_name<span class="classifier">str</span></dt><dd><p>The name of the grid. We recommand you to choose a specific name for each grid you create. This name is used to save the grid in an nc file with <a href="#id6"><span class="problematic" id="id7">`save`_</span></a>.</p>
+</dd>
+<dt>from_file<span class="classifier">(bool,way)</span></dt><dd><p>This parameter define if the data are new or loaded from a previously saved model in a nc file. If the first element is False, the code will create a blank object, based on provided datas. If the first element is True, the method will get the data from the file way specified in the second element of this attribute.</p>
 </dd>
 </dl>
 </div></blockquote>
 </section>
 <section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h3>
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>load(grid)</dt><dd><p>load the ice from ice_6g model  !!! need to be modified !!!</p>
+<dt><a class="reference internal" href="#ice-correction">ice_correction</a> </dt><dd><p>correct the grounded ice thickness from the created floating ice by ground vertical mouvement</p>
 </dd>
-<dt>quickload(grid)</dt><dd><p>load the ice from ice_6g model and is parallelized  !!! need to be modified !!!</p>
-</dd>
-<dt>calc_del_ice(t_it)</dt><dd><p>update the grd field with the variation of ice thickness</p>
+<dt><a class="reference internal" href="#ice-save"><span class="std std-ref">save</span></a> </dt><dd><p>used to save data</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -132,40 +155,56 @@
 </dd></dl>
 
 </section>
-<section id="id1">
-<h2><strong>METHODS</strong><a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<section id="id2">
+<h2><strong>METHODS</strong><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="grid.ICE_TIME_GRID.load">
-<span class="sig-prename descclassname"><span class="pre">grid.ICE_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step_number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.ICE_TIME_GRID.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to load the ice data from the ice6g map. 
-I’ll have to create a function to simply interpolate a time grid for ice.
-This way anyone can load a data without having to modify or create a function.</p>
-<dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><p>grid (object): Output of the class GRID.</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.ICE_TIME_GRID.ice_correction">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.ICE_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">ice_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.ICE_TIME_GRID.ice_correction" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="ice-correction">ice_correction</span> method is used to correct the grounded ice thickness from the floating ice generted by vertical ground motion. This correction is done for each time step to remove the floating ice.  The correction of grounded ice is based on <a class="reference internal" href="../numerical_imp.html#ice-corr"><span class="std std-ref">Grounded ice correction</span></a>.</p>
+<section id="id3">
+<h3>Attributes<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl>
+<dt>topo<span class="classifier"><a class="reference internal" href="TOPOGRAPHIC_TIME_GRID_doc.html#id1"><span class="std std-ref">TOPOGRAPHIC_TIME_GRID</span></a> class object</span></dt><dd><p>A topogrphic grid object, used to check if grounded ice become floating ice. The topography is then modified to by this function.</p>
+</dd>
+<dt>oc<span class="classifier"><a class="reference internal" href="OCEAN_TIME_GRID_doc.html#id1"><span class="std std-ref">OCEAN_TIME_GRID</span></a> class object</span></dt><dd><p>An oceanic time grid object used only to get the density of ocean set for the model.</p>
 </dd>
 </dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
-<dl class="simple">
-<dt>Added fields<span class="classifier"></span></dt><dd><p>ice (np.array): The ice thickness threw time matrix interpolated on the Gaussian grid of GRID class of shape time step, maxdeg, maxdeg x 2.
-ice_corrected (np.array): an array full of zero with the same shape then the ice field.</p>
-</dd>
-</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To avoid memory consumption the oc parameter should be replace simply by oc_rho the ocean density.</p>
+</div>
+</div></blockquote>
+</section>
+<section id="return">
+<h3>Return<a class="headerlink" href="#return" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
 </dd></dl>
 
 <hr class="docutils" />
-<hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="grid.ICE_TIME_GRID.zeros">
-<span class="sig-prename descclassname"><span class="pre">grid.ICE_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.ICE_TIME_GRID.zeros" title="Permalink to this definition">¶</a></dt>
-<dd><p>A method used to generate a zero array with the caracteristics of the grid.</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.ICE_TIME_GRID.save">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.ICE_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_way</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.ICE_TIME_GRID.save" title="Permalink to this definition"></a></dt>
+<dd><p id="ice-save">The save method is used to save the data of the ice grid. Because of the <a class="reference internal" href="#ice-correction">ice_correction</a> method that update the grid we choosed to preserve the original ice thickness data in a ice parameter that is saved inside the nc file. Otherwise this method use the super method <span class="xref std std-ref">save</span> to save the rest of the data.</p>
+<section id="id4">
+<h3>Attributes<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>save_way :str</dt><dd><p>The way where the nc file is saved. Default value is the current file (an empty str).</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id5">
+<h3>Return<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
 </dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="grid.ICE_TIME_GRID.ice_correction">
-<span class="sig-prename descclassname"><span class="pre">grid.ICE_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">ice_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.ICE_TIME_GRID.ice_correction" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </section>
 </section>

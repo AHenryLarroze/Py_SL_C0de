@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mathematical Theory &mdash; SL_C0de 0.4.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Numerical implementation" href="numerical_imp.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SL_C0de
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Mathematical Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-sle">The SLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conservation-of-mass">Conservation of mass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-of-delta-g-and-delta-r">Development of <span class="math notranslate nohighlight">\(\Delta G\)</span> and <span class="math notranslate nohighlight">\(\Delta R\)</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#case-of-a-non-rotational-earth">Case of a non-rotational Earth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#case-of-a-rotational-earth">Case of a rotational Earth</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#resolution-of-temporal-and-spatial-convolution">Resolution of temporal and spatial convolution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spatial-convolution">Spatial convolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#temporal-convolution">Temporal convolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resolution-of-the-convolutions">Resolution of the convolutions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_imp.html">Numerical implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide.html">Developer guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SL_C0de</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Mathematical Theory</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Theory.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mathematical-theory">
+<h1>Mathematical Theory<a class="headerlink" href="#mathematical-theory" title="Permalink to this heading"></a></h1>
+<p>Most of our code is based on the mathematic and computational theory from <span id="id1">[<a class="reference internal" href="index.html#id3" title="A. V. Dalca, K. L. Ferrier, J. X. Mitrovica, J. T. Perron, G. A. Milne, and J. R. Creveling. On postglacial sea level—III. Incorporating sediment redistribution. Geophysical Journal International, 194(1):45–60, July 2013. doi:10.1093/gji/ggt089.">Dalca <em>et al.</em>, 2013</a>]</span>.</p>
+<img alt="_images/Fonctionnalite_Python.png" src="_images/Fonctionnalite_Python.png" />
+<section id="the-sle">
+<h2>The SLE<a class="headerlink" href="#the-sle" title="Permalink to this heading"></a></h2>
+<p>The Relative sea level (<span class="math notranslate nohighlight">\(\Delta SL\)</span>) variations is the result of the interaction between the vertical mouvement of geoïd, <span class="math notranslate nohighlight">\(\Delta Gtot\)</span> (surface of the ocean) and the vertical mouvement of the ground, <span class="math notranslate nohighlight">\(\Delta Rtot\)</span> (called subsidence). We can then express the equation as :</p>
+<div class="math notranslate nohighlight">
+\[\Delta SL(\Theta,\Psi,t) = \Delta Gtot(\Theta,\Psi,t) - \Delta Rtot(\Theta,\Psi,t) -\Delta H - Delta I\]</div>
+<p>The geoïd variation include both, variation of the geoïd <span class="math notranslate nohighlight">\(\Delta\mathcal{G}tot\)</span> surface and variation of the ocean volume. The variation of the ocean volume following a conservation of the mass, denoted <span class="math notranslate nohighlight">\(\frac{\Delta \Phi}{g}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\Delta Gtot(\Theta,\Psi,t)=\Delta\mathcal{G}tot (\Theta,\Psi,t)- \frac{\Delta \Phi}{g}\]</div>
+<p>Both geoïd and ground variations (<span class="math notranslate nohighlight">\(\Delta Xtot\)</span>) can be decomposed into variations (<span class="math notranslate nohighlight">\(\Delta X\)</span>) due to mass redistribution and varaitions induced by earth rotation (<span class="math notranslate nohighlight">\(\Delta X^T\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[\Delta Xtot (\Theta,\Psi,t)=\Delta X^{T} (\Theta,\Psi,t)+\Delta X (\Theta,\Psi,t)\]</div>
+<p>The resulting SLE is :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\Delta SL(\Theta,\Psi,t) = \Delta\mathcal{G}^{T} (\Theta,\Psi,t)+\Delta\mathcal{G} (\Theta,\Psi,t)- \frac{\Delta \Phi}{g} \\  - \Delta R^{T} (\Theta,\Psi,t)-\Delta R (\Theta,\Psi,t) - \Delta H - \Delta I
+\end{aligned}\end{split}\]</div>
+<p>This equation shows that variations in relative sea level are the result of the interaction of geoid and ground variations induced by mass variations, plus the effect of the earth’s rotation, plus respectively the redistribution of water masses between ice, sediment and ocean and variations in the earth’s surface due to sedimentary input and ice.</p>
+</section>
+<section id="conservation-of-mass">
+<h2>Conservation of mass<a class="headerlink" href="#conservation-of-mass" title="Permalink to this heading"></a></h2>
+<p>The term <span class="math notranslate nohighlight">\(\frac{\Delta \Phi}{g}\)</span> follows a conservation of mass equation based on the variation of ice (<span class="math notranslate nohighlight">\(\Delta I\)</span>) and ocean volume (<span class="math notranslate nohighlight">\(\Delta S\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[\iint_{\Omega} \Delta I \mathrm{~d} \Omega=-\frac{\rho_{\mathrm{W}}}{\rho_{\mathrm{I}}} \iint_{\Omega} \Delta S \mathrm{~d} \Omega .\]</div>
+<p><span class="math notranslate nohighlight">\(\Delta S\)</span> include three variations, the variations of the sea level, the variation of ocean volume due to ice ocean interaction and the variation of the ocean surface. These three variations are expressed as follows :</p>
+<div class="math notranslate nohighlight">
+\[\Delta S=\Delta \mathcal{S} \mathcal{L} \cdot C+\frac{\Delta \Phi}{g} C-T_0\left[C-C_0\right]\]</div>
+<p>Where <span class="math notranslate nohighlight">\(T_0\)</span> is the initial ocean volume and <span class="math notranslate nohighlight">\(C\)</span> is the ocean function (1 in the ocean and 0 on the continent) :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}C= \begin{cases}1 &amp; \text { if } Z&gt;0 \\ 0 &amp; \text { if } Z \leq 0\end{cases}\end{split}\]</div>
+<p>Injecting this expression to the conservation of mass we obtain :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\frac{\Delta \Phi}{g}= &amp; -\frac{1}{\mathcal{A}} \frac{\rho_{\mathrm{I}}}{\rho_{\mathrm{w}}} \iint_{\Omega} \Delta I \mathrm{~d} \Omega-\frac{1}{\mathcal{A}} \iint_{\Omega} \Delta \mathcal{S} \mathcal{L} C \mathrm{~d} \Omega \\
+&amp; +\frac{1}{\mathcal{A}} \iint_{\Omega} T_0\left[C-C_0\right] \mathrm{d} \Omega,
+\end{aligned}\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(\mathcal{A} \equiv \iint_{\Omega} C \mathrm{~d} \Omega\)</span></p>
+<p>Behind the ocean function the variation of topography include ice and sediment thickness. The conservation term <span class="math notranslate nohighlight">\(\frac{\Delta \Phi}{g}\)</span> include then the replacement of ocean by sediment.</p>
+</section>
+<section id="development-of-delta-g-and-delta-r">
+<h2>Development of <span class="math notranslate nohighlight">\(\Delta G\)</span> and <span class="math notranslate nohighlight">\(\Delta R\)</span><a class="headerlink" href="#development-of-delta-g-and-delta-r" title="Permalink to this heading"></a></h2>
+<p id="geoid-ground-variation-theory">To determine both <span class="math notranslate nohighlight">\(\Delta G\)</span> and <span class="math notranslate nohighlight">\(\Delta R\)</span>, denoted from here <span class="math notranslate nohighlight">\(\Delta \chi\)</span>, <span id="id2">[<a class="reference internal" href="index.html#id10" title="W. R. Peltier. The impulse response of a Maxwell Earth. Reviews of Geophysics, 12(4):649, 1974. doi:10.1029/RG012i004p00649.">Peltier, 1974</a>]</span> and <span id="id3">[<a class="reference internal" href="index.html#id9" title="J. X. Mitrovica and W. R. Peltier. Pleistocene deglaciation and the global gravity field. Journal of Geophysical Research: Solid Earth, 94(B10):13651–13671, October 1989. doi:10.1029/JB094iB10p13651.">Mitrovica and Peltier, 1989</a>]</span> introduce the Green’s functions that describe the response of a radial symetric self gravitating sphere. The relation include a spatial and temporal convolution between the Green functions and the Load <span class="math notranslate nohighlight">\(\Delta M\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\Delta \chi (\Theta,\Psi,t)=\int_{-\infty}^t \iint_{\Omega} \Delta M\left(\Theta^{\prime}, \Psi^{\prime}, t^{\prime}\right) \cdot G F\left(\gamma, t-t^{\prime}\right) \mathrm{d} \Omega^{\prime} \mathrm{d} t^{\prime}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\gamma\)</span> is <span class="math notranslate nohighlight">\(cos(\gamma) = cos(\theta)cos(\theta^{\prime}) + sin(\theta)sin(\theta^{\prime})cos(\psi-\psi^{\prime})\)</span>. GF here denote the Green function.</p>
+<section id="case-of-a-non-rotational-earth">
+<h3>Case of a non-rotational Earth<a class="headerlink" href="#case-of-a-non-rotational-earth" title="Permalink to this heading"></a></h3>
+<p>The GFs follows the love numbers theory <span id="id4">[<a class="reference internal" href="index.html#id6" title="Augustus Love. A Treatise on the Mathematical Theory of Elasticity. Volume 1. Cambridge, 1892.">Love, 1892</a>]</span>. Our code differs from the work of <span id="id5">[<a class="reference internal" href="index.html#id3" title="A. V. Dalca, K. L. Ferrier, J. X. Mitrovica, J. T. Perron, G. A. Milne, and J. R. Creveling. On postglacial sea level—III. Incorporating sediment redistribution. Geophysical Journal International, 194(1):45–60, July 2013. doi:10.1093/gji/ggt089.">Dalca <em>et al.</em>, 2013</a>]</span> by using decay love numbers where the normal mode of love numbers was used (see section xx for details about the love numbers used in this code). We use the h and k love numbers and derive for both the elastic (<span class="math notranslate nohighlight">\(x_{\ell}^E\)</span>) and viscous (decay, <span class="math notranslate nohighlight">\(x_{\ell}^V(t)\)</span>) part.</p>
+<p>Here we are working on two GF, for the geoïd (<span class="math notranslate nohighlight">\(\phi(\gamma,t)\)</span>) and the ground (<span class="math notranslate nohighlight">\(\Gamma(\gamma,t)\)</span>) vertical motion.</p>
+<div class="math notranslate nohighlight">
+\[\phi(\gamma, t)=\frac{a g}{M_{\mathrm{e}}} \sum_{\ell=0}^{\infty}\left[\delta(t)+k_{\ell}^E \delta(t)+ k_{\ell}^V(t)\right] P_{\ell}(\cos \gamma)\]</div>
+<div class="math notranslate nohighlight">
+\[\Gamma(\gamma, t)=\frac{a g}{M_{\mathrm{e}}} \sum_{\ell=0}^{\infty}\left[h_{\ell}^E \delta(t)+h_{\ell}^V(t)\right] P_{\ell}(\cos \gamma)\]</div>
+<p>Where <span class="math notranslate nohighlight">\(a\)</span> is the Earth radius, <span class="math notranslate nohighlight">\(M_e\)</span> the Earth mass, <span class="math notranslate nohighlight">\(g\)</span> the gravitational constant of earth and <span class="math notranslate nohighlight">\(\delta(t)\)</span> is the Dirac function. For the non-rotational part, in the convolution, GFs are applied to the Load (<span class="math notranslate nohighlight">\(\Delta L (\Theta,\Psi,t)\)</span>) a pure variation of masses.</p>
+<div class="math notranslate nohighlight">
+\[\Delta \chi (\Theta,\Psi,t)=\int_{-\infty}^t \iint_{\Omega} \Delta L\left(\Theta^{\prime}, \Psi^{\prime}, t^{\prime}\right) \cdot G F\left(\gamma, t-t^{\prime}\right) \mathrm{d} \Omega^{\prime} \mathrm{d} t^{\prime}\]</div>
+</section>
+<section id="case-of-a-rotational-earth">
+<h3>Case of a rotational Earth<a class="headerlink" href="#case-of-a-rotational-earth" title="Permalink to this heading"></a></h3>
+<p>The effect of rotation on sea level is expressed by the perturbation of Earth’s rotational vector solved by using tidal love numbers <span class="math notranslate nohighlight">\(k^T\)</span> and <span class="math notranslate nohighlight">\(h^T\)</span> <span id="id6">[<a class="reference internal" href="index.html#id8" title="Glenn A. Milne and Jerry X. Mitrovica. Postglacial sea-level change on a rotating Earth. Geophysical Journal International, 133(1):1–19, April 1998. doi:10.1046/j.1365-246X.1998.1331455.x.">Milne and Mitrovica, 1998</a>]</span> in the GFs, for both elastic <span class="math notranslate nohighlight">\(x_{\ell}^{T,E}\)</span> and viscous <span class="math notranslate nohighlight">\(x_{\ell}^{T,V}(t)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\phi^T(\gamma, t)=\frac{a g}{M_{\mathrm{e}}} \sum_{\ell=0}^{\infty}\left[\delta(t)+k_{\ell}^{T,E} \delta(t)+ k_{\ell}^{T,V}(t)\right] P_{\ell}(\cos \gamma)\]</div>
+<div class="math notranslate nohighlight">
+\[\Gamma^T(\gamma, t)=\frac{a g}{M_{\mathrm{e}}} \sum_{\ell=0}^{\infty}\left[h_{\ell}^{T,E} \delta(t)+h_{\ell}^{T,V}(t)\right] P_{\ell}(\cos \gamma)\]</div>
+<p>Where</p>
+<p>For the rotational Earth convolution a rotational potential is defined as <span class="math notranslate nohighlight">\(\Lambda(\Theta,\Psi,t_j)\)</span>. The equations behind are described in <span id="id7">[<a class="reference internal" href="index.html#id8" title="Glenn A. Milne and Jerry X. Mitrovica. Postglacial sea-level change on a rotating Earth. Geophysical Journal International, 133(1):1–19, April 1998. doi:10.1046/j.1365-246X.1998.1331455.x.">Milne and Mitrovica, 1998</a>]</span> and are not developed here.</p>
+</section>
+</section>
+<section id="resolution-of-temporal-and-spatial-convolution">
+<h2>Resolution of temporal and spatial convolution<a class="headerlink" href="#resolution-of-temporal-and-spatial-convolution" title="Permalink to this heading"></a></h2>
+<section id="spatial-convolution">
+<h3>Spatial convolution<a class="headerlink" href="#spatial-convolution" title="Permalink to this heading"></a></h3>
+<p>The spatial convolution is resolved using the spherical harmonic transformation. For a function <span class="math notranslate nohighlight">\(\chi(\Theta,\Psi,t)\)</span>, we can define spherical harmonics coefficients <span class="math notranslate nohighlight">\(\chi_{lm}(t)\)</span>, where <span class="math notranslate nohighlight">\(l\)</span> is the degree and <span class="math notranslate nohighlight">\(m\)</span> is the order of the associated Legendre polynomial (<span class="math notranslate nohighlight">\(Y_{lm}(\Theta,\Psi)\)</span>) :</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{X} (\Theta,\Psi,t)=\sum_{lm} \mathcal{X} _{lm}(t)Y_{lm}(\Theta,\Psi)\]</div>
+<p>with <span class="math notranslate nohighlight">\(\sum_{lm}=\sum_{l=0}^{\infty} \sum_{m=-l}^{m=l}\)</span>, for a degree l there is 2l+1 order.</p>
+<p>In the spectral domain the convolution can be solved :</p>
+<div class="math notranslate nohighlight">
+\[\iint _{\Omega} \sum_{l=0}^{infty} \mathcal{X} (\Theta',\Psi',t)P_l(cos\gamma') \,d \Omega = T_l \sum_{lm} \mathcal{X} _{lm} (t) Y_{lm}(\Theta,\Psi)\]</div>
+<p id="t-definition">With <span class="math notranslate nohighlight">\(T_l = \frac{4\pi a^2}{2l+1}\)</span></p>
+</section>
+<section id="temporal-convolution">
+<h3>Temporal convolution<a class="headerlink" href="#temporal-convolution" title="Permalink to this heading"></a></h3>
+<p>The resolution of temporal convolution is performed by a Heaviside distribution of the load <span class="math notranslate nohighlight">\(\mathcal{H} (t)\)</span>.</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[\begin{split}\mathcal{H} (t) = \left\{
+    \begin{array}{ll}
+        1 &amp; \mbox{si t&gt;0} \\
+        \varnothing   &amp; \mbox{si t=0} \\
+        0 &amp; \mbox{si t&lt;0} \\
+    \end{array}
+\right.\end{split}\]</div>
+</div></blockquote>
+<p>The Heavyside distributed load is :</p>
+<div class="math notranslate nohighlight">
+\[\Delta L(\Theta,\Psi,t)=\sum_{n=0}^{N} \delta L(\Theta,\Psi,t_n)\mathcal{H} (t-t_n)\]</div>
+</section>
+<section id="resolution-of-the-convolutions">
+<h3>Resolution of the convolutions<a class="headerlink" href="#resolution-of-the-convolutions" title="Permalink to this heading"></a></h3>
+<p>Applying the temporal convolution resolution :</p>
+<div class="math notranslate nohighlight">
+\[\Delta \chi= \iint_{\Omega} \sum_{n=0}^{N} \delta M(\Theta,\Psi,t_n) \int_{-\infty}^t  \mathcal{H} (t-t_n) \cdot G F\left(\gamma, t-t^{\prime}\right) \mathrm{d} \Omega^{\prime} \mathrm{d} t^{\prime}\]</div>
+<p>and :</p>
+<div class="math notranslate nohighlight">
+\[\int_{-\infty}^t  \mathcal{H} (t-t_n) \cdot G F\left(\gamma, t-t^{\prime}\right) \mathrm{d} t^{\prime} = I G F\left(\gamma, t-t_n \right)\]</div>
+<p>with IGF the time integration of the GF.</p>
+<p>We have then :</p>
+<div class="math notranslate nohighlight">
+\[\Delta \chi (\Theta,\Psi,t)= \iint_{\Omega} \sum_{n=0}^{j-1} \delta M(\Theta,\Psi,t_n) \cdot I G F\left(\gamma, t_j -t_n \right)\]</div>
+<p>By application of the spatial convolution solution :</p>
+<div class="math notranslate nohighlight">
+\[\Delta \chi (\Theta,\Psi,t)= \sum_{lm} T_l \sum_{n=0}^{j-1} \delta M_{lm} (t_n) Y_{lm}(\Theta,\Psi) \cdot I G F\left(\gamma, t-t_n \right)\]</div>
+<p>The respective IGF are :</p>
+<div class="math notranslate nohighlight">
+\[I \phi(\gamma, t)=\frac{a g}{M_{\mathrm{e}}} \sum_{\ell=0}^{\infty}\left[1+k_{\ell}^E+ K_{\ell}^V(t)\right]\]</div>
+<div class="math notranslate nohighlight">
+\[I \Gamma(\gamma, t)=\frac{a g}{M_{\mathrm{e}}} \sum_{\ell=0}^{\infty}\left[h_{\ell}^E +H_{\ell}^V(t)\right]\]</div>
+<div class="math notranslate nohighlight">
+\[I \phi^T(\gamma, t)=\frac{a g}{M_{\mathrm{e}}} \sum_{\ell=0}^{\infty}\left[1+k_{\ell}^{T,E} + K_{\ell}^{T,V}(t)\right]\]</div>
+<div class="math notranslate nohighlight">
+\[I \Gamma^T(\gamma, t)=\frac{a g}{M_{\mathrm{e}}} \sum_{\ell=0}^{\infty}\left[h_{\ell}^{T,E}+H_{\ell}^{T,V}(t)\right]\]</div>
+<p>Where K and H are the integrated love numbers between 0 and the considered time t.</p>
+<p>The resulting SLE is :</p>
+<div class="math notranslate nohighlight">
+\[\Delta \mathcal{SL}(\Theta,\Psi,t) = \int_{-\infty}^{t_j} \iint_\Omega \Delta L (\Theta ^\prime, \Psi ^\prime,t ^\prime) \cdot [\frac{\Phi(\gamma, t - t^\prime)}{g} - \Gamma(\gamma,t-t^\prime)] \mathrm{d} \Omega ^\prime \mathrm{d} t^\prime - \Delta H(\Theta,\Psi,t) - \Delta I(\Theta,\Psi,t)\]</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="numerical_imp.html" class="btn btn-neutral float-right" title="Numerical implementation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, HENRY Adrien.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

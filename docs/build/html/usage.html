@@ -11,14 +11,16 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Developer guide" href="developer_guide.html" />
-    <link rel="prev" title="Welcome to SL_C0de’s documentation!" href="index.html" /> 
+    <link rel="next" title="Mathematical Theory" href="Theory.html" />
+    <link rel="prev" title="Welcome to \(SL_{C0de}\)’s documentation!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,8 +44,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#installation">INSTALLATION</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">INSTALLATION</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#minimal-exemple">minimal exemple</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_imp.html">Numerical implementation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developer_guide.html">Developer guide</a></li>
 </ul>
 
@@ -72,17 +79,15 @@
            <div itemprop="articleBody">
              
   <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h1>
-</section>
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
 <section id="installation">
-<h1>INSTALLATION<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
+<h2>INSTALLATION<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>THe code is developped on windows for the moment. We want to export it on other OS but for the moment we focus on the packages.</p>
+<p>The code is developped on windows for the moment. We want to export it on other OS but for the moment we focus on the packages.</p>
 </div>
-<p>download</p>
-<p>To install the library, run in command line :
-.. code-block:</p>
+<p>Download</p>
+<p>To install the library, run in command line :</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(.venv) $ conda create -n SL_C0de
 (.venv) $ conda activate SL_C0de
 (.venv) $ conda install pip
@@ -91,25 +96,170 @@
 </div>
 <p>To install the dependencies, download the requirements.txt on <a class="reference external" href="https://github.com/AHenryLarroze/Py_SL_C0de">https://github.com/AHenryLarroze/Py_SL_C0de</a> and run inside the file :</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(.venv) $ pip install -r requirements
-(.venv) $ conda install -c conda-forge stripy
 </pre></div>
 </div>
+<p>You also need the stripy package. This package has unstable deployment. Try to install this package with pip and conda.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>you need to be in the activated environment to install the packages localy</p>
+<p>You need to be in the activated environment to install the packages locally</p>
 </div>
-<p>For testing the module. You can donwload the script file in <a class="reference external" href="https://github.com/AHenryLarroze/Py_SL_C0de">https://github.com/AHenryLarroze/Py_SL_C0de</a>. You will also need cartopy to install it.</p>
+<p>For testing the module. You can download the script file in <a class="reference external" href="https://github.com/AHenryLarroze/Py_SL_C0de">https://github.com/AHenryLarroze/Py_SL_C0de</a>. You will also need cartopy to install it.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(.venv) $ conda install -c conda-forge cartopy
 </pre></div>
 </div>
+</section>
+<section id="minimal-exemple">
+<h2>minimal exemple<a class="headerlink" href="#minimal-exemple" title="Permalink to this heading"></a></h2>
+<p>Here we propose to run the code over 26 kyr with a time resolution of 500 years. The spatial resolution is deduced from the maximum spherical harmonic degree (see section xx). Here 64 degree correspond to a spatial resolution of 170 km at the equator.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">stop</span><span class="o">=</span><span class="mi">26</span> <span class="c1">#stop the computation at 26 kyr</span>
+<span class="n">step</span><span class="o">=</span><span class="mf">0.5</span> <span class="c1"># run the model at a time resolution of 0.5</span>
+<span class="n">time_step</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span><span class="n">stop</span><span class="o">=-</span><span class="n">step</span><span class="p">,</span><span class="n">step</span><span class="o">=-</span><span class="n">step</span><span class="p">)</span>
+<span class="n">maxdeg</span><span class="o">=</span><span class="mi">64</span> <span class="c1">#Define the maximum degrre of spherical harmonics</span>
+</pre></div>
+</div>
+<p>We preset the ice, sediment and topographic time grid.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">SL_C0de.SOLVER</span> <span class="kn">import</span> <span class="n">Precomputation</span>
+
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">io</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Loading Ice data</span>
+
+<span class="n">data</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;H:/SL_C0de/SL_C0de_data/ice6G122k&#39;</span><span class="p">)</span> <span class="c1">#load the file, can be modified to load an other file.</span>
+<span class="n">ice_in</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ice6g&#39;</span><span class="p">]</span><span class="c1"># ice_in[temps, latitude, longitude] hauteur de la glace</span>
+<span class="n">ice_time</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ice_time&#39;</span><span class="p">]</span>
+<span class="n">ice_time</span><span class="o">=</span><span class="n">ice_time</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">ice_time</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ice_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">ice_time</span><span class="p">)</span>
+<span class="n">ice_lon</span> <span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ice_long&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">ice_lat</span> <span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ice_lat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1"># The ice is not in the good shape. We have to derivate it :</span>
+<span class="n">ice_0</span><span class="o">=</span><span class="n">ice_in</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ice_in</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ice_in</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ice_in</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">ice_0</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span><span class="n">ice_in</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">ice_grid</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ICE_ICE6G&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">ice_in</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">ice_time</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="n">ice_lon</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="n">ice_lat</span><span class="p">)</span>
+
+<span class="c1"># Loading sediment loading data</span>
+
+<span class="n">sed_ncgrid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;H:/SL_C0de/SL_C0de_data/AYS2_sed.csv&#39;</span><span class="p">)</span>
+
+<span class="n">lon</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sed_ncgrid</span><span class="p">[</span><span class="s2">&quot;POINT_X.N.19.11&quot;</span><span class="p">])</span>
+<span class="n">lat</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sed_ncgrid</span><span class="p">[</span><span class="s2">&quot;POINT_Y.N.19.11&quot;</span><span class="p">])</span>
+<span class="n">sed</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sed_ncgrid</span><span class="p">[:])</span><span class="o">.</span><span class="n">T</span><span class="o">/</span><span class="mi">4</span>
+<span class="n">sed</span><span class="o">=</span><span class="n">sed</span><span class="p">[</span><span class="mi">3</span><span class="p">:,:]</span>
+<span class="n">sed</span><span class="o">=</span><span class="n">sed</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span><span class="o">*</span><span class="mi">0</span> <span class="c1"># add a zero sediment model</span>
+<span class="n">sed_time_step</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">26.25</span><span class="p">,</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span><span class="o">-</span><span class="mf">0.25</span><span class="p">)</span>
+
+<span class="n">area</span><span class="o">=</span><span class="p">(</span><span class="mi">93</span><span class="p">,</span><span class="mi">98</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">sed_grid</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;SED&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">sed</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">sed_time_step</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span><span class="n">frame</span><span class="o">=</span><span class="n">area</span><span class="p">)</span>
+
+<span class="c1"># Loading topographic data</span>
+
+<span class="n">data</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;H:/SL_C0de/SL_C0de_data/topo_SL&#39;</span><span class="p">)</span> <span class="c1">#load the file, can be modified to load an other file.</span>
+<span class="n">topo_grid</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;topo_bed&#39;</span><span class="p">][::</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">topo_lat</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lat_topo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()[::</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">topo_lon</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lon_topo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="n">topo_grid</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;topo_SL&#39;</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="n">topo_grid</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="n">topo_lon</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="n">topo_lat</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For this example we will set no ice load, with the method zeros_time. topography have a general depth of 3000 m. We create a disk centered at the equator with a thickness of 100 m, a radius of 300 km and deposited after 500 years.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Precompute the full data to prepare the next resolution of the SLE</span>
+
+<span class="n">stop</span><span class="o">=</span><span class="mi">26</span> <span class="c1"># define the number of time steps</span>
+<span class="n">step</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="n">time_step</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span><span class="n">stop</span><span class="o">=-</span><span class="n">step</span><span class="p">,</span><span class="n">step</span><span class="o">=-</span><span class="n">step</span><span class="p">)</span> <span class="c1"># in kyr to present</span>
+<span class="n">maxdeg</span><span class="o">=</span><span class="mi">512</span> <span class="c1"># define the maximum degree for spherical harmonics.</span>
+<span class="n">Output_way</span><span class="o">=</span><span class="s1">&#39;H:/SL_C0de/Interpolated_grid/Test_512_no_sed&#39;</span>
+<span class="n">plot</span><span class="o">=</span><span class="kc">True</span>
+
+<span class="n">Precomputation</span><span class="p">(</span><span class="n">ice_grid</span><span class="p">,</span><span class="n">sed_grid</span><span class="p">,</span><span class="n">topo_grid</span><span class="p">,</span><span class="n">Output_way</span><span class="p">,</span><span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span><span class="n">maxdeg</span><span class="o">=</span><span class="n">maxdeg</span><span class="p">,</span><span class="n">plot</span><span class="o">=</span><span class="n">plot</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now all entries are set up, we can resolve the sea level equation. We set as entry love numbers based on VM5 <span id="id1">[<a class="reference internal" href="index.html#id11" title="W. R. Peltier, D. F. Argus, and R. Drummond. Space geodesy constrains ice age terminal deglaciation: The global ICE-6G_C (VM5a) model: Global Glacial Isostatic Adjustment. Journal of Geophysical Research: Solid Earth, 120(1):450–487, January 2015. doi:10.1002/2014JB011176.">Peltier <em>et al.</em>, 2015</a>]</span> with a litosphere of 60 km, a upper mantle viscosity of <span class="math notranslate nohighlight">\(10^{20.5}\)</span> Pa.s and a lower mantle viscosity of <span class="math notranslate nohighlight">\(10^{22.699}\)</span> Pa.s. We use a forward modeling version of the SLE resolution. We set a convergence criterion of the SLE to <span class="math notranslate nohighlight">\(10^{-10}\)</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">SL_C0de.SOLVER</span> <span class="kn">import</span> <span class="n">SLE_solver</span>
+
+<span class="n">Input_way</span><span class="o">=</span><span class="s1">&#39;H:/SL_C0de/Interpolated_grid/Test_512_no_sed&#39;</span>
+<span class="n">ice_name</span><span class="o">=</span><span class="s1">&#39;ICE_ICE6G&#39;</span>
+<span class="n">sediment_name</span><span class="o">=</span><span class="s1">&#39;AYS2&#39;</span>
+<span class="n">topo_name</span><span class="o">=</span><span class="s1">&#39;topo_SL&#39;</span>
+<span class="n">ocean_name</span><span class="o">=</span><span class="s1">&#39;OCE&#39;</span>
+<span class="n">love_way</span><span class="o">=</span><span class="s1">&#39;H:/SL_C0de/SL_C0de_data/variable_um_32&#39;</span>
+<span class="n">love_file</span><span class="o">=</span><span class="s1">&#39;VM5a.l32.um21.5.lm22.699&#39;</span>
+<span class="n">conv_lim</span><span class="o">=</span><span class="mf">10e-10</span>
+<span class="n">topo_lim</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">Output_way</span><span class="o">=</span><span class="s1">&#39;H:/SL_C0de/Interpolated_grid/Test_512_no_sed&#39;</span>
+
+<span class="n">load</span><span class="o">=</span><span class="n">SLE_solver</span><span class="p">(</span><span class="n">Input_way</span><span class="p">,</span><span class="n">ice_name</span><span class="p">,</span><span class="n">sediment_name</span><span class="p">,</span><span class="n">topo_name</span><span class="p">,</span><span class="n">ocean_name</span><span class="p">,</span><span class="n">love_way</span><span class="p">,</span><span class="n">love_file</span><span class="p">,</span><span class="n">topo_lim</span><span class="p">,</span><span class="n">conv_lim</span><span class="p">,</span><span class="n">Output_way</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From here, we can post process these data to compute subsidence linked to the different loads. First you must save your result into a file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">Output_way</span><span class="o">=</span><span class="s2">&quot;outputs/&quot;</span>
+
+<span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">Output_way</span><span class="o">+</span><span class="n">love_file</span><span class="p">)):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">Output_way</span><span class="o">+</span><span class="n">love_file</span><span class="p">)</span>
+<span class="n">ocean_time_grid</span><span class="o">.</span><span class="n">timecoefftotimegrd</span><span class="p">()</span>
+<span class="n">ocean_time_grid</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">Output_way</span><span class="o">+</span><span class="n">love_file</span><span class="p">)</span>
+<span class="n">ice_time_grid_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">Output_way</span><span class="o">+</span><span class="n">love_file</span><span class="p">)</span>
+<span class="n">topo_time_grid_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">Output_way</span><span class="o">+</span><span class="n">love_file</span><span class="p">)</span>
+<span class="n">sediment_time_grid</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">Output_way</span><span class="o">+</span><span class="n">love_file</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we apply the post process</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">SL_C0de.SOLVER</span> <span class="kn">import</span> <span class="n">Post_process</span>
+
+<span class="n">Input_way</span><span class="o">=</span><span class="s1">&#39;H:/SL_C0de/Interpolated_grid/Test_512_no_sed/model_output&#39;</span>
+<span class="n">sed_name</span><span class="o">=</span><span class="s1">&#39;AYS2&#39;</span>
+<span class="n">ice_name</span><span class="o">=</span><span class="s1">&#39;ICE_ICE6G&#39;</span>
+<span class="n">ocean_name</span><span class="o">=</span><span class="s1">&#39;OCE&#39;</span>
+<span class="n">topo_name</span><span class="o">=</span><span class="s1">&#39;topo_SL&#39;</span>
+<span class="n">love_way</span><span class="o">=</span><span class="s1">&#39;H:/SL_C0de/SL_C0de_data/variable_um_32&#39;</span>
+<span class="n">Post_process</span><span class="p">(</span><span class="n">Input_way</span><span class="p">,</span><span class="n">sed_name</span><span class="p">,</span><span class="n">ice_name</span><span class="p">,</span><span class="n">ocean_name</span><span class="p">,</span><span class="n">topo_name</span><span class="p">,</span><span class="n">love_way</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Post process create new files in a folder called LOAD in the output folder. These data can be plotted using different functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">Input_way</span><span class="o">=</span><span class="s1">&#39;H:/SL_C0de/Interpolated_grid/Test_512/model_output/VM5a.l32.um20.25.lm22.699&#39;</span>
+<span class="n">plot</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">times</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span>
+        <span class="n">frames</span><span class="o">=</span><span class="p">[(</span><span class="o">-</span><span class="mi">179</span><span class="p">,</span><span class="mi">179</span><span class="p">,</span><span class="o">-</span><span class="mi">89</span><span class="p">,</span><span class="mi">89</span><span class="p">)],</span>
+        <span class="n">frames_resolution</span><span class="o">=</span><span class="p">[</span><span class="mi">1024</span><span class="p">],</span>
+        <span class="n">frames_min_max</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">]]),</span>
+        <span class="n">contours_v</span><span class="o">=</span><span class="p">[[[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)]</span><span class="o">+</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span><span class="o">+</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)]</span><span class="o">+</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">],],[[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">]]]</span>
+        <span class="n">transects</span><span class="o">=</span><span class="p">[(</span><span class="mf">21.63</span><span class="p">,</span><span class="mf">96.01</span><span class="p">,</span><span class="mf">11.1235</span><span class="p">,</span><span class="mf">96.04</span><span class="p">)],</span>
+        <span class="n">point_density</span><span class="o">=</span><span class="p">[</span><span class="mi">512</span><span class="p">],</span>
+        <span class="n">transect_min_max</span><span class="o">=</span><span class="p">[(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="o">-</span><span class="mf">0.7</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mf">0.7</span><span class="p">,</span><span class="mi">1</span><span class="p">)],</span>
+        <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">16.8</span><span class="p">,</span><span class="mi">96</span><span class="p">],[</span><span class="mi">15</span><span class="p">,</span><span class="mf">96.25</span><span class="p">],[</span><span class="mf">15.9609036</span><span class="p">,</span><span class="mf">95.4758372</span><span class="p">],[</span><span class="mf">16.0318760</span><span class="p">,</span><span class="mf">94.8894641</span><span class="p">],[</span><span class="mf">16.3469326</span><span class="p">,</span><span class="mf">95.2544328</span><span class="p">]]),</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">SL_C0de.SOLVER</span> <span class="kn">import</span> <span class="n">plot_model_result_map</span><span class="p">,</span><span class="n">plot_model_result_cross_section</span><span class="p">,</span><span class="n">plot_model_output_points</span>
+<span class="n">plot_model_result_map</span><span class="p">(</span><span class="n">Input_way</span><span class="p">,</span><span class="n">plot</span><span class="p">)</span>
+<span class="n">plot_model_result_cross_section</span><span class="p">(</span><span class="n">Input_way</span><span class="p">,</span><span class="n">plot</span><span class="p">)</span>
+<span class="n">plot_model_output_points</span><span class="p">(</span><span class="n">Input_way</span><span class="p">,</span><span class="n">plot</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">SL_C0de.SOLVER</span> <span class="kn">import</span> <span class="n">export_to_netcdf</span>
+<span class="n">export_to_netcdf</span><span class="p">(</span><span class="n">Input_way</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">plot</span><span class="p">[</span><span class="s1">&#39;frames_resolution&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="n">plot</span><span class="p">[</span><span class="s1">&#39;frames&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="n">Input_way</span><span class="o">+</span><span class="s1">&#39;\LOAD&#39;</span><span class="p">,</span><span class="s1">&#39;SEDIMENT&#39;</span><span class="p">,</span><span class="s1">&#39;LOAD&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to SL_C0de’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="developer_guide.html" class="btn btn-neutral float-right" title="Developer guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to \(SL_{C0de}\)’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Theory.html" class="btn btn-neutral float-right" title="Mathematical Theory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

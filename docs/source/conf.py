@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 import sys, os
-sys.path.insert(0, os.path.abspath('C:/Users/ahenry01/Desktop/Python_code/SL_C0de_lib_0_4_0/src/SL_C0de'))
+sys.path.insert(0, os.path.abspath('C:/Users/ahenry01/Desktop/Python_code/SL_C0de_lib_0_4_0/src'))
 
 project = 'SL_C0de'
 copyright = '2023, HENRY Adrien'
@@ -21,8 +21,13 @@ extensions = [
     'sphinx.ext.duration',
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
+    'sphinxcontrib.bibtex',
 ]
 
+bibtex_encoding = 'latin'
+bibtex_bibfiles = ['reference.bib']
+bibtex_default_style = 'plain'
+bibtex_reference_style= 'author_year'
 templates_path = ['_templates']
 exclude_patterns = []
 
@@ -35,7 +40,25 @@ import sphinx_rtd_theme
 
 html_theme = 'sphinx_rtd_theme'
 
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+#html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+
+html_theme_options = {
+    # 'analytics_id': 'G-XXXXXXXXXX',  #  Provided by Google in your dashboard
+    # 'analytics_anonymize_ip': False,
+    # 'logo_only': False,
+    # 'display_version': True,
+    # 'prev_next_buttons_location': 'bottom',
+    # 'style_external_links': False,
+    # 'vcs_pageview_mode': '',
+    # 'style_nav_header_background': 'white',
+    # # Toc options
+    'collapse_navigation': True,
+    # 'sticky_navigation': True,
+    'navigation_depth': -1
+    # 'includehidden': True,
+    # 'titles_only': False
+}
+
 #html_logo = 'img/logo2.png'
 # html_theme_options = {
 #     'logo_only': True,
@@ -51,7 +74,7 @@ master_doc = 'index'
 
 latex_elements = {
     'fncychap': '\\usepackage[Sonny]{fncychap}',
-    'figure_align': 'tbh'
+    'figure_align': 'tbh',
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
@@ -62,7 +85,8 @@ latex_elements = {
 
     # Additional stuff for the LaTeX preamble.
     #
-    # 'preamble': '',
+    'preamble': r'''\renewcommand{\hyperref}[2][]{(#2 p.\pageref{#1})}'''
+    #'preamble': r'''\renewcommand{\hyperref}[2][]{}'''
 
     # Latex figure (float) alignment
     #
@@ -75,8 +99,10 @@ latex_engine = 'pdflatex'
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'badlands.tex', 'badlands Documentation',
-     'Tristan Salles', 'manual'),
+    (master_doc, 'SLC0de.tex', 'SL$_{C0de}$ Documentation',
+     'Adrien Henry', 'manual'),
 ]
+
+
 
 

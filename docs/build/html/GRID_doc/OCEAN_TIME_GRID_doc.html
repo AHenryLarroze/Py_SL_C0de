@@ -11,6 +11,7 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
@@ -43,27 +44,35 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage.html#installation">INSTALLATION</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../numerical_imp.html">Numerical implementation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../developer_guide.html">Developer guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../SL_model_doc.html">SL_model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../LOAD_doc.html">LOAD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../love_doc.html">love</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SOLVER_doc.html">SOLVER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spharm_doc.html">spharm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../Grid_doc.html">Grid</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="GRID_class_doc.html">GRID</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TIME_GRID_doc.html">TIME_GRID</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SEDIMENT_TIME_GRID_doc.html">SEDIMENT_TIME_GRID</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ICE_TIME_GRID_doc.html">ICE_TIME_GRID</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">OCEAN_TIME_GRID</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#class"><strong>CLASS</strong></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id1"><strong>METHODS</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.OCEAN_TIME_GRID"><code class="docutils literal notranslate"><span class="pre">OCEAN_TIME_GRID</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#id2"><strong>METHODS</strong></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.OCEAN_TIME_GRID.update_0"><code class="docutils literal notranslate"><span class="pre">update_0()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.OCEAN_TIME_GRID.evaluate_ocean"><code class="docutils literal notranslate"><span class="pre">evaluate_ocean()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.OCEAN_TIME_GRID.sea_level_solver"><code class="docutils literal notranslate"><span class="pre">sea_level_solver()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.OCEAN_TIME_GRID.sea_level_equation"><code class="docutils literal notranslate"><span class="pre">sea_level_equation()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="TOPOGRAPHIC_TIME_GRID_doc.html">TOPOGRAPHIC_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LOAD_TIME_GRID_doc.html">LOAD_TIME_GRID</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../spharm_doc.html">spharm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../SeaLevel_doc.html">SeaLevel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plot_doc.html">plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../love_doc.html">love</a></li>
 </ul>
 </li>
 </ul>
@@ -95,34 +104,52 @@
            <div itemprop="articleBody">
              
   <section id="ocean-time-grid">
-<h1>OCEAN_TIME_GRID<a class="headerlink" href="#ocean-time-grid" title="Permalink to this heading">¶</a></h1>
+<h1>OCEAN_TIME_GRID<a class="headerlink" href="#ocean-time-grid" title="Permalink to this heading"></a></h1>
 <section id="class">
-<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading">¶</a></h2>
+<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="grid.OCEAN_TIME_GRID">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grid.</span></span><span class="sig-name descname"><span class="pre">OCEAN_TIME_GRID</span></span><a class="headerlink" href="#grid.OCEAN_TIME_GRID" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class used to represent the ocean grid</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.OCEAN_TIME_GRID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.</span></span><span class="sig-name descname"><span class="pre">OCEAN_TIME_GRID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([1,</span> <span class="pre">2])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'time_grid'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(False,)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.OCEAN_TIME_GRID" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="id1">OCEAN_TIME_GRID</span> class is used to represent the ocean thickness variation and contains the method to resolve the sea level equation. This method inherit from <a class="reference internal" href="TIME_GRID_doc.html#id1"><span class="std std-ref">TIME_GRID</span></a>.</p>
 <p>…</p>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>rho<span class="classifier">float</span></dt><dd><p>Density value of the water</p>
+<dt>time_step<span class="classifier">np.array([time_step_number,])</span></dt><dd><p>This array contains the time step of the data you are importing. They will be use for temporal interpolation.</p>
 </dd>
-<dt>oc_0_grd<span class="classifier">np.array (maxdeg, maxdeg x2)</span></dt><dd><p>Gaussian grid with 0 or 1 copy of the ocean function at time 0 normaly.</p>
+<dt>maxdeg<span class="classifier">int</span></dt><dd><p>Maximum harmonic coefficient degree of the data. this define the chape of the grid and coefficient arrays</p>
 </dd>
-<dt>oc_0_coeff<span class="classifier">np.array (maxdeg, maxdeg) !!!! A vérifier !!!! </span></dt><dd><p>spherical harmonic coefficient copy of the ocean function at time 0 normaly</p>
+<dt>height_time_grid<span class="classifier">np.array([maxedg*2,maxdeg])</span></dt><dd><p>This array is the height grid at each time steps defined in grid_time_step</p>
+</dd>
+<dt>mass_time_grid<span class="classifier">np.array([maxedg*2,maxdeg])</span></dt><dd><p>This array is the mass grid at each time steps defined in grid_time_step</p>
+</dd>
+<dt>height_time_coeff<span class="classifier">np.array([(maxdeg+1)(maxedg+2)/2,])</span></dt><dd><p>This array is the height spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+</dd>
+<dt>mass_time_coeff<span class="classifier">np.array([(maxdeg+1)(maxedg+2)/2,])</span></dt><dd><p>This array is the mass spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+</dd>
+<dt>rho<span class="classifier">float</span></dt><dd><p>The density of the considered layer. Default is 1000 kg/m3.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In future development the density may vary threw space and time. We’ll have to make a variable object more then a constant density.</p>
+</div>
+<dl class="simple">
+<dt>grid_name<span class="classifier">str</span></dt><dd><p>The name of the grid. We recommand you to choose a specific name for each grid you create. This name is used to save the grid in an nc file with <a href="#id8"><span class="problematic" id="id9">`save`_</span></a>.</p>
+</dd>
+<dt>from_file<span class="classifier">(bool,way)</span></dt><dd><p>This parameter define if the data are new or loaded from a previously saved model in a nc file. If the first element is False, the code will create a blank object, based on provided datas. If the first element is True, the method will get the data from the file way specified in the second element of this attribute.</p>
 </dd>
 </dl>
 </div></blockquote>
 </section>
 <section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h3>
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>update_oc_0()</dt><dd><p>set the oc_0_grd and oc_0_coeff attribute as a copy of the grd and coeff</p>
+<dt><a class="reference internal" href="#update-0-oce"><span class="std std-ref">update_0</span></a></dt><dd><p>set the grd_0 from the actual grd loaded in the grid</p>
 </dd>
-<dt>evaluate_ocean(topo)</dt><dd><p>evaluate the ocean function based on the Gaussian grid of the topography topo</p>
+<dt><a class="reference internal" href="#evaluate-ocean">evaluate_ocean</a></dt><dd><p>evaluate the ocean function based on the Gaussian grid of the topography</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -130,23 +157,112 @@
 </dd></dl>
 
 </section>
-<section id="id1">
-<h2><strong>METHODS</strong><a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<section id="id2">
+<h2><strong>METHODS</strong><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.grid.OCEAN_TIME_GRID.update_0">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.OCEAN_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">update_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.OCEAN_TIME_GRID.update_0" title="Permalink to this definition"></a></dt>
+<dd><p id="update-0-oce">The update_0 method update the grd_0 parameter of the object to the currend loaded grd.</p>
+<section id="id3">
+<h3>Attributes<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="return">
+<h3>Return<a class="headerlink" href="#return" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="grid.OCEAN_TIME_GRID.evaluate_ocean">
-<span class="sig-prename descclassname"><span class="pre">grid.OCEAN_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">evaluate_ocean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.OCEAN_TIME_GRID.evaluate_ocean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate the ocean function using the topography. It create a 0-1 matrix wich is 1 where topo&lt;0 and 0 where topo&gt;0.</p>
-<dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><p>topo (np.array): topo gaussian grid of size maxdeg, maxdegx2</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.OCEAN_TIME_GRID.evaluate_ocean">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.OCEAN_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">evaluate_ocean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.OCEAN_TIME_GRID.evaluate_ocean" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="evaluate-ocean">evaluate_ocean</span> method evaluate the ocean function using the topography. It create a 0-1 matrix wich is 1 where topo&lt;0 and 0 where topo&gt;0.  The ocean function is described in <a class="reference internal" href="../numerical_imp.html#oc-func"><span class="std std-ref">ocean function</span></a>.</p>
+<section id="attribute">
+<h3>Attribute<a class="headerlink" href="#attribute" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>topo<span class="classifier">np.array(maxdeg,maxdegx2)</span></dt><dd><p>topographic gaussian grid.</p>
 </dd>
 </dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
+</div></blockquote>
 <dl class="simple">
-<dt>Added fields<span class="classifier"></span></dt><dd><p>self.grd (np.array): a matrix of 0 and 1 with shape maxdeg, maxeg x 2.</p>
+<dt>Returns :</dt><dd><p>None</p>
 </dd>
 </dl>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.grid.OCEAN_TIME_GRID.sea_level_solver">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.OCEAN_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">sea_level_solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ice_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sed_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">love_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conv_it</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conv_lim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.OCEAN_TIME_GRID.sea_level_solver" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="sea-level-solver">sea_level_solver</span> method solve the sea level equation until. Beacause of the iterative type of the resolution of the SLE, this method define also a first guess of the Sea level at the first iteration and the first time step. This function is based on the convergence iteration for the estimation of the variability defined in <a class="reference internal" href="../numerical_imp.html#conv"><span class="std std-ref">Convergence parameter</span></a>.</p>
+<section id="id4">
+<h3>Attribute<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl>
+<dt>load<span class="classifier"><a class="reference internal" href="LOAD_TIME_GRID_doc.html#id1"><span class="std std-ref">LOAD_TIME_GRID</span></a> class object</span></dt><dd><p>The load time grid as specified in the class object. This grid needs to be of the same shape (maxdeg) then the one of the current object.</p>
+</dd>
+<dt>ice_time_grid<span class="classifier"><a class="reference internal" href="ICE_TIME_GRID_doc.html#id1"><span class="std std-ref">ICE_TIME_GRID</span></a> class object</span></dt><dd><p>The ice time grid as specified in the class object. This grid needs to be of the same shape (maxdeg) then the one of the current object.</p>
+</dd>
+<dt>sed_time_grid<span class="classifier"><a class="reference internal" href="SEDIMENT_TIME_GRID_doc.html#id1"><span class="std std-ref">SEDIMENT_TIME_GRID</span></a> class object</span></dt><dd><p>The sediment time grid as specified in the class object. This grid needs to be of the same shape (maxdeg) then the one of the current object.</p>
+</dd>
+<dt>love_number<span class="classifier"><a class="reference internal" href="../love_doc.html#id5"><span class="std std-ref">LOVE</span></a> class object </span></dt><dd><p>The love numbers as specified in the class object. The love numbers must have been set up with the same maximm degree thne the currend object.</p>
+</dd>
+<dt>TO<span class="classifier"><a class="reference internal" href="../spharm_doc.html#sphericalobject"><span class="std std-ref">sphericalobject</span></a> class object</span></dt><dd><p>The ocean contours variability area computed as a sphericalobject class computed for the previous iteration. !Trouver où définir ce calcul!.</p>
+</dd>
+<dt>t_it<span class="classifier">int</span></dt><dd><p>The time iteration of the current computation on wich apply the resolution of the SLE.</p>
+</dd>
+<dt>conv_it<span class="classifier">int</span></dt><dd><p>convergence iteration set to 0 if it’s for a simple resolution of the SLE on one time step. This is used when you are working on a topographic convergence. In the code, the first guess for the SLE will be if it’s not the first topographic convergence iteration, the guess of the previuous one.</p>
+</dd>
+<dt>conv_lim<span class="classifier">float</span></dt><dd><p>To stop the convergence of the solution, the conv_lim is usually set to 10^-3. The number of required step is then between 13 and 7.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id5">
+<h3>Return<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.grid.OCEAN_TIME_GRID.sea_level_equation">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.OCEAN_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">sea_level_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ice_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sed_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">love_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.OCEAN_TIME_GRID.sea_level_equation" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="sea-level-equation">sea_level_equation</span> method calculate the Sea level variation following the SLE. Tis function is resolving both the conservation of mass equation and the SL variation. This follows the method described in <a class="reference internal" href="../numerical_imp.html#spec-sol"><span class="std std-ref">Resolution of SLE including the deconvolution</span></a>.</p>
+<section id="id6">
+<h3>Attribute<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl>
+<dt>load<span class="classifier"><a class="reference internal" href="LOAD_TIME_GRID_doc.html#id1"><span class="std std-ref">LOAD_TIME_GRID</span></a> class object</span></dt><dd><p>The load time grid as specified in the class object. This grid needs to be of the same shape (maxdeg) then the one of the current object.</p>
+</dd>
+<dt>ice_time_grid<span class="classifier"><a class="reference internal" href="ICE_TIME_GRID_doc.html#id1"><span class="std std-ref">ICE_TIME_GRID</span></a> class object</span></dt><dd><p>The ice time grid as specified in the class object. This grid needs to be of the same shape (maxdeg) then the one of the current object.</p>
+</dd>
+<dt>sed_time_grid<span class="classifier"><a class="reference internal" href="SEDIMENT_TIME_GRID_doc.html#id1"><span class="std std-ref">SEDIMENT_TIME_GRID</span></a> class object</span></dt><dd><p>The sediment time grid as specified in the class object. This grid needs to be of the same shape (maxdeg) then the one of the current object.</p>
+</dd>
+<dt>love_number<span class="classifier"><a class="reference internal" href="../love_doc.html#id5"><span class="std std-ref">LOVE</span></a> class object </span></dt><dd><p>The love numbers as specified in the class object. The love numbers must have been set up with the same maximm degree thne the currend object.</p>
+</dd>
+<dt>TO<span class="classifier"><a class="reference internal" href="../spharm_doc.html#sphericalobject"><span class="std std-ref">sphericalobject</span></a> class object</span></dt><dd><p>The ocean contours variability area computed as a sphericalobject class computed for the previous iteration. !Trouver où définir ce calcul!.</p>
+</dd>
+<dt>t_it<span class="classifier">int</span></dt><dd><p>The time iteration of the current computation on wich apply the resolution of the SLE.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id7">
+<h3>Return<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
 </dd></dl>
 
 </section>

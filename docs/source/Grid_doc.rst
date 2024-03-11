@@ -12,4 +12,5 @@ The Grid module is used to manage all the data in there version grided. This mod
     GRID_doc/ICE_TIME_GRID_doc
     GRID_doc/OCEAN_TIME_GRID_doc
     GRID_doc/TOPOGRAPHIC_TIME_GRID_doc
+    GRID_doc/LOAD_TIME_GRID_doc
 

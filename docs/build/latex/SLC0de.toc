@@ -1,0 +1,162 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}\(SL_{C0de}\)}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Usage}{2}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}INSTALLATION}{2}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}\(SL_{C0de}\) minimal exemple}{2}{subsection.1.1.2}%
+\contentsline {section}{\numberline {1.2}Mathematical Theory}{6}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}The SLE}{7}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Conservation of mass}{7}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Development of \(\Delta G\) and \(\Delta R\)}{8}{subsection.1.2.3}%
+\contentsline {subsubsection}{Case of a non\sphinxhyphen {}rotational Earth}{8}{subsubsection*.4}%
+\contentsline {subsubsection}{Case of a rotational Earth}{8}{subsubsection*.5}%
+\contentsline {subsection}{\numberline {1.2.4}Resolution of temporal and spatial convolution}{9}{subsection.1.2.4}%
+\contentsline {subsubsection}{Spatial convolution}{9}{subsubsection*.6}%
+\contentsline {subsubsection}{Temporal convolution}{9}{subsubsection*.8}%
+\contentsline {subsubsection}{Resolution of the convolutions}{9}{subsubsection*.9}%
+\contentsline {section}{\numberline {1.3}Numerical implementation}{10}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Sea Level equation resolution}{11}{subsection.1.3.1}%
+\contentsline {subsubsection}{Sea level equation Resolution implementation}{11}{subsubsection*.11}%
+\contentsline {subsubsection}{Resolution of SLE including the deconvolution}{11}{subsubsection*.13}%
+\contentsline {subsubsection}{Convergence parameter}{12}{subsubsection*.15}%
+\contentsline {paragraph}{Inner convergence on SLE}{12}{paragraph*.16}%
+\contentsline {paragraph}{Outer convergence criterion}{12}{paragraph*.18}%
+\contentsline {subsubsection}{Grounded ice correction}{12}{subsubsection*.19}%
+\contentsline {subsection}{\numberline {1.3.2}Computation of ground and geoid subsidence from different load source}{12}{subsection.1.3.2}%
+\contentsline {subsubsection}{Elastic components of SLE :}{13}{subsubsection*.22}%
+\contentsline {subsubsection}{Viscous components of the SLE :}{13}{subsubsection*.23}%
+\contentsline {subsubsection}{True sediment subsidence}{13}{subsubsection*.24}%
+\contentsline {subsubsection}{Relative sea level variations}{13}{subsubsection*.26}%
+\contentsline {subsection}{\numberline {1.3.3}Input data format}{14}{subsection.1.3.3}%
+\contentsline {subsubsection}{Mass grid format}{14}{subsubsection*.27}%
+\contentsline {subsubsection}{Implementation of Love numbers}{14}{subsubsection*.29}%
+\contentsline {section}{\numberline {1.4}Developer guide}{15}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}SOLVER}{15}{subsection.1.4.1}%
+\contentsline {subsubsection}{\sphinxstylestrong {Functions}}{15}{subsubsection*.31}%
+\contentsline {paragraph}{Attribute :}{15}{paragraph*.34}%
+\contentsline {paragraph}{Returns :}{16}{paragraph*.35}%
+\contentsline {paragraph}{Attribute :}{16}{paragraph*.38}%
+\contentsline {paragraph}{Returns :}{17}{paragraph*.39}%
+\contentsline {paragraph}{Attribute :}{17}{paragraph*.42}%
+\contentsline {paragraph}{Returns :}{18}{paragraph*.43}%
+\contentsline {paragraph}{Attribute :}{18}{paragraph*.46}%
+\contentsline {paragraph}{Returns :}{18}{paragraph*.47}%
+\contentsline {paragraph}{Attribute :}{18}{paragraph*.50}%
+\contentsline {paragraph}{Returns :}{19}{paragraph*.51}%
+\contentsline {paragraph}{Attribute :}{19}{paragraph*.54}%
+\contentsline {paragraph}{Returns :}{20}{paragraph*.55}%
+\contentsline {subsection}{\numberline {1.4.2}spharm}{20}{subsection.1.4.2}%
+\contentsline {subsubsection}{\sphinxstylestrong {Functions}}{20}{subsubsection*.57}%
+\contentsline {paragraph}{Attribute :}{20}{paragraph*.60}%
+\contentsline {paragraph}{Returns :}{20}{paragraph*.61}%
+\contentsline {subsubsection}{\sphinxstylestrong {CLASS}}{20}{subsubsection*.62}%
+\contentsline {paragraph}{Attributes}{20}{paragraph*.65}%
+\contentsline {paragraph}{Methods}{21}{paragraph*.66}%
+\contentsline {subsubsection}{\sphinxstylestrong {Methods}}{21}{subsubsection*.67}%
+\contentsline {paragraph}{Attribute :}{21}{paragraph*.70}%
+\contentsline {paragraph}{Returns :}{21}{paragraph*.71}%
+\contentsline {paragraph}{Attribute :}{22}{paragraph*.76}%
+\contentsline {paragraph}{Returns :}{22}{paragraph*.77}%
+\contentsline {paragraph}{Attribute :}{22}{paragraph*.80}%
+\contentsline {paragraph}{Returns :}{22}{paragraph*.81}%
+\contentsline {subsection}{\numberline {1.4.3}Grid}{22}{subsection.1.4.3}%
+\contentsline {subsubsection}{GRID}{22}{subsubsection*.82}%
+\contentsline {paragraph}{\sphinxstylestrong {CLASS}}{22}{paragraph*.83}%
+\contentsline {subparagraph}{Attributes}{23}{subparagraph*.86}%
+\contentsline {subparagraph}{Methods}{23}{subparagraph*.87}%
+\contentsline {paragraph}{\sphinxstylestrong {Methods}}{23}{paragraph*.88}%
+\contentsline {subparagraph}{Attribute}{23}{subparagraph*.91}%
+\contentsline {subparagraph}{Return}{24}{subparagraph*.92}%
+\contentsline {subparagraph}{Attribute}{24}{subparagraph*.95}%
+\contentsline {subparagraph}{Return}{24}{subparagraph*.96}%
+\contentsline {subparagraph}{Attribute}{24}{subparagraph*.99}%
+\contentsline {subparagraph}{Return}{25}{subparagraph*.100}%
+\contentsline {subparagraph}{Attribute :}{25}{subparagraph*.103}%
+\contentsline {subparagraph}{Return :}{25}{subparagraph*.104}%
+\contentsline {subsubsection}{TIME\_GRID}{25}{subsubsection*.106}%
+\contentsline {paragraph}{\sphinxstylestrong {CLASS}}{25}{paragraph*.107}%
+\contentsline {subparagraph}{Attributes}{25}{subparagraph*.110}%
+\contentsline {subparagraph}{Methods}{26}{subparagraph*.111}%
+\contentsline {paragraph}{\sphinxstylestrong {Methods}}{27}{paragraph*.112}%
+\contentsline {subparagraph}{Attributes}{27}{subparagraph*.115}%
+\contentsline {subparagraph}{Return :}{27}{subparagraph*.116}%
+\contentsline {subparagraph}{Attributes}{28}{subparagraph*.119}%
+\contentsline {subparagraph}{Return :}{28}{subparagraph*.120}%
+\contentsline {subparagraph}{Attributes :}{28}{subparagraph*.123}%
+\contentsline {subparagraph}{Return :}{28}{subparagraph*.124}%
+\contentsline {subparagraph}{Attributes :}{29}{subparagraph*.127}%
+\contentsline {subparagraph}{Return :}{29}{subparagraph*.128}%
+\contentsline {subparagraph}{Attribute :}{29}{subparagraph*.131}%
+\contentsline {subparagraph}{Result :}{29}{subparagraph*.132}%
+\contentsline {subparagraph}{Attribute :}{29}{subparagraph*.135}%
+\contentsline {subparagraph}{Result :}{29}{subparagraph*.136}%
+\contentsline {subparagraph}{Attribute :}{30}{subparagraph*.139}%
+\contentsline {subparagraph}{Return :}{30}{subparagraph*.140}%
+\contentsline {subparagraph}{Attribute :}{30}{subparagraph*.143}%
+\contentsline {subparagraph}{Return :}{30}{subparagraph*.144}%
+\contentsline {subparagraph}{Attribute :}{30}{subparagraph*.147}%
+\contentsline {subparagraph}{Return :}{31}{subparagraph*.148}%
+\contentsline {subparagraph}{Attribute :}{31}{subparagraph*.151}%
+\contentsline {subparagraph}{Return :}{31}{subparagraph*.152}%
+\contentsline {subsubsection}{SEDIMENT\_TIME\_GRID}{31}{subsubsection*.153}%
+\contentsline {paragraph}{\sphinxstylestrong {CLASS}}{31}{paragraph*.154}%
+\contentsline {subparagraph}{Attributes}{32}{subparagraph*.157}%
+\contentsline {subparagraph}{Method}{32}{subparagraph*.158}%
+\contentsline {paragraph}{\sphinxstylestrong {METHODS}}{33}{paragraph*.159}%
+\contentsline {subparagraph}{Attributes}{33}{subparagraph*.162}%
+\contentsline {subparagraph}{Return}{33}{subparagraph*.163}%
+\contentsline {subsubsection}{ICE\_TIME\_GRID}{33}{subsubsection*.164}%
+\contentsline {paragraph}{\sphinxstylestrong {CLASS}}{33}{paragraph*.165}%
+\contentsline {subparagraph}{Attributes}{33}{subparagraph*.168}%
+\contentsline {subparagraph}{Methods}{34}{subparagraph*.169}%
+\contentsline {paragraph}{\sphinxstylestrong {METHODS}}{34}{paragraph*.170}%
+\contentsline {subparagraph}{Attributes}{34}{subparagraph*.173}%
+\contentsline {subparagraph}{Return}{35}{subparagraph*.174}%
+\contentsline {subparagraph}{Attributes}{35}{subparagraph*.177}%
+\contentsline {subparagraph}{Return}{35}{subparagraph*.178}%
+\contentsline {subsubsection}{OCEAN\_TIME\_GRID}{35}{subsubsection*.179}%
+\contentsline {paragraph}{\sphinxstylestrong {CLASS}}{35}{paragraph*.180}%
+\contentsline {subparagraph}{Attributes}{35}{subparagraph*.183}%
+\contentsline {subparagraph}{Methods}{36}{subparagraph*.184}%
+\contentsline {paragraph}{\sphinxstylestrong {METHODS}}{36}{paragraph*.185}%
+\contentsline {subparagraph}{Attributes}{36}{subparagraph*.188}%
+\contentsline {subparagraph}{Return}{37}{subparagraph*.189}%
+\contentsline {subparagraph}{Attribute}{37}{subparagraph*.192}%
+\contentsline {subparagraph}{Attribute}{37}{subparagraph*.195}%
+\contentsline {subparagraph}{Return}{38}{subparagraph*.196}%
+\contentsline {subparagraph}{Attribute}{38}{subparagraph*.199}%
+\contentsline {subparagraph}{Return}{38}{subparagraph*.200}%
+\contentsline {subsubsection}{TOPOGRAPHIC\_TIME\_GRID}{39}{subsubsection*.201}%
+\contentsline {paragraph}{\sphinxstylestrong {CLASS}}{39}{paragraph*.202}%
+\contentsline {subparagraph}{Attributes}{39}{subparagraph*.205}%
+\contentsline {subparagraph}{Methods}{40}{subparagraph*.206}%
+\contentsline {paragraph}{\sphinxstylestrong {METHODS}}{40}{paragraph*.207}%
+\contentsline {subparagraph}{Attributes}{40}{subparagraph*.210}%
+\contentsline {subparagraph}{Return}{40}{subparagraph*.211}%
+\contentsline {subsubsection}{LOAD\_TIME\_GRID}{40}{subsubsection*.212}%
+\contentsline {paragraph}{\sphinxstylestrong {CLASS}}{40}{paragraph*.213}%
+\contentsline {subparagraph}{Attributes}{40}{subparagraph*.216}%
+\contentsline {subparagraph}{Methods}{41}{subparagraph*.217}%
+\contentsline {paragraph}{\sphinxstylestrong {Methods}}{42}{paragraph*.218}%
+\contentsline {subparagraph}{Attribute}{42}{subparagraph*.221}%
+\contentsline {subparagraph}{Attribute}{42}{subparagraph*.224}%
+\contentsline {subparagraph}{Return}{42}{subparagraph*.225}%
+\contentsline {subparagraph}{Attribute}{42}{subparagraph*.228}%
+\contentsline {subparagraph}{Return}{43}{subparagraph*.229}%
+\contentsline {subparagraph}{Attribute}{43}{subparagraph*.232}%
+\contentsline {subparagraph}{Return}{43}{subparagraph*.233}%
+\contentsline {subsection}{\numberline {1.4.4}love}{43}{subsection.1.4.4}%
+\contentsline {subsubsection}{\sphinxstylestrong {Functions}}{43}{subsubsection*.235}%
+\contentsline {paragraph}{Attribute}{43}{paragraph*.238}%
+\contentsline {paragraph}{Returns}{44}{paragraph*.239}%
+\contentsline {paragraph}{Attribute}{44}{paragraph*.242}%
+\contentsline {paragraph}{Returns}{44}{paragraph*.243}%
+\contentsline {paragraph}{Attribute}{44}{paragraph*.246}%
+\contentsline {paragraph}{Returns}{44}{paragraph*.247}%
+\contentsline {subsubsection}{\sphinxstylestrong {CLASS}}{45}{subsubsection*.248}%
+\contentsline {paragraph}{Attributes}{45}{paragraph*.251}%
+\contentsline {paragraph}{Methods}{45}{paragraph*.252}%
+\contentsline {subsubsection}{\sphinxstylestrong {Methods}}{45}{subsubsection*.253}%
+\contentsline {paragraph}{Attribute}{46}{paragraph*.256}%
+\contentsline {paragraph}{Return}{46}{paragraph*.257}%
+\contentsline {chapter}{\numberline {2}Indices and tables}{47}{chapter.2}%
+\contentsline {chapter}{Bibliography}{49}{chapter*.258}%

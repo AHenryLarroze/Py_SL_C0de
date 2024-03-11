@@ -11,12 +11,15 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Grid" href="Grid_doc.html" />
+    <link rel="prev" title="SOLVER" href="SOLVER_doc.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,34 +41,37 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">spharm</a><ul>
-<li><a class="reference internal" href="#functions"><strong>Functions</strong></a><ul>
-<li><a class="reference internal" href="#spharm.GaussQuad"><code class="docutils literal notranslate"><span class="pre">GaussQuad()</span></code></a></li>
-<li><a class="reference internal" href="#spharm.legendre"><code class="docutils literal notranslate"><span class="pre">legendre()</span></code></a></li>
-<li><a class="reference internal" href="#spharm.get_coeffs"><code class="docutils literal notranslate"><span class="pre">get_coeffs()</span></code></a></li>
-<li><a class="reference internal" href="#spharm.calc_at_point"><code class="docutils literal notranslate"><span class="pre">calc_at_point()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_imp.html">Numerical implementation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="developer_guide.html">Developer guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="SOLVER_doc.html">SOLVER</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">spharm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#functions"><strong>Functions</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.spharm.get_coeffs"><code class="docutils literal notranslate"><span class="pre">get_coeffs()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
-<li><a class="reference internal" href="#spharm.sphericalobject"><code class="docutils literal notranslate"><span class="pre">sphericalobject</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.spharm.sphericalobject"><code class="docutils literal notranslate"><span class="pre">sphericalobject</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id1"><strong>Methods</strong></a><ul>
-<li><a class="reference internal" href="#spharm.sphericalobject.grdtocoeff"><code class="docutils literal notranslate"><span class="pre">grdtocoeff()</span></code></a></li>
-<li><a class="reference internal" href="#spharm.sphericalobject.coefftogrd"><code class="docutils literal notranslate"><span class="pre">coefftogrd()</span></code></a></li>
-<li><a class="reference internal" href="#spharm.sphericalobject.coefftogrd_hd"><code class="docutils literal notranslate"><span class="pre">coefftogrd_hd()</span></code></a></li>
-<li><a class="reference internal" href="#spharm.sphericalobject.multiply"><code class="docutils literal notranslate"><span class="pre">multiply()</span></code></a></li>
-<li><a class="reference internal" href="#spharm.sphericalobject.save_prev"><code class="docutils literal notranslate"><span class="pre">save_prev()</span></code></a></li>
-<li><a class="reference internal" href="#spharm.sphericalobject.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
-<li><a class="reference internal" href="#spharm.sphericalobject.modify"><code class="docutils literal notranslate"><span class="pre">modify()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#id1"><strong>Methods</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.spharm.sphericalobject.grdtocoeff"><code class="docutils literal notranslate"><span class="pre">grdtocoeff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.spharm.sphericalobject.coefftogrd"><code class="docutils literal notranslate"><span class="pre">coefftogrd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.spharm.sphericalobject.coefftogrdhd"><code class="docutils literal notranslate"><span class="pre">coefftogrdhd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.spharm.sphericalobject.save_prev"><code class="docutils literal notranslate"><span class="pre">save_prev()</span></code></a></li>
 </ul>
 </li>
 </ul>
-</div>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Grid_doc.html">Grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="love_doc.html">love</a></li>
+</ul>
+</li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -80,6 +86,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="developer_guide.html">Developer guide</a></li>
       <li class="breadcrumb-item active">spharm</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/spharm_doc.rst.txt" rel="nofollow"> View page source</a>
@@ -91,91 +98,72 @@
            <div itemprop="articleBody">
              
   <section id="spharm">
-<h1>spharm<a class="headerlink" href="#spharm" title="Permalink to this heading">¶</a></h1>
+<h1>spharm<a class="headerlink" href="#spharm" title="Permalink to this heading"></a></h1>
 <section id="functions">
-<h2><strong>Functions</strong><a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
+<h2><strong>Functions</strong><a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="spharm.GaussQuad">
-<span class="sig-prename descclassname"><span class="pre">spharm.</span></span><span class="sig-name descname"><span class="pre">GaussQuad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.GaussQuad" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the Gaussian grid parameters for the computation of the gaussian quadrature.</p>
+<dt class="sig sig-object py" id="SL_C0de.spharm.get_coeffs">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.spharm.</span></span><span class="sig-name descname"><span class="pre">get_coeffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_lm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.spharm.get_coeffs" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="get-coeffs">get_coeffs</span> function get the spherical harmonics coefficients of the nth order from a linearly Spharm array.</p>
+<section id="attribute">
+<h3>Attribute :<a class="headerlink" href="#attribute" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><dl class="simple">
-<dt>N<span class="classifier">int </span></dt><dd><p>The number of latitude in the grid. It’s equal to the maximum degree</p>
+<dt>a_lm<span class="classifier">np.array([maxdeg*(maxdeg+1)/2,])</span></dt><dd><p>An array containing the spherical coefficient in a linear form</p>
 </dd>
-</dl>
-</dd>
-</dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
-<dl class="simple">
-<dt>Added fields<span class="classifier"></span></dt><dd><p>w (np.array): The weight of the node in the gaussian grid
-x (np.array):The nodes coefficient in the gaussian grid</p>
+<dt>n<span class="classifier">int</span></dt><dd><p>The order of the spherical harmonics coefficient you are trying to retrive</p>
 </dd>
 </dl>
 </div></blockquote>
+</section>
+<section id="returns">
+<h3>Returns :<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>a_n<span class="classifier">np.array([n,])</span></dt><dd><p>The spherical harmonic coefficient of the order n.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
 </dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="spharm.legendre">
-<span class="sig-prename descclassname"><span class="pre">spharm.</span></span><span class="sig-name descname"><span class="pre">legendre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.legendre" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="spharm.get_coeffs">
-<span class="sig-prename descclassname"><span class="pre">spharm.</span></span><span class="sig-name descname"><span class="pre">get_coeffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_lm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.get_coeffs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="spharm.calc_at_point">
-<span class="sig-prename descclassname"><span class="pre">spharm.</span></span><span class="sig-name descname"><span class="pre">calc_at_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C_lm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.calc_at_point" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </section>
 <section id="class">
-<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading">¶</a></h2>
+<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="spharm.sphericalobject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spharm.</span></span><span class="sig-name descname"><span class="pre">sphericalobject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'grd'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.sphericalobject" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class difining any spherical object. This class is working with pyshtools.</p>
-<p>…</p>
+<dt class="sig sig-object py" id="SL_C0de.spharm.sphericalobject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SL_C0de.spharm.</span></span><span class="sig-name descname"><span class="pre">sphericalobject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.spharm.sphericalobject" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="sphericalobject">sphericalobject</span> class include any spherical object. This class is working with pyshtools (<a class="reference external" href="https://shtools.github.io/SHTOOLS/">pyshtools</a>).</p>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>grd<span class="classifier">np.array (maxdeg,maxdeg x2)</span></dt><dd><p>Value of the spherical object on a Gaussian Grid.</p>
+<dt>grd<span class="classifier">np.array[(maxdeg,maxdeg x2)]</span></dt><dd><p>Value of the spherical object on a Gaussian Grid.</p>
 </dd>
 <dt>isgrd<span class="classifier">Bool</span></dt><dd><p>A boolean to define if a Gaussian grid have been defined for this object.</p>
 </dd>
-<dt>coeff<span class="classifier">np.array (maxdeg,maxdeg) !!!! A vérifier !!!!</span></dt><dd><p>Spherical harmonic coefficient array.</p>
+<dt>coeff<span class="classifier">np.array[(maxdeg,maxdeg)]</span></dt><dd><p>Spherical harmonic coefficient array.</p>
 </dd>
 <dt>iscoeff<span class="classifier">Bool</span></dt><dd><p>A boolean to define if a spherical harmonic coefficient have been defined for this object.</p>
 </dd>
-<dt>saved<span class="classifier">np.array (n, maxdeg, maxdeg) !!!! A vérifier !!!! n is the number of time the save method is activated. </span></dt><dd><p>An array wich contain the spherical harmonic coefficient each time th save method is applied.</p>
+<dt>saved<span class="classifier">np.array[(n, maxdeg, maxdeg)]</span></dt><dd><p>An array wich contain the spherical harmonic coefficient each time th save method is applied.</p>
 </dd>
-<dt>prev<span class="classifier">np.array (maxedg, maxdeg) !!!! A vérifier !!!!</span></dt><dd><p>save the spherical coefficient using save_prev.</p>
+<dt>prev<span class="classifier">np.array[(maxedg, maxdeg)] </span></dt><dd><p>save the spherical coefficient using save_prev.</p>
 </dd>
 </dl>
 </div></blockquote>
 </section>
 <section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h3>
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>grdtocoeff()</dt><dd><p>Convert the Gaussian grid to spherical harmonic coefficient</p>
+<dt><a class="reference internal" href="#grdtocoeff">grdtocoeff</a><span class="classifier"></span></dt><dd><p>Convert the Gaussian grid to spherical harmonic coefficient</p>
 </dd>
-<dt>coefftogrd()</dt><dd><p>Convert spherical harmonic coefficient to Gaussian grid</p>
+<dt><a class="reference internal" href="#coefftogrd">coefftogrd</a><span class="classifier"></span></dt><dd><p>Convert spherical harmonic coefficient to Gaussian grid</p>
 </dd>
-<dt>multiply(flm2)</dt><dd><p>Multiply the spherical coefficient of the object with the coefficient of flm2</p>
+<dt><a class="reference internal" href="#coefftogrdhd">coefftogrdhd</a> :</dt><dd><p>Convert spherical harmonic coefficient to a Gaussian grid with a higher resolution then maxdeg</p>
 </dd>
-<dt>save_prev()</dt><dd><p>Save the spherical harmonic coefficient to the attribute prev</p>
-</dd>
-<dt>save()</dt><dd><p>Save the spherical harmonic coefficient to the attribute saved and stack with previous saved coefficient</p>
-</dd>
-<dt>modify(gc,t=’grd’)</dt><dd><p>change the grid or coeff attribute with gc depending on t value</p>
+<dt><a class="reference internal" href="#save-prev">save_prev</a> :</dt><dd><p>Save the spherical harmonic coefficient to the attribute prev</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -184,26 +172,33 @@ x (np.array):The nodes coefficient in the gaussian grid</p>
 
 </section>
 <section id="id1">
-<h2><strong>Methods</strong><a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<h2><strong>Methods</strong><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="spharm.sphericalobject.grdtocoeff">
-<span class="sig-prename descclassname"><span class="pre">spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">grdtocoeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.sphericalobject.grdtocoeff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a Gaussian grid into spherical harmonic coefficient array using a numerical method to create spherical harmonic coefficient
+<dt class="sig sig-object py" id="SL_C0de.spharm.sphericalobject.grdtocoeff">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">grdtocoeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.spharm.sphericalobject.grdtocoeff" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="grdtocoeff">grdtocoeff</span> method convert a Gaussian grid into spherical harmonic coefficient array using a numerical method to create spherical harmonic coefficient
 self.coeff is updated usig these output.
 self.iscoeff defining if a coefficient have been created for this object. 
-If there is no grid created (self.isgrid == 0) then it returns an error.
-A modifier pour pouvoir modifier les entrées de la fonction.</p>
-<p>Parameters :</p>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
-<p>Added fields :</p>
+If there is no grid created (self.isgrid == 0) then it returns an error.</p>
+<section id="id2">
+<h3>Attribute :<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="id3">
+<h3>Returns :<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
 </dd></dl>
 
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="spharm.sphericalobject.coefftogrd">
-<span class="sig-prename descclassname"><span class="pre">spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">coefftogrd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.sphericalobject.coefftogrd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert spherical harmonic coefficient into a gird array using shtools.
+<dt class="sig sig-object py" id="SL_C0de.spharm.sphericalobject.coefftogrd">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">coefftogrd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.spharm.sphericalobject.coefftogrd" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="coefftogrd">coefftogrd</span> method convert spherical harmonic coefficient into a gird array using shtools.
 The output of pysh.SHCoeff are converted to real.
 self.grd is updated usig these output.
 self.isgrd defining if a grid have been created for this object. 
@@ -217,99 +212,47 @@ A modifier pour pouvoir modifier les entrées de la fonction.</p>
 
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="spharm.sphericalobject.coefftogrd_hd">
-<span class="sig-prename descclassname"><span class="pre">spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">coefftogrd_hd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.sphericalobject.coefftogrd_hd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert spherical harmonic coefficient into a gird array using shtools.
+<dt class="sig sig-object py" id="SL_C0de.spharm.sphericalobject.coefftogrdhd">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">coefftogrdhd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_calc_deg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.spharm.sphericalobject.coefftogrdhd" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="coefftogrdhd">coefftogrdhd</span> convert spherical harmonic coefficient into a gird array using shtools.
 The output of pysh.SHCoeff are converted to real.
 self.grd is updated usig these output.
 self.isgrd defining if a grid have been created for this object. 
 If there is no grid created (self.iscoeff == 0) then it returns an error.
 A modifier pour pouvoir modifier les entrées de la fonction.</p>
-<p>Parameters :</p>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
-<p>Added fields :</p>
-</dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="spharm.sphericalobject.multiply">
-<span class="sig-prename descclassname"><span class="pre">spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flm2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.sphericalobject.multiply" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function is no longer used !!!!</p>
-<p>Multiply the spherical coefficient of a gird with the others. It could be done using the pysh.SHcoeffs.Multiply.
-I choose to do it manually but i could test the efficiency of the pysh tool function.</p>
-<dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><p>flm2 (np.array): the harmonic coefficient matrix of size maxdeg, maxdeg !!!! A vérifier !!!!!</p>
-</dd>
-</dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<dl class="simple">
-<dt>Returns<span class="classifier"></span></dt><dd><p>flm[0,:,:]+1j*flm[1,:,:] (np.array): the harmonic coefficient matrix resulting of the multiplication of the two grids. 
-size maxdeg, maxdeg !!!! A vérifier !!!!</p>
-</dd>
-</dl>
-<p>Added fields :</p>
-</dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="spharm.sphericalobject.save_prev">
-<span class="sig-prename descclassname"><span class="pre">spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">save_prev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.sphericalobject.save_prev" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new field for the object to save the spherical coefficient at the moment of the applied function. 
-This function make a clean copy of the array to avoid modification.</p>
-<p>Parameters :</p>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
-<dl class="simple">
-<dt>Added fields<span class="classifier"></span></dt><dd><p>prev (np.array): a copy of the self.coeff spherical coeffcient matrix of size maxdeg, maxdeg !!!! A vérifier !!!!</p>
-</dd>
-</dl>
-</dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="spharm.sphericalobject.save">
-<span class="sig-prename descclassname"><span class="pre">spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.sphericalobject.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a 3D matrix containing the spherical coefficient of each time this function is activated or add a copy of the
-spherical coefficient to the already existing matrix.</p>
-<dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><p>flm2 (np.array): the harmonic coefficient matrix of size maxdeg, maxdeg !!!! A vérifier !!!!!</p>
-</dd>
-</dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<dl class="simple">
-<dt>Returns<span class="classifier"></span></dt><dd><p>flm[0,:,:]+1j*flm[1,:,:] (np.array): the harmonic coefficient matrix resulting of the multiplication of the two grids. 
-size maxdeg, maxdeg !!!! A vérifier !!!!</p>
-</dd>
-</dl>
-<p>Added fields :</p>
-</dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="spharm.sphericalobject.modify">
-<span class="sig-prename descclassname"><span class="pre">spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'grd'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spharm.sphericalobject.modify" title="Permalink to this definition">¶</a></dt>
-<dd><p>Modify the coeff or grid field of the object depending on the t variable. 
-Default value for t is grd.</p>
-<section id="parameters">
-<h3>Parameters :<a class="headerlink" href="#parameters" title="Permalink to this heading">¶</a></h3>
+<section id="id4">
+<h3>Attribute :<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>gc (np.array): spherical coefficient matrix of size maxdeg, maxdeg !!!! A vérifier !!!! or</dt><dd><p>Gaussian grid of the data of size maxdeg, maxdegx2.</p>
-</dd>
-<dt>t (str): str</dt><dd><p>string value to set the type of the gc entry. ‘grd’ for grid, ‘coeff’ for spherical coefficient.</p>
+<dt>max_calc_deg<span class="classifier">int</span></dt><dd><p>The maximum spherical harmonic degree to calculate the grid. This function can be used to have a better rendering in output.</p>
 </dd>
 </dl>
 </div></blockquote>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
 </section>
-<section id="added-fields">
-<h3>Added fields :<a class="headerlink" href="#added-fields" title="Permalink to this heading">¶</a></h3>
+<section id="id5">
+<h3>Returns :<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
 <blockquote>
-<div><p>grd (np.array): array of size maxdeg, maxdeg. !!!! A vérifier !!!!
-coeff (np.array): array of spherical coefficient of size maxdeg,maxdeg. !!!! A vérifier !!!!
-iscoeff (bool): boolean value, true if there is a coefficient false otherwise
-isgrd (bool): boolean value, true if there is a grid false otherwise</p>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.spharm.sphericalobject.save_prev">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.spharm.sphericalobject.</span></span><span class="sig-name descname"><span class="pre">save_prev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.spharm.sphericalobject.save_prev" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="save-prev">save_prev</span> create a new field for the object to save the spherical coefficient at the moment of the applied function. 
+This function make a clean copy of the array to avoid modification.</p>
+<section id="id6">
+<h3>Attribute :<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="id7">
+<h3>Returns :<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
 </div></blockquote>
 </section>
 </dd></dl>
@@ -320,7 +263,10 @@ isgrd (bool): boolean value, true if there is a grid false otherwise</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SOLVER_doc.html" class="btn btn-neutral float-left" title="SOLVER" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Grid_doc.html" class="btn btn-neutral float-right" title="Grid" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

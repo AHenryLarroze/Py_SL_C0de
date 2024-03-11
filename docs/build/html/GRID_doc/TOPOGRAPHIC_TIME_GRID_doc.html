@@ -11,12 +11,15 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="LOAD_TIME_GRID" href="LOAD_TIME_GRID_doc.html" />
+    <link rel="prev" title="OCEAN_TIME_GRID" href="OCEAN_TIME_GRID_doc.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,22 +41,39 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">TOPOGRAPHIC_TIME_GRID</a><ul>
-<li><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
-<li><a class="reference internal" href="#grid.TOPOGRAPHIC_TIME_GRID"><code class="docutils literal notranslate"><span class="pre">TOPOGRAPHIC_TIME_GRID</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../numerical_imp.html">Numerical implementation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../developer_guide.html">Developer guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../SOLVER_doc.html">SOLVER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spharm_doc.html">spharm</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../Grid_doc.html">Grid</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="GRID_class_doc.html">GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TIME_GRID_doc.html">TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEDIMENT_TIME_GRID_doc.html">SEDIMENT_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ICE_TIME_GRID_doc.html">ICE_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OCEAN_TIME_GRID_doc.html">OCEAN_TIME_GRID</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">TOPOGRAPHIC_TIME_GRID</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TOPOGRAPHIC_TIME_GRID"><code class="docutils literal notranslate"><span class="pre">TOPOGRAPHIC_TIME_GRID</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id1"><strong>METHODS</strong></a><ul>
-<li><a class="reference internal" href="#grid.TOPOGRAPHIC_TIME_GRID.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
-<li><a class="reference internal" href="#grid.TOPOGRAPHIC_TIME_GRID.update_topo_0"><code class="docutils literal notranslate"><span class="pre">update_topo_0()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2"><strong>METHODS</strong></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.TOPOGRAPHIC_TIME_GRID.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="LOAD_TIME_GRID_doc.html">LOAD_TIME_GRID</a></li>
 </ul>
-</div>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../love_doc.html">love</a></li>
+</ul>
+</li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -68,6 +88,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../developer_guide.html">Developer guide</a></li>
+          <li class="breadcrumb-item"><a href="../Grid_doc.html">Grid</a></li>
       <li class="breadcrumb-item active">TOPOGRAPHIC_TIME_GRID</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/GRID_doc/TOPOGRAPHIC_TIME_GRID_doc.rst.txt" rel="nofollow"> View page source</a>
@@ -79,37 +101,49 @@
            <div itemprop="articleBody">
              
   <section id="topographic-time-grid">
-<h1>TOPOGRAPHIC_TIME_GRID<a class="headerlink" href="#topographic-time-grid" title="Permalink to this heading">¶</a></h1>
+<h1>TOPOGRAPHIC_TIME_GRID<a class="headerlink" href="#topographic-time-grid" title="Permalink to this heading"></a></h1>
 <section id="class">
-<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading">¶</a></h2>
+<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="grid.TOPOGRAPHIC_TIME_GRID">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grid.</span></span><span class="sig-name descname"><span class="pre">TOPOGRAPHIC_TIME_GRID</span></span><a class="headerlink" href="#grid.TOPOGRAPHIC_TIME_GRID" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class used to represent the topographic grid</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.TOPOGRAPHIC_TIME_GRID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.</span></span><span class="sig-name descname"><span class="pre">TOPOGRAPHIC_TIME_GRID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([1,</span> <span class="pre">2])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'time_grid'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(False,)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TOPOGRAPHIC_TIME_GRID" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="id1">TOPOGRAPHIC_TIME_GRID</span> class is used to save and include all the topographic variations. This class inherits of <a class="reference internal" href="TIME_GRID_doc.html#id1"><span class="std std-ref">TIME_GRID</span></a>. This class main difference with TIME_GRID is the presence of a parameter called topo_pres wich is the present topography. It is created using <a class="reference internal" href="../SOLVER_doc.html#precomputation"><span class="std std-ref">Precomputation</span></a>.</p>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>topo_pres<span class="classifier">np.array (maxdeg, maxdeg x2)</span></dt><dd><p>The present topography gaussian grid</p>
+<dt>time_step<span class="classifier">np.array([time_step_number,])</span></dt><dd><p>This array contains the time step of the data you are importing. They will be use for temporal interpolation.</p>
 </dd>
-<dt>topo_initial<span class="classifier">np.array (maxdeg, maxdeg x2)</span></dt><dd><p>The topography at the begining of the modelization (maxdeg, maxdeg x2)</p>
+<dt>maxdeg<span class="classifier">int</span></dt><dd><p>Maximum harmonic coefficient degree of the data. this define the chape of the grid and coefficient arrays</p>
 </dd>
-<dt>topo<span class="classifier">np.array (n_time_step, maxdeg, maxdeg x2)</span></dt><dd><p>The topography threw time</p>
+<dt>height_time_grid<span class="classifier">np.array([maxedg*2,maxdeg])</span></dt><dd><p>This array is the height grid at each time steps defined in grid_time_step</p>
 </dd>
-<dt>topo_0<span class="classifier">np.array (maxdeg, maxdeg x2)</span></dt><dd><p>Gaussian grid of the topography at the time of run update_topo_0. Used to save the initial topography after it’s modification by the load.</p>
+<dt>mass_time_grid<span class="classifier">np.array([maxedg*2,maxdeg])</span></dt><dd><p>This array is the mass grid at each time steps defined in grid_time_step</p>
+</dd>
+<dt>height_time_coeff<span class="classifier">np.array([(maxdeg+1)(maxedg+2)/2,])</span></dt><dd><p>This array is the height spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+</dd>
+<dt>mass_time_coeff<span class="classifier">np.array([(maxdeg+1)(maxedg+2)/2,])</span></dt><dd><p>This array is the mass spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+</dd>
+<dt>rho<span class="classifier">float</span></dt><dd><p>The density of the considered layer.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In future development the density may vary threw space and time. We’ll have to make a variable object more then a constant density.</p>
+</div>
+<dl class="simple">
+<dt>grid_name<span class="classifier">str</span></dt><dd><p>The name of the grid. We recommand you to choose a specific name for each grid you create. This name is used to save the grid in an nc file with <a href="#id4"><span class="problematic" id="id5">`save`_</span></a>.</p>
+</dd>
+<dt>from_file<span class="classifier">(bool,way)</span></dt><dd><p>This parameter define if the data are new or loaded from a previously saved model in a nc file. If the first element is False, the code will create a blank object, based on provided datas. If the first element is True, the method will get the data from the file way specified in the second element of this attribute.</p>
 </dd>
 </dl>
 </div></blockquote>
 </section>
 <section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h3>
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>load(grid,,ice,sed)</dt><dd><p>Load the topographic data from the file topo_SL. Create the topography variation by including the ice thickness and the sediment thickness</p>
-</dd>
-<dt>update_topo_0()</dt><dd><p>update the topo_0 attribute.</p>
-</dd>
-<dt>ice_correction(ice,grid,oc)</dt><dd><p>correct the ice and the topography from the land attached ice variation.</p>
+<dt><a class="reference internal" href="#topo-save"><span class="std std-ref">save</span></a> </dt><dd><p>Method to save the topographic datas</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -117,45 +151,27 @@
 </dd></dl>
 
 </section>
-<section id="id1">
-<h2><strong>METHODS</strong><a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<section id="id2">
+<h2><strong>METHODS</strong><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="grid.TOPOGRAPHIC_TIME_GRID.load">
-<span class="sig-prename descclassname"><span class="pre">grid.TOPOGRAPHIC_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SL_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">way</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TOPOGRAPHIC_TIME_GRID.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load the topography and adapt it with the ice and sediment thickness.</p>
-<dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><p>grid (object): output of the class GRID
-ice (object): output of the class spherical_ice
-sed (object): output of the class spherical_sed</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.TOPOGRAPHIC_TIME_GRID.save">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.TOPOGRAPHIC_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_way</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.TOPOGRAPHIC_TIME_GRID.save" title="Permalink to this definition"></a></dt>
+<dd><p id="topo-save">The save method is used to save the data of the topographic grid. Particularity of the topography is the present day topography used in the code to converge toward it. The function save is. Otherwise this method use the super method <span class="xref std std-ref">save</span> to save the rest of the data.</p>
+<section id="id3">
+<h3>Attributes<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>save_way :str</dt><dd><p>The way where the nc file is saved. Default value is the current file (an empty str).</p>
 </dd>
 </dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
-<dl>
-<dt>Added fields<span class="classifier"></span></dt><dd><dl class="simple">
-<dt>topo_pres (np.array): matrix of the present topography with shape maxdeg, maxdeg x 2. This grid is </dt><dd><p>defined to compare with the topography at the end of the simulation.</p>
-</dd>
-</dl>
-<p>topo_initial (np.array): matrix of the topography at the begining of the modelisation, with shape maxdeg, maxdeg x 2.
-topo (np.array):matrix of the topography threw time with shape time step, maxdeg, maxdeg x 2.
-grd (np.array): graussian grid set to the topography at the beginning of the simulation, maxdeg, maxdeg x 2.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="grid.TOPOGRAPHIC_TIME_GRID.update_topo_0">
-<span class="sig-prename descclassname"><span class="pre">grid.TOPOGRAPHIC_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">update_topo_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.TOPOGRAPHIC_TIME_GRID.update_topo_0" title="Permalink to this definition">¶</a></dt>
-<dd><p>update the topography 0 wich is the topography at the beginning of the simulation. This function is used to update
-the initial topography after each simulation to restart a loop over it. This way there is a convergence and we take in account the GIA.</p>
-<p>Parameters :</p>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
-<dl class="simple">
-<dt>Added fields<span class="classifier"></span></dt><dd><p>topo_0 (np.array): A matrix of the topography at the bigining of the simulation of shape maxdeg, maxdeg x 2.</p>
-</dd>
-</dl>
+</div></blockquote>
+</section>
+<section id="return">
+<h3>Return<a class="headerlink" href="#return" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
 </dd></dl>
 
 </section>
@@ -164,7 +180,10 @@ the initial topography after each simulation to restart a loop over it. This way
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="OCEAN_TIME_GRID_doc.html" class="btn btn-neutral float-left" title="OCEAN_TIME_GRID" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="LOAD_TIME_GRID_doc.html" class="btn btn-neutral float-right" title="LOAD_TIME_GRID" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

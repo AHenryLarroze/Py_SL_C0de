@@ -4,16 +4,18 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to SL_C0de’s documentation! &mdash; SL_C0de 0.4.0 documentation</title>
+  <title>Welcome to \(SL_{C0de}\)’s documentation! &mdash; SL_C0de 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -42,7 +44,8 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html#installation">INSTALLATION</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_imp.html">Numerical implementation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developer_guide.html">Developer guide</a></li>
 </ul>
 
@@ -60,7 +63,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to SL_C0de’s documentation!</li>
+      <li class="breadcrumb-item active">Welcome to <span class="math notranslate nohighlight">\(SL_{C0de}\)</span>’s documentation!</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -71,35 +74,88 @@
            <div itemprop="articleBody">
              
   <section id="welcome-to-sl-c0de-s-documentation">
-<h1>Welcome to SL_C0de’s documentation!<a class="headerlink" href="#welcome-to-sl-c0de-s-documentation" title="Permalink to this heading">¶</a></h1>
+<h1>Welcome to <span class="math notranslate nohighlight">\(SL_{C0de}\)</span>’s documentation!<a class="headerlink" href="#welcome-to-sl-c0de-s-documentation" title="Permalink to this heading"></a></h1>
 </section>
 <section id="sl-c0de">
-<h1>SL_C0de<a class="headerlink" href="#sl-c0de" title="Permalink to this heading">¶</a></h1>
-<p><strong>SL_C0de</strong> is a python library based on the matlab code SL_code. This module is used to calculate GIA over the world but alse the sediment isostasy. It include function to calculate radial symetric auto gravitational earth visco-elastic response. This module also include the possibility to resolve the Sea level equation based on the publication of Mitrovica and Austermann … ajouter des refs. The aim of this library is to be easy to include new sources of load and link to other python library.</p>
+<h1><span class="math notranslate nohighlight">\(SL_{C0de}\)</span><a class="headerlink" href="#sl-c0de" title="Permalink to this heading"></a></h1>
+<img alt="_images/Bengal_Bay.png" src="_images/Bengal_Bay.png" />
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This project is under active development.</p>
 </div>
+<p><span class="math notranslate nohighlight">\(SL_{C0de}\)</span> is a python library based on the theory described in <span id="id1">[<a class="reference internal" href="#id3" title="A. V. Dalca, K. L. Ferrier, J. X. Mitrovica, J. T. Perron, G. A. Milne, and J. R. Creveling. On postglacial sea level—III. Incorporating sediment redistribution. Geophysical Journal International, 194(1):45–60, July 2013. doi:10.1093/gji/ggt089.">Dalca <em>et al.</em>, 2013</a>]</span>. This module provides tools to resolve the Sea Level Equation (SLE). This theory incorporates the governing equations, shoreline migration due to local sea level variation and changes in the geometry of grounded/marine based ice. This theory is based on Love numbers theory, which include gravitational, deformational and rotational effects of the sediment redistribution.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html#installation">INSTALLATION</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#installation">INSTALLATION</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#minimal-exemple">minimal exemple</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Theory.html">Mathematical Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Theory.html#the-sle">The SLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Theory.html#conservation-of-mass">Conservation of mass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Theory.html#development-of-delta-g-and-delta-r">Development of <span class="math notranslate nohighlight">\(\Delta G\)</span> and <span class="math notranslate nohighlight">\(\Delta R\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Theory.html#resolution-of-temporal-and-spatial-convolution">Resolution of temporal and spatial convolution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_imp.html">Numerical implementation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="numerical_imp.html#sea-level-equation-resolution">Sea Level equation resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numerical_imp.html#computation-of-ground-and-geoid-subsidence-from-different-load-source">Computation of ground and geoid subsidence from different load source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numerical_imp.html#input-data-format">Input data format</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="developer_guide.html">Developer guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SL_model_doc.html">SL_model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LOAD_doc.html">LOAD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="love_doc.html">love</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Grid_doc.html">Grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SOLVER_doc.html">SOLVER</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spharm_doc.html">spharm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SeaLevel_doc.html">SeaLevel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_doc.html">plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Grid_doc.html">Grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="love_doc.html">love</a></li>
 </ul>
 </li>
 </ul>
 </div>
+<div class="docutils container" id="id2">
+<div class="citation" id="id3" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>A. V. Dalca, K. L. Ferrier, J. X. Mitrovica, J. T. Perron, G. A. Milne, and J. R. Creveling. On postglacial sea level—III. Incorporating sediment redistribution. <em>Geophysical Journal International</em>, 194(1):45–60, July 2013. <a class="reference external" href="https://doi.org/10.1093/gji/ggt089">doi:10.1093/gji/ggt089</a>.</p>
+</div>
+<div class="citation" id="id4" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Ken L. Ferrier, Jacqueline Austermann, Jerry X. Mitrovica, and Tamara Pico. Incorporating sediment compaction into a gravitationally self-consistent model for ice age sea-level change. <em>Geophysical Journal International</em>, 211(1):663–672, October 2017. <a class="reference external" href="https://doi.org/10.1093/gji/ggx293">doi:10.1093/gji/ggx293</a>.</p>
+</div>
+<div class="citation" id="id5" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>Roblyn A. Kendall, Jerry X. Mitrovica, and Glenn A. Milne. On post-glacial sea level - II. Numerical formulation and comparative results on spherically symmetric models. <em>Geophysical Journal International</em>, 161(3):679–706, June 2005. <a class="reference external" href="https://doi.org/10.1111/j.1365-246X.2005.02553.x">doi:10.1111/j.1365-246X.2005.02553.x</a>.</p>
+</div>
+<div class="citation" id="id6" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<p>Augustus Love. <em>A Treatise on the Mathematical Theory of Elasticity</em>. Volume 1. Cambridge, 1892.</p>
+</div>
+<div class="citation" id="id7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
+<p>D Melini, C Saliby, and G Spada. On computing viscoelastic Love numbers for general planetary models: the ALMA3 code. <em>Geophysical Journal International</em>, 231(3):1502–1517, August 2022. <a class="reference external" href="https://doi.org/10.1093/gji/ggac263">doi:10.1093/gji/ggac263</a>.</p>
+</div>
+<div class="citation" id="id8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
+<p>Glenn A. Milne and Jerry X. Mitrovica. Postglacial sea-level change on a rotating Earth. <em>Geophysical Journal International</em>, 133(1):1–19, April 1998. <a class="reference external" href="https://doi.org/10.1046/j.1365-246X.1998.1331455.x">doi:10.1046/j.1365-246X.1998.1331455.x</a>.</p>
+</div>
+<div class="citation" id="id9" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></span>
+<p>J. X. Mitrovica and W. R. Peltier. Pleistocene deglaciation and the global gravity field. <em>Journal of Geophysical Research: Solid Earth</em>, 94(B10):13651–13671, October 1989. <a class="reference external" href="https://doi.org/10.1029/JB094iB10p13651">doi:10.1029/JB094iB10p13651</a>.</p>
+</div>
+<div class="citation" id="id10" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></span>
+<p>W. R. Peltier. The impulse response of a Maxwell Earth. <em>Reviews of Geophysics</em>, 12(4):649, 1974. <a class="reference external" href="https://doi.org/10.1029/RG012i004p00649">doi:10.1029/RG012i004p00649</a>.</p>
+</div>
+<div class="citation" id="id11" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></span>
+<p>W. R. Peltier, D. F. Argus, and R. Drummond. Space geodesy constrains ice age terminal deglaciation: The global ICE-6G_C (VM5a) model: Global Glacial Isostatic Adjustment. <em>Journal of Geophysical Research: Solid Earth</em>, 120(1):450–487, January 2015. <a class="reference external" href="https://doi.org/10.1002/2014JB011176">doi:10.1002/2014JB011176</a>.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>

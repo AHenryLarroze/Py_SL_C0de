@@ -11,6 +11,7 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
@@ -38,29 +39,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">LOAD</a><ul>
-<li><a class="reference internal" href="#functions"><strong>Functions</strong></a><ul>
-<li><a class="reference internal" href="#Load.calc_rot_visc"><code class="docutils literal notranslate"><span class="pre">calc_rot_visc()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_imp.html">Numerical implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide.html">Developer guide</a></li>
 </ul>
-</li>
-<li><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
-<li><a class="reference internal" href="#Load.LOAD"><code class="docutils literal notranslate"><span class="pre">LOAD</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id1"><strong>Methods</strong></a><ul>
-<li><a class="reference internal" href="#Load.LOAD.modify"><code class="docutils literal notranslate"><span class="pre">modify()</span></code></a></li>
-<li><a class="reference internal" href="#Load.LOAD.save_prev"><code class="docutils literal notranslate"><span class="pre">save_prev()</span></code></a></li>
-<li><a class="reference internal" href="#Load.LOAD.calc_viscuous_load"><code class="docutils literal notranslate"><span class="pre">calc_viscuous_load()</span></code></a></li>
-<li><a class="reference internal" href="#Load.LOAD.calc_rotational_potential"><code class="docutils literal notranslate"><span class="pre">calc_rotational_potential()</span></code></a></li>
-<li><a class="reference internal" href="#Load.LOAD.calc_viscuous_load_T"><code class="docutils literal notranslate"><span class="pre">calc_viscuous_load_T()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -86,81 +72,99 @@
            <div itemprop="articleBody">
              
   <section id="load">
-<h1>LOAD<a class="headerlink" href="#load" title="Permalink to this heading">¶</a></h1>
+<h1>LOAD<a class="headerlink" href="#load" title="Permalink to this heading"></a></h1>
 <p>The Load module is used to manage the calculation of the earth and geoïd deformation.</p>
 <section id="functions">
-<h2><strong>Functions</strong><a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
+<h2><strong>Functions</strong><a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="Load.calc_rot_visc">
-<span class="sig-prename descclassname"><span class="pre">Load.</span></span><span class="sig-name descname"><span class="pre">calc_rot_visc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Load.calc_rot_visc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the object from the class spherical_sea_level the fields delLa, sdelI and sdelm.
-delLa are the spherical harmonic coefficient associated to the earth rotation.
-sdelI is the deformation of ice effect due to the rotation.
-sdelm is the deformation associated to the rotation.</p>
-<blockquote>
-<div><dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><p>SL (object): output of the class spherical_sea_level
-love (object): output of the class LOVE
-t_it (int): time step iteration
-model_p (object): output of the class World_Model_Parameter</p>
-</dd>
-</dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
-<p>Added fields :</p>
-</div></blockquote>
+<dt class="sig sig-object py" id="SL_C0de.Load.calc_rot_visc">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.Load.</span></span><span class="sig-name descname"><span class="pre">calc_rot_visc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.Load.calc_rot_visc" title="Permalink to this definition"></a></dt>
+<dd><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function must be updated to work with the new versions of the code.</p>
+</div>
 </dd></dl>
 
 </section>
 <section id="class">
-<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading">¶</a></h2>
+<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="Load.LOAD">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Load.</span></span><span class="sig-name descname"><span class="pre">LOAD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Load.LOAD" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class used to represent the different load over the world</p>
+<dt class="sig sig-object py" id="SL_C0de.Load.LOAD">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SL_C0de.Load.</span></span><span class="sig-name descname"><span class="pre">LOAD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.Load.LOAD" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="id1">LOAD</span> class is used to estimate the deformation of the earth and geoid. this method allow you to calculate the elastic response and the vicous one separately.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class might be included directly inside the LOAD class to reduce the amount of code.</p>
+</div>
 <p>…</p>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>maxdeg<span class="classifier">int</span></dt><dd><p>The maximum spherical harmonic degree of the load used.</p>
+</dd>
+<dt>time_step<span class="classifier">np.array([time_step_number,])</span></dt><dd><p>The time steps used to modelize the load.</p>
+</dd>
+</dl>
+</div></blockquote>
 </section>
 <section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h3>
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
 <blockquote>
-<div><p>create_GRID()</p>
+<div><dl class="simple">
+<dt><a class="reference internal" href="#save-prev">save_prev</a><span class="classifier"></span></dt><dd><p>A method used to save the actual computation in order to use it in a future computation after alteration of this computation.</p>
+</dd>
+<dt><a class="reference internal" href="#calc-viscuous">calc_viscuous</a> :</dt><dd><p>A method used to compute the viscous deformation of the ground and geoïd.</p>
+</dd>
+</dl>
 </div></blockquote>
 </section>
 </dd></dl>
 
 </section>
-<section id="id1">
-<h2><strong>Methods</strong><a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<section id="id2">
+<h2><strong>Methods</strong><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="Load.LOAD.modify">
-<span class="sig-prename descclassname"><span class="pre">Load.LOAD.</span></span><span class="sig-name descname"><span class="pre">modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delL</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Load.LOAD.modify" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="SL_C0de.Load.LOAD.save_prev">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.Load.LOAD.</span></span><span class="sig-name descname"><span class="pre">save_prev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.Load.LOAD.save_prev" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="save-prev">save_prev</span> method is used to save a previously computed value of load. This can be used to calculate deformation based on a difference.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method might not be required in the present code.</p>
+</div>
+<section id="attribute">
+<h3>Attribute<a class="headerlink" href="#attribute" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="return">
+<h3>Return<a class="headerlink" href="#return" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
 
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="Load.LOAD.save_prev">
-<span class="sig-prename descclassname"><span class="pre">Load.LOAD.</span></span><span class="sig-name descname"><span class="pre">save_prev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Load.LOAD.save_prev" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="Load.LOAD.calc_viscuous_load">
-<span class="sig-prename descclassname"><span class="pre">Load.LOAD.</span></span><span class="sig-name descname"><span class="pre">calc_viscuous_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sdelL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Load.LOAD.calc_viscuous_load" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="Load.LOAD.calc_rotational_potential">
-<span class="sig-prename descclassname"><span class="pre">Load.LOAD.</span></span><span class="sig-name descname"><span class="pre">calc_rotational_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Load.LOAD.calc_rotational_potential" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="Load.LOAD.calc_viscuous_load_T">
-<span class="sig-prename descclassname"><span class="pre">Load.LOAD.</span></span><span class="sig-name descname"><span class="pre">calc_viscuous_load_T</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sdelLa</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Load.LOAD.calc_viscuous_load_T" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="SL_C0de.Load.LOAD.calc_viscuous">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.Load.LOAD.</span></span><span class="sig-name descname"><span class="pre">calc_viscuous</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sdelL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_it</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.Load.LOAD.calc_viscuous" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="calc-viscuous">calc_viscuous</span> method is used to calculate the ground and geoïd deformation based on viscuous love numbers.</p>
+<section id="id3">
+<h3>Attribute<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>sdelL<span class="classifier">np.array([t_it,(maxdeg+1)(maxdeg+20/2)])</span></dt><dd><p>The load grid used to estimate the ground vertical mouvement. This include all previous loading history because of the viscous comportment of earth.</p>
+</dd>
+<dt>beta<span class="classifier">np.array([time_step_number,time_step_number,(maxdeg+1)(maxdeg+2)/2])</span></dt><dd><p>The beta love numbers used to compute the earth deformation to include the viscous part. These love numbers are particularly heavy in the memory due to the representation of the time.</p>
+</dd>
+<dt>t_it<span class="classifier">int</span></dt><dd><p>The time iteration at wich the computation is performed.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</dd></dl>
 
 </section>
 </section>

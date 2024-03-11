@@ -11,6 +11,7 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
@@ -43,27 +44,32 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage.html#installation">INSTALLATION</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../numerical_imp.html">Numerical implementation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../developer_guide.html">Developer guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../SL_model_doc.html">SL_model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../LOAD_doc.html">LOAD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../love_doc.html">love</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SOLVER_doc.html">SOLVER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spharm_doc.html">spharm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../Grid_doc.html">Grid</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="GRID_class_doc.html">GRID</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TIME_GRID_doc.html">TIME_GRID</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">SEDIMENT_TIME_GRID</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#class"><strong>CLASS</strong></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#methods"><strong>METHODS</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.SEDIMENT_TIME_GRID"><code class="docutils literal notranslate"><span class="pre">SEDIMENT_TIME_GRID</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#methods"><strong>METHODS</strong></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#SL_C0de.grid.SEDIMENT_TIME_GRID.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="ICE_TIME_GRID_doc.html">ICE_TIME_GRID</a></li>
 <li class="toctree-l3"><a class="reference internal" href="OCEAN_TIME_GRID_doc.html">OCEAN_TIME_GRID</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TOPOGRAPHIC_TIME_GRID_doc.html">TOPOGRAPHIC_TIME_GRID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LOAD_TIME_GRID_doc.html">LOAD_TIME_GRID</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../spharm_doc.html">spharm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../SeaLevel_doc.html">SeaLevel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plot_doc.html">plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../love_doc.html">love</a></li>
 </ul>
 </li>
 </ul>
@@ -95,20 +101,53 @@
            <div itemprop="articleBody">
              
   <section id="sediment-time-grid">
-<h1>SEDIMENT_TIME_GRID<a class="headerlink" href="#sediment-time-grid" title="Permalink to this heading">¶</a></h1>
+<h1>SEDIMENT_TIME_GRID<a class="headerlink" href="#sediment-time-grid" title="Permalink to this heading"></a></h1>
 <section id="class">
-<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading">¶</a></h2>
+<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="grid.SEDIMENT_TIME_GRID">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">grid.</span></span><span class="sig-name descname"><span class="pre">SEDIMENT_TIME_GRID</span></span><a class="headerlink" href="#grid.SEDIMENT_TIME_GRID" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class used to represent the sediment grid</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.SEDIMENT_TIME_GRID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.</span></span><span class="sig-name descname"><span class="pre">SEDIMENT_TIME_GRID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([1,</span> <span class="pre">2])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_time_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'time_grid'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(False,)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.SEDIMENT_TIME_GRID" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="id1">SEDIMENT_TIME_GRID</span> class is used to represent sediment deposited thickness and time over time. It inherit from <a class="reference internal" href="TIME_GRID_doc.html#id1"><span class="std std-ref">TIME_GRID</span></a> and just add a default value of sediment density at 2600 kg/m3.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class must include the developement of <span id="id2">[<a class="reference internal" href="../index.html#id4" title="Ken L. Ferrier, Jacqueline Austermann, Jerry X. Mitrovica, and Tamara Pico. Incorporating sediment compaction into a gravitationally self-consistent model for ice age sea-level change. Geophysical Journal International, 211(1):663–672, October 2017. doi:10.1093/gji/ggx293.">Ferrier <em>et al.</em>, 2017</a>]</span> on sediment compaction and it’s effect on water redistriution.</p>
+</div>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
 <blockquote>
 <div><dl class="simple">
-<dt>rho<span class="classifier">float</span></dt><dd><p>Density value of the sediment as a constant</p>
+<dt>time_step<span class="classifier">np.array([time_step_number,])</span></dt><dd><p>This array contains the time step of the data you are importing. They will be use for temporal interpolation.</p>
 </dd>
-<dt>sed<span class="classifier">np.array (maxdeg, maxdeg x2)</span></dt><dd><p>Gaussian grid with the sediment thickness</p>
+<dt>maxdeg<span class="classifier">int</span></dt><dd><p>Maximum harmonic coefficient degree of the data. this define the chape of the grid and coefficient arrays</p>
+</dd>
+<dt>height_time_grid<span class="classifier">np.array([maxedg*2,maxdeg])</span></dt><dd><p>This array is the height grid at each time steps defined in grid_time_step</p>
+</dd>
+<dt>mass_time_grid<span class="classifier">np.array([maxedg*2,maxdeg])</span></dt><dd><p>This array is the mass grid at each time steps defined in grid_time_step</p>
+</dd>
+<dt>height_time_coeff<span class="classifier">np.array([(maxdeg+1)(maxedg+2)/2,])</span></dt><dd><p>This array is the height spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+</dd>
+<dt>mass_time_coeff<span class="classifier">np.array([(maxdeg+1)(maxedg+2)/2,])</span></dt><dd><p>This array is the mass spherical harmonic coefficient at each time steps defined in grid_time_step</p>
+</dd>
+<dt>rho<span class="classifier">float</span></dt><dd><p>The density of the considered layer. Default value is 2600.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In future development the density may vary threw space and time. We’ll have to make a variable object more then a constant density.</p>
+</div>
+<dl class="simple">
+<dt>grid_name<span class="classifier">str</span></dt><dd><p>The name of the grid. We recommand you to choose a specific name for each grid you create. This name is used to save the grid in an nc file with <a href="#id5"><span class="problematic" id="id6">`save`_</span></a>.</p>
+</dd>
+<dt>from_file<span class="classifier">(bool,way)</span></dt><dd><p>This parameter define if the data are new or loaded from a previously saved model in a nc file. If the first element is False, the code will create a blank object, based on provided datas. If the first element is True, the method will get the data from the file way specified in the second element of this attribute.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="method">
+<h3>Method<a class="headerlink" href="#method" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt><a class="reference internal" href="#sed-save"><span class="std std-ref">save</span></a> </dt><dd><p>used to save data</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -117,33 +156,30 @@
 
 </section>
 <section id="methods">
-<h2><strong>METHODS</strong><a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h2>
+<h2><strong>METHODS</strong><a class="headerlink" href="#methods" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="grid.SEDIMENT_TIME_GRID.load">
-<span class="sig-prename descclassname"><span class="pre">grid.SEDIMENT_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'height'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.SEDIMENT_TIME_GRID.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>function to load the sediment grid. The actual version simply create a matrix of 0.</p>
-<dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><p>grid (object): The output of the class GRID.</p>
+<dt class="sig sig-object py" id="SL_C0de.grid.SEDIMENT_TIME_GRID.save">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.grid.SEDIMENT_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_way</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.grid.SEDIMENT_TIME_GRID.save" title="Permalink to this definition"></a></dt>
+<dd><p id="sed-save">The save method is used to save the grid data to a file. It call the super method <a class="reference internal" href="TIME_GRID_doc.html#save"><span class="std std-ref">save</span></a> method with no additional saved parameters.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Because we need to include <span id="id3">[<a class="reference internal" href="../index.html#id4" title="Ken L. Ferrier, Jacqueline Austermann, Jerry X. Mitrovica, and Tamara Pico. Incorporating sediment compaction into a gravitationally self-consistent model for ice age sea-level change. Geophysical Journal International, 211(1):663–672, October 2017. doi:10.1093/gji/ggx293.">Ferrier <em>et al.</em>, 2017</a>]</span> works, this save function will be modified to include data about the sediment compaction.</p>
+</div>
+<section id="id4">
+<h3>Attributes<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>rho<span class="classifier">float</span></dt><dd><p>Density value of the sediment as a constant, default value is 2600.</p>
 </dd>
 </dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
-<dl class="simple">
-<dt>Added fields<span class="classifier"></span></dt><dd><dl class="simple">
-<dt>sed (np.array): the sediment thickness threw time the shape is number of time step, maxdeg, maxdegx2</dt><dd><p>The definition here is the one of Mitrovica code. 
-So the thickness of sediment at time is the thickness deposited from that time till present.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<hr class="docutils" />
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="grid.SEDIMENT_TIME_GRID.zeros">
-<span class="sig-prename descclassname"><span class="pre">grid.SEDIMENT_TIME_GRID.</span></span><span class="sig-name descname"><span class="pre">zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#grid.SEDIMENT_TIME_GRID.zeros" title="Permalink to this definition">¶</a></dt>
-<dd><p>A method used to generate a zero array with the caracteristics of the grid.</p>
+</div></blockquote>
+</section>
+<section id="return">
+<h3>Return<a class="headerlink" href="#return" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
 </dd></dl>
 
 </section>

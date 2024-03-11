@@ -1,0 +1,16 @@
+LICENCE.md
+README.md
+README.rst
+pyproject.toml
+src/SL_C0de/Load.py
+src/SL_C0de/SOLVER.py
+src/SL_C0de/__init__.py
+src/SL_C0de/grid.py
+src/SL_C0de/love.py
+src/SL_C0de/spharm.py
+src/slcode.egg-info/PKG-INFO
+src/slcode.egg-info/SOURCES.txt
+src/slcode.egg-info/dependency_links.txt
+src/slcode.egg-info/requires.txt
+src/slcode.egg-info/top_level.txt
+tests/test_SL_C0de_lib.py

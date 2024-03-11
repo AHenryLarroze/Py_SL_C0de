@@ -11,12 +11,15 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SOLVER" href="SOLVER_doc.html" />
+    <link rel="prev" title="Numerical implementation" href="numerical_imp.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,11 +41,20 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Developer guide</a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_imp.html">Numerical implementation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SOLVER_doc.html">SOLVER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spharm_doc.html">spharm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Grid_doc.html">Grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="love_doc.html">love</a></li>
 </ul>
-</div>
+</li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -68,24 +80,20 @@
            <div itemprop="articleBody">
              
   <section id="developer-guide">
-<h1>Developer guide<a class="headerlink" href="#developer-guide" title="Permalink to this heading">¶</a></h1>
+<h1>Developer guide<a class="headerlink" href="#developer-guide" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="SL_model_doc.html">SL_model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SL_model_doc.html#class"><strong>CLASS</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="SL_model_doc.html#id1"><strong>Methods</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="SOLVER_doc.html">SOLVER</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SOLVER_doc.html#functions"><strong>Functions</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="SOLVER_doc.html#data-extractor"><strong>Data_extractor</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="SOLVER_doc.html#plot-functions"><strong>Plot functions</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="SOLVER_doc.html#utils-functions"><strong>Utils functions</strong></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="LOAD_doc.html">LOAD</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="LOAD_doc.html#functions"><strong>Functions</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="LOAD_doc.html#class"><strong>CLASS</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="LOAD_doc.html#id1"><strong>Methods</strong></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="love_doc.html">love</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="love_doc.html#functions"><strong>Functions</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="love_doc.html#class"><strong>CLASS</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="love_doc.html#methods"><strong>Methods</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="spharm_doc.html">spharm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spharm_doc.html#functions"><strong>Functions</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="spharm_doc.html#class"><strong>CLASS</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="spharm_doc.html#id1"><strong>Methods</strong></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Grid_doc.html">Grid</a><ul>
@@ -95,20 +103,15 @@
 <li class="toctree-l2"><a class="reference internal" href="GRID_doc/ICE_TIME_GRID_doc.html">ICE_TIME_GRID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GRID_doc/OCEAN_TIME_GRID_doc.html">OCEAN_TIME_GRID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GRID_doc/TOPOGRAPHIC_TIME_GRID_doc.html">TOPOGRAPHIC_TIME_GRID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GRID_doc/LOAD_TIME_GRID_doc.html">LOAD_TIME_GRID</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="spharm_doc.html">spharm</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="spharm_doc.html#functions"><strong>Functions</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="spharm_doc.html#class"><strong>CLASS</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="spharm_doc.html#id1"><strong>Methods</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="love_doc.html">love</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="love_doc.html#functions"><strong>Functions</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="love_doc.html#class"><strong>CLASS</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="love_doc.html#id6"><strong>Methods</strong></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="SeaLevel_doc.html">SeaLevel</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SeaLevel_doc.html#class"><strong>CLASS</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="SeaLevel_doc.html#id1"><strong>Methods</strong></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="plot_doc.html">plot</a></li>
 </ul>
 </div>
 </section>
@@ -116,7 +119,10 @@
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="numerical_imp.html" class="btn btn-neutral float-left" title="Numerical implementation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SOLVER_doc.html" class="btn btn-neutral float-right" title="SOLVER" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

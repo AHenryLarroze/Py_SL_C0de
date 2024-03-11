@@ -4,50 +4,26 @@ spharm
 **Functions**
 ^^^^^^^^^^^^^
 
-.. autofunction:: spharm.GaussQuad
-
-----
-
-.. autofunction:: spharm.legendre
-
-----
-
-.. autofunction:: spharm.get_coeffs
-
-----
-
-.. autofunction:: spharm.calc_at_point
+.. autofunction:: SL_C0de.spharm.get_coeffs
 
 **CLASS**
 ^^^^^^^^^
 
-.. autoclass:: spharm.sphericalobject
+.. autoclass:: SL_C0de.spharm.sphericalobject
 
 **Methods**
 ^^^^^^^^^^^
 
-.. autofunction:: spharm.sphericalobject.grdtocoeff
+.. autofunction:: SL_C0de.spharm.sphericalobject.grdtocoeff
 
 ----
 
-.. autofunction:: spharm.sphericalobject.coefftogrd
+.. autofunction:: SL_C0de.spharm.sphericalobject.coefftogrd
 
 ----
 
-.. autofunction:: spharm.sphericalobject.coefftogrd_hd
+.. autofunction:: SL_C0de.spharm.sphericalobject.coefftogrdhd
 
 ----
 
-.. autofunction:: spharm.sphericalobject.multiply
-
-----
-
-.. autofunction:: spharm.sphericalobject.save_prev
-
-----
-
-.. autofunction:: spharm.sphericalobject.save
-
-----
-
-.. autofunction:: spharm.sphericalobject.modify
+.. autofunction:: SL_C0de.spharm.sphericalobject.save_prev

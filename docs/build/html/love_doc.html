@@ -11,12 +11,14 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="LOAD_TIME_GRID" href="GRID_doc/LOAD_TIME_GRID_doc.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,29 +40,38 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">love</a><ul>
-<li><a class="reference internal" href="#functions"><strong>Functions</strong></a><ul>
-<li><a class="reference internal" href="#love.love_lm"><code class="docutils literal notranslate"><span class="pre">love_lm()</span></code></a></li>
-<li><a class="reference internal" href="#love.get_tlm"><code class="docutils literal notranslate"><span class="pre">get_tlm()</span></code></a></li>
-<li><a class="reference internal" href="#love.calc_beta_counter"><code class="docutils literal notranslate"><span class="pre">calc_beta_counter()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_imp.html">Numerical implementation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="developer_guide.html">Developer guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="SOLVER_doc.html">SOLVER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spharm_doc.html">spharm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Grid_doc.html">Grid</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">love</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#functions"><strong>Functions</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.love.love_lm"><code class="docutils literal notranslate"><span class="pre">love_lm()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.love.get_tlm"><code class="docutils literal notranslate"><span class="pre">get_tlm()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.love.calc_beta_counter"><code class="docutils literal notranslate"><span class="pre">calc_beta_counter()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
-<li><a class="reference internal" href="#love.LOVE"><code class="docutils literal notranslate"><span class="pre">LOVE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#class"><strong>CLASS</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.love.LOVE"><code class="docutils literal notranslate"><span class="pre">LOVE</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#methods"><strong>Methods</strong></a><ul>
-<li><a class="reference internal" href="#love.LOVE.initiale_spherical_object"><code class="docutils literal notranslate"><span class="pre">initiale_spherical_object()</span></code></a></li>
-<li><a class="reference internal" href="#love.LOVE.calc_beta_G"><code class="docutils literal notranslate"><span class="pre">calc_beta_G()</span></code></a></li>
-<li><a class="reference internal" href="#love.LOVE.calc_beta_R"><code class="docutils literal notranslate"><span class="pre">calc_beta_R()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6"><strong>Methods</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.love.LOVE.dev_beta"><code class="docutils literal notranslate"><span class="pre">dev_beta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.love.LOVE.dev_beta_tide"><code class="docutils literal notranslate"><span class="pre">dev_beta_tide()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.love.LOVE.clean_memory"><code class="docutils literal notranslate"><span class="pre">clean_memory()</span></code></a></li>
 </ul>
 </li>
 </ul>
-</div>
+</li>
+</ul>
+</li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -75,6 +86,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="developer_guide.html">Developer guide</a></li>
       <li class="breadcrumb-item active">love</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/love_doc.rst.txt" rel="nofollow"> View page source</a>
@@ -86,117 +98,195 @@
            <div itemprop="articleBody">
              
   <section id="love">
-<h1>love<a class="headerlink" href="#love" title="Permalink to this heading">¶</a></h1>
+<h1>love<a class="headerlink" href="#love" title="Permalink to this heading"></a></h1>
 <p>This module is used to manage the love numbers for the earth deformation calculation.</p>
 <section id="functions">
-<h2><strong>Functions</strong><a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
+<h2><strong>Functions</strong><a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="love.love_lm">
-<span class="sig-prename descclassname"><span class="pre">love.</span></span><span class="sig-name descname"><span class="pre">love_lm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'m'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#love.love_lm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exrtact from love numbers the h_lm spherical coefficient.</p>
-<dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><p>num (np.array): love number coefficient of the size of the entry file
-grid (object): output of the class GRID</p>
-</dd>
-</dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<dl class="simple">
-<dt>Returns<span class="classifier"></span></dt><dd><p>h_lm (np.array): array of the love number transformed of size 1, maxdeg.</p>
-</dd>
-</dl>
-<p>Added fields :</p>
-</dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="love.get_tlm">
-<span class="sig-prename descclassname"><span class="pre">love.</span></span><span class="sig-name descname"><span class="pre">get_tlm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">earth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'l'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#love.get_tlm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate the T spherical harmonic coefficient. Retrouver d’où viennet ces coeff.</p>
-<dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><p>maxdeg (int): maximum degree of spherical harmonic defined in the model parameters. 
-earth (object): output of the class World_Model_Parameter.</p>
-</dd>
-</dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<dl class="simple">
-<dt>Returns<span class="classifier"></span></dt><dd><p>T_lm (np.array): array of size maxdeg + 1</p>
-</dd>
-</dl>
-<p>Added fields :</p>
-</dd></dl>
-
-<hr class="docutils" />
-<dl class="py function">
-<dt class="sig sig-object py" id="love.calc_beta_counter">
-<span class="sig-prename descclassname"><span class="pre">love.</span></span><span class="sig-name descname"><span class="pre">calc_beta_counter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#love.calc_beta_counter" title="Permalink to this definition">¶</a></dt>
-<dd><p>define the degree of the spherical harmonic for each beta coefficient</p>
-<dl class="simple">
-<dt>Parameters<span class="classifier"></span></dt><dd><p>self (object): output of the class LOVE</p>
-</dd>
-</dl>
-<p>See the documentation of the cited class object for more information on different parameters used in the function.</p>
-<p>Returns :</p>
-<dl class="simple">
-<dt>Added fields<span class="classifier"></span></dt><dd><p>beta_counter : np.array ((maxdeg+1)*(maxdeg+2)/2)</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<hr class="docutils" />
-<section id="class">
-<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="love.LOVE">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">love.</span></span><span class="sig-name descname"><span class="pre">LOVE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">way</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#love.LOVE" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class used to represent the Love numbers parameters</p>
-<p>…</p>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<dt class="sig sig-object py" id="SL_C0de.love.love_lm">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.love.</span></span><span class="sig-name descname"><span class="pre">love_lm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.love.love_lm" title="Permalink to this definition"></a></dt>
+<dd><p>the <span class="target" id="love-lm">love_lm</span> funtion get from love numbers the h_lm spherical coefficient.</p>
+<section id="attribute">
+<h3>Attribute<a class="headerlink" href="#attribute" title="Permalink to this heading"></a></h3>
 <blockquote>
-<div><p>mode_found : np.array (PREM_maxdeg)
-k_amp : np.array(PREM_maxdeg, maximum(mode_found))
-h_amp : np.array(PREM_maxdeg, maximum(mode_found))
-k_amp_tide : np.array(PREM_maxdeg, maximum(mode_found))
-h_amp_tide : np.array(PREM_maxdeg, maximum(mode_found))
-spoles : np.array(PREM_maxdeg, maximum(mode_found))
-k_el : np.array(PREM_maxdeg)
-k_el_tide : np.array(PREM_maxdeg)
-h : np.array (maxdeg+1, maxdeg+1) !!!! Corriger ce truc avec le maxdeg peut être le caller mieux !!!!
-k : np.array (maxdeg+1, maxdeg+1) !!!! Corriger ce truc avec le maxdeg peut être le caller mieux !!!!
-h_tide : np.array (maxdeg+1, maxdeg+1) !!!! Corriger ce truc avec le maxdeg peut être le caller mieux !!!!
-k_tide : np.array (maxdeg+1, maxdeg+1) !!!! Corriger ce truc avec le maxdeg peut être le caller mieux !!!!
-E : np.array (maxdeg+1, maxdeg+1) !!!! Corriger ce truc avec le maxdeg peut être le caller mieux !!!!
-T : np.array (maxdeg+1, maxdeg+1) !!!! Corriger ce truc avec le maxdeg peut être le caller mieux !!!!
-E_T : np.array (maxdeg+1, maxdeg+1) !!!! Corriger ce truc avec le maxdeg peut être le caller mieux !!!!
-beta_l : 
-beta_k_only :
-beta_tide :
-beta_konly_tide :
-beta_counter :</p>
+<div><dl class="simple">
+<dt>num<span class="classifier">np.array([n,]) </span></dt><dd><p>Love number coefficient of the size of the entry file</p>
+</dd>
+<dt>maxdeg<span class="classifier">int</span></dt><dd><p>The maximum harmonic coefficient degree.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>h_lm<span class="classifier">np.array([(maxdeg+1)(maxdeg+2)/2,])</span></dt><dd><p>Array of the love number repeated on harmonic degree orders.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.love.get_tlm">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.love.</span></span><span class="sig-name descname"><span class="pre">get_tlm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Me</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.love.get_tlm" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="get-lm">get_lm</span> function generate the T spherical harmonic coefficient as defined in <a class="reference internal" href="Theory.html#t-definition"><span class="std std-ref">Theory</span></a>.</p>
+<section id="id1">
+<h3>Attribute<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>maxdeg<span class="classifier">int</span></dt><dd><p>maximum degree of spherical harmonic defined in the model parameters.</p>
+</dd>
+<dt>a<span class="classifier">float</span></dt><dd><p>The earth radius in meters.</p>
+</dd>
+<dt>Me<span class="classifier">float</span></dt><dd><p>The earth mass.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id2">
+<h3>Returns<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>T_lm<span class="classifier">np.array([(maxdeg+1)(maxdeg+2)/2])</span></dt><dd><p>The T harmonic coefficient</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.love.calc_beta_counter">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.love.</span></span><span class="sig-name descname"><span class="pre">calc_beta_counter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.love.calc_beta_counter" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="calc-beta-counter">calc_beta_counter</span> define the degree of the spherical harmonic for each beta coefficient</p>
+<section id="id3">
+<h3>Attribute<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl>
+<dt>self<span class="classifier"><a class="reference internal" href="#id5"><span class="std std-ref">LOVE</span></a> class object</span></dt><dd><p>The LOVE class object on wich the betacounter is calculated</p>
+</dd>
+<dt>maxdeg<span class="classifier">int</span></dt><dd><p>maximum spherical harmonic coefficient</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id4">
+<h3>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
 </div></blockquote>
 </section>
 </dd></dl>
 
 </section>
+<hr class="docutils" />
+<section id="class">
+<h2><strong>CLASS</strong><a class="headerlink" href="#class" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SL_C0de.love.LOVE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SL_C0de.love.</span></span><span class="sig-name descname"><span class="pre">LOVE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Me</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'time'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.love.LOVE" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="id5">LOVE</span> class is used to keep the love numbers values and prepare them for the computation of geoïd and ground vertical motion. The love number are calculted and loaded from a file as described in <a class="reference internal" href="#id5"><span class="std std-ref">Implementation of Love numbers</span></a>. This function also include the possibility to compute the love numbers from normal modes love numbers parameters.</p>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>maxedeg<span class="classifier">int</span></dt><dd><p>The spherical harmonic maximum degree.</p>
+</dd>
+<dt>way<span class="classifier">str</span></dt><dd><p>The file path to the ALMA output file. This file must follow the described pattern in …</p>
+</dd>
+<dt>time_step<span class="classifier">np.array([time_step_number,])</span></dt><dd><p>The time step of the model, used to prepare the viscuous love numbers.</p>
+</dd>
+<dt>a<span class="classifier">float</span></dt><dd><p>The earth radius in meter.</p>
+</dd>
+<dt>Me<span class="classifier">float</span></dt><dd><p>The earth mass.</p>
+</dd>
+<dt>type<span class="classifier">str</span></dt><dd><p>The type of love number in input. could be ‘time’ or ‘normal, where ‘time’ is for love numbers from ALMA3 code and ‘normal’ is for love number in normale mode from MIT serveur. Default is ‘time’.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
 <section id="methods">
-<h2><strong>Methods</strong><a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h2>
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt><a class="reference internal" href="#dev-beta">dev_beta</a> :</dt><dd><p>This method is used to calculate the beta love numbers.</p>
+</dd>
+<dt><a class="reference internal" href="#dev-beta-tide">dev_beta_tide</a> :</dt><dd><p>This method is used to calculate the beta tidal love numbers.</p>
+</dd>
+<dt><a class="reference internal" href="#clean-memory">clean_memory</a> :</dt><dd><p>This method is used to clean the memory of your computer.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</dd></dl>
+
+</section>
+<section id="id6">
+<h2><strong>Methods</strong><a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="love.LOVE.initiale_spherical_object">
-<span class="sig-prename descclassname"><span class="pre">love.LOVE.</span></span><span class="sig-name descname"><span class="pre">initiale_spherical_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#love.LOVE.initiale_spherical_object" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="SL_C0de.love.LOVE.dev_beta">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.love.LOVE.</span></span><span class="sig-name descname"><span class="pre">dev_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">applied</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'beta'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.love.LOVE.dev_beta" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="dev-beta">dev_beta</span> method can be used to rise the love numbers to their full shape to fit the computation method. This is required before using the beta in the methods from <a class="reference internal" href="LOAD_doc.html#id1"><span class="std std-ref">LOAD</span></a>.</p>
+<section id="id7">
+<h3>Attribute<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>applied<span class="classifier">str</span></dt><dd><p>The kinf of beta you are calculating. Three values are possible : beta, beta_R et beta_G. ‘beta’ define the love numbers used to caculate the variation of ocean thickness. ‘beta_R’ define the love numbers used to calculate the variation of groud. ‘beta_G’ define the love numbers used to calculate the variation of geoïd.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="return">
+<h3>Return<a class="headerlink" href="#return" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
 
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="love.LOVE.calc_beta_G">
-<span class="sig-prename descclassname"><span class="pre">love.LOVE.</span></span><span class="sig-name descname"><span class="pre">calc_beta_G</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#love.LOVE.calc_beta_G" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="SL_C0de.love.LOVE.dev_beta_tide">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.love.LOVE.</span></span><span class="sig-name descname"><span class="pre">dev_beta_tide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">applied</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'beta'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.love.LOVE.dev_beta_tide" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="dev-beta-tide">dev_beta_tide</span> method can be used to rise the love numbers to their full shape to fit the computation method. This is required before using the beta in the methods from <a class="reference internal" href="LOAD_doc.html#id1"><span class="std std-ref">LOAD</span></a>.</p>
+<section id="id8">
+<h3>Attribute<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>applied<span class="classifier">str</span></dt><dd><p>The kinf of beta you are calculating. Three values are possible : beta, beta_R et beta_G. ‘beta’ define the love numbers used to caculate the variation of ocean thickness. ‘beta_R’ define the love numbers used to calculate the variation of groud. ‘beta_G’ define the love numbers used to calculate the variation of geoïd.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id9">
+<h3>Return<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
 
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="love.LOVE.calc_beta_R">
-<span class="sig-prename descclassname"><span class="pre">love.LOVE.</span></span><span class="sig-name descname"><span class="pre">calc_beta_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#love.LOVE.calc_beta_R" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="SL_C0de.love.LOVE.clean_memory">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.love.LOVE.</span></span><span class="sig-name descname"><span class="pre">clean_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.love.LOVE.clean_memory" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="clean-memory">clean_memory</span> method can be used to araise the beta_l, beta_R and beta_G to avoid memory issues.</p>
+<section id="id10">
+<h3>Attribute<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="id11">
+<h3>Return<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
 
 </section>
 </section>
@@ -204,7 +294,9 @@ beta_counter :</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GRID_doc/LOAD_TIME_GRID_doc.html" class="btn btn-neutral float-left" title="LOAD_TIME_GRID" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 

@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOLVER &mdash; SL_C0de 0.4.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="spharm" href="spharm_doc.html" />
+    <link rel="prev" title="Developer guide" href="developer_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SL_C0de
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Theory.html">Mathematical Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numerical_imp.html">Numerical implementation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="developer_guide.html">Developer guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SOLVER</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#functions"><strong>Functions</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.Precomputation"><code class="docutils literal notranslate"><span class="pre">Precomputation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.SLE_forward_modeling"><code class="docutils literal notranslate"><span class="pre">SLE_forward_modeling()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.SLE_solver"><code class="docutils literal notranslate"><span class="pre">SLE_solver()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.Post_process"><code class="docutils literal notranslate"><span class="pre">Post_process()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.calculate_deformation"><code class="docutils literal notranslate"><span class="pre">calculate_deformation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.calculate_sediment_ocean_interaction"><code class="docutils literal notranslate"><span class="pre">calculate_sediment_ocean_interaction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.find_files"><code class="docutils literal notranslate"><span class="pre">find_files()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-extractor"><strong>Data_extractor</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.calc_transect"><code class="docutils literal notranslate"><span class="pre">calc_transect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.calc_point"><code class="docutils literal notranslate"><span class="pre">calc_point()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.calculate_dESL"><code class="docutils literal notranslate"><span class="pre">calculate_dESL()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#plot-functions"><strong>Plot functions</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.plot_model_result_map"><code class="docutils literal notranslate"><span class="pre">plot_model_result_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.plot_frame"><code class="docutils literal notranslate"><span class="pre">plot_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.plot_model_output"><code class="docutils literal notranslate"><span class="pre">plot_model_output()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.plot_load_frame"><code class="docutils literal notranslate"><span class="pre">plot_load_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.plot_model_result_cross_section"><code class="docutils literal notranslate"><span class="pre">plot_model_result_cross_section()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.plot_model_output_points"><code class="docutils literal notranslate"><span class="pre">plot_model_output_points()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.plot_precomputation"><code class="docutils literal notranslate"><span class="pre">plot_precomputation()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#utils-functions"><strong>Utils functions</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SL_C0de.SOLVER.export_to_netcdf"><code class="docutils literal notranslate"><span class="pre">export_to_netcdf()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="spharm_doc.html">spharm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Grid_doc.html">Grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="love_doc.html">love</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SL_C0de</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="developer_guide.html">Developer guide</a></li>
+      <li class="breadcrumb-item active">SOLVER</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/SOLVER_doc.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solver">
+<h1>SOLVER<a class="headerlink" href="#solver" title="Permalink to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The entire functions used here must be verified before publication of the code. They have not been tested yet.</p>
+</div>
+<section id="functions">
+<h2><strong>Functions</strong><a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.Precomputation">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">Precomputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ice_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sed_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Output_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">26</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdeg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irregular_time_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.Precomputation" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="precomputation">Precomputation</span> method prepare the different data to match temporal and spatial resolution of the modelisation. spatial resolution (m,n) and temporal resolution (step). The input data format is described in <a class="reference internal" href="numerical_imp.html#grid-format"><span class="std std-ref">Mass grid format</span></a>.</p>
+<section id="attribute">
+<h3>Attribute :<a class="headerlink" href="#attribute" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>ice_grid<span class="classifier">dict(name = str, grid = np.array((n_i,m_i,t_i)), time = np.array((t_i,)), lon = np.array((n_i)), lat = np.array((m_i)))</span></dt><dd><p>ice thickness grid</p>
+</dd>
+<dt>sed_grid<span class="classifier">dict(name = str, grid = np.array((n_j,m_j,t_j)), time = np.array((t_j,)), lon = np.array((n_j)), lat = np.array((m_j)),frame = (lon1,lon2,lat1,lat2))</span></dt><dd><p>sediment thickness</p>
+</dd>
+<dt>topo_grid<span class="classifier">dict(name = str, grid = np.array((n_k,m_k)), lon = np.array((n_j)), lat = np.array((m_j)))</span></dt><dd><p>present topography</p>
+</dd>
+<dt>Output_way<span class="classifier">str</span></dt><dd><p>The filepath toward wich the different grid will be saved</p>
+</dd>
+<dt>stop<span class="classifier">float </span></dt><dd><p>age at wich the computation stop</p>
+</dd>
+<dt>step<span class="classifier">float</span></dt><dd><p>time step used for the temporal resolution of the model</p>
+</dd>
+<dt>maxdeg<span class="classifier">int </span></dt><dd><p>The maximum degree of spherical harmonics, that define the spatial resolution of the model. (m = 2*maxdeg, n = maxdeg)</p>
+</dd>
+<dt>irregular_time_step<span class="classifier">np.array((time_step_number,))</span></dt><dd><p>An irregular time array to compute the model over non regular time step</p>
+</dd>
+<dt>backend<span class="classifier">bool</span></dt><dd><p>If required you can ask a backend during the run of each computation. True, will generate a backend, False will not. Defaul is False</p>
+</dd>
+<dt>Plot<span class="classifier">bool</span></dt><dd><p>If needed you can ask plot of each output compared to the initial plot. You will need the cartopy doc.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="returns">
+<h3>Returns :<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<p>The data output of the function are saved to the output way.</p>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.SLE_forward_modeling">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">SLE_forward_modeling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ice_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sed_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocean_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">love_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">love_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conv_lim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Output_way</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.SLE_forward_modeling" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="sle-forward-modeling">SLE_forward_modeling</span> method solve the SLE with no constrain on final topography. This result in a forward modeling of the SL. It can be used for test and exploration of models. For informations on iterations see <a class="reference internal" href="numerical_imp.html#iteration-desc"><span class="std std-ref">description of iteration</span></a>.</p>
+<section id="id1">
+<h3>Attribute :<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Input_way<span class="classifier">str</span></dt><dd><p>File location of the input data (ice, sediment and topography)</p>
+</dd>
+<dt>ice_name<span class="classifier">str</span></dt><dd><p>The name of the ice data file</p>
+</dd>
+<dt>sed_name<span class="classifier">str</span></dt><dd><p>The name of the sediment data file</p>
+</dd>
+<dt>topo_name<span class="classifier">str</span></dt><dd><p>The name of the topographic data file</p>
+</dd>
+<dt>ocean_name<span class="classifier">str</span></dt><dd><p>The name of the output file containig the data on the ocean</p>
+</dd>
+<dt>love_way<span class="classifier">str </span></dt><dd><p>way of the love numbers file used to compute earth visco elastic deformation</p>
+</dd>
+<dt>conv_lim<span class="classifier">float</span></dt><dd><p>Limit of precision required for the convergence of the SLE resolution (10^-3)</p>
+</dd>
+<dt>output_way<span class="classifier">str </span></dt><dd><p>filepath for saving results of the modelisation</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id2">
+<h3>Returns :<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<p>The resulting ocean class object (<a class="reference internal" href="GRID_doc/OCEAN_TIME_GRID_doc.html#id1"><span class="std std-ref">OCEAN_TIME_GRID</span></a>) containing the ocean thickness is saved in the outputway under the name ocean.</p>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.SLE_solver">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">SLE_solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ice_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sed_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocean_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">love_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">love_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo_lim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conv_lim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Output_way</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.SLE_solver" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="sle-solver">SLE_solver</span> solve the SLE and converge toward the actual topography. The computation of the SLE resolution is describe in <a class="reference internal" href="numerical_imp.html#sle-res"><span class="std std-ref">Sea level equation resolution</span></a>. For informations on iterations see <a class="reference internal" href="numerical_imp.html#iteration-desc"><span class="std std-ref">description of iteration</span></a>.</p>
+<section id="id3">
+<h3>Attribute :<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Input_way<span class="classifier">str</span></dt><dd><p>File location of the input data (ice, sediment and topography)</p>
+</dd>
+<dt>ice_name<span class="classifier">str</span></dt><dd><p>The name of the ice data file</p>
+</dd>
+<dt>sed_name<span class="classifier">str</span></dt><dd><p>The name of the sediment data file</p>
+</dd>
+<dt>topo_name<span class="classifier">str</span></dt><dd><p>The name of the topographic data file</p>
+</dd>
+<dt>ocean_name<span class="classifier">str</span></dt><dd><p>The name of the output file containig the data on the ocean</p>
+</dd>
+<dt>love_way<span class="classifier">str </span></dt><dd><p>way of the love numbers file used to compute earth visco elastic deformation</p>
+</dd>
+<dt>conv_lim<span class="classifier">float</span></dt><dd><p>Limit of precision required for the convergence of the SLE resolution (10^-3)</p>
+</dd>
+<dt>topo_lim<span class="classifier">float</span></dt><dd><p>Topography convergence limit toward wich the iteration will converge (1 m)</p>
+</dd>
+<dt>output_way<span class="classifier">str </span></dt><dd><p>filepath for saving results of the modelisation</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id4">
+<h3>Returns :<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<p>The resulting ocean class object (<a class="reference internal" href="GRID_doc/OCEAN_TIME_GRID_doc.html#id1"><span class="std std-ref">OCEAN_TIME_GRID</span></a>), updated ice thickness (<a class="reference internal" href="GRID_doc/ICE_TIME_GRID_doc.html#id1"><span class="std std-ref">ICE_TIME_GRID</span></a>) and updated  topography (<a class="reference internal" href="GRID_doc/TOPOGRAPHIC_TIME_GRID_doc.html#id1"><span class="std std-ref">TOPOGRAPHIC_TIME_GRID</span></a>) are saved to output_way.</p>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.Post_process">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">Post_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sed_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ice_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocean_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">love_way</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.Post_process" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="post-process">Post_process</span> calculate the earth viscoelastic response resulting from the different masses caculated with the SLE_solver. This computation is made for all models available in the files.</p>
+<section id="id5">
+<h3>Attribute :<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>input_way_sed<span class="classifier">str</span></dt><dd><p>way where the sediment precomputed are stored</p>
+</dd>
+<dt>input_way_model_output<span class="classifier">str</span></dt><dd><p>filepath to the different masses calculated by the SLE solver</p>
+</dd>
+<dt>love_way<span class="classifier">str</span></dt><dd><p>way to the love number output</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id6">
+<h3>Returns :<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<p>The resulting LOAD and GEOID are stored in a LOAD file in the same file then the input files. The structure is based on the <a class="reference internal" href="GRID_doc/LOAD_TIME_GRID_doc.html#id1"><span class="std std-ref">LOAD_TIME_GRID</span></a> class object.</p>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.calculate_deformation">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">calculate_deformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">love_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ice_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sed_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocean_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Me</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Output_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'plot':</span> <span class="pre">False}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.calculate_deformation" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="calculate-deformation">calculate_deformation</span> method calculate the earth viscoelastic response resulting from the different masses caculated with the <a class="reference internal" href="#sle-solver"><span class="std std-ref">SLE_solver</span></a>. This computation follows the decomposition of the SLE described in <a class="reference internal" href="numerical_imp.html#g-r-comp"><span class="std std-ref">Computation of ground and geoid subsidence from different load source</span></a></p>
+<section id="id7">
+<h3>Attribute :<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl>
+<dt>love_number<span class="classifier"><a class="reference internal" href="love_doc.html#id5"><span class="std std-ref">LOVE</span></a> </span></dt><dd><p>The loaded love number in the form of a LOVE class object</p>
+</dd>
+<dt>ice_time_grid<span class="classifier"><a class="reference internal" href="GRID_doc/ICE_TIME_GRID_doc.html#id1"><span class="std std-ref">grid.ICE_TIME_GRID</span></a></span></dt><dd><p>ice thickness in the form of ICE_TIME_GRID class object</p>
+</dd>
+<dt>sed_time_grid<span class="classifier"><a class="reference internal" href="GRID_doc/SEDIMENT_TIME_GRID_doc.html#id1"><span class="std std-ref">grid.SEDIMENT_TIME_GRID</span></a> </span></dt><dd><p>sediment thickness in the form of SEDIMENT_TIME_GRID class object</p>
+</dd>
+<dt>ocean_time_grid<span class="classifier"><a class="reference internal" href="GRID_doc/OCEAN_TIME_GRID_doc.html#id1"><span class="std std-ref">grid.OCEAN_TIME_GRID</span></a> </span></dt><dd><p>ocean thickness calculated using the SLE solver in the form of OCEAN_TIME_GRID class object</p>
+</dd>
+<dt>a<span class="classifier">float</span></dt><dd><p>radius of earth in meter</p>
+</dd>
+<dt>Me<span class="classifier">float</span></dt><dd><p>mass of earth (kg)</p>
+</dd>
+<dt>Output_way<span class="classifier">str</span></dt><dd><p>way of the output where the load is calculated</p>
+</dd>
+<dt>backend<span class="classifier">bool</span></dt><dd><p>set if the function is writing its state of computation</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id8">
+<h3>Returns :<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<p>The resulting LOAD and GEOID are stored in a LOAD file in the same file then the input files. The structure is based on the <a class="reference internal" href="GRID_doc/LOAD_TIME_GRID_doc.html#id1"><span class="std std-ref">LOAD_TIME_GRID</span></a>  class object.</p>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.calculate_sediment_ocean_interaction">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">calculate_sediment_ocean_interaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">love_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ice_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sed_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ocean_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Me</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo_time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Output_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'plot':</span> <span class="pre">False}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.calculate_sediment_ocean_interaction" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="calculate-sediment-ocean-interaction">calculate_sediment_ocean_interaction</span> method calculate the earth viscoelastic response resulting from sediment under sea surface. This is used to retrieve the effect of ocean replacement by sediment on the sediment load. The resulting subsidence is the true subsidence induced by sediment. The problems and resolution in equation is described in <a class="reference internal" href="numerical_imp.html#sed-subs"><span class="std std-ref">True sediment subsidence</span></a>.</p>
+<section id="id9">
+<h3>Attribute :<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl>
+<dt>love_number<span class="classifier"><a class="reference internal" href="love_doc.html#id5"><span class="std std-ref">LOVE</span></a> </span></dt><dd><p>The loaded love number in the form of a LOVE class object</p>
+</dd>
+<dt>ice_time_grid<span class="classifier"><a class="reference internal" href="GRID_doc/ICE_TIME_GRID_doc.html#id1"><span class="std std-ref">grid.ICE_TIME_GRID</span></a></span></dt><dd><p>ice thickness in the form of ICE_TIME_GRID class object</p>
+</dd>
+<dt>sed_time_grid<span class="classifier"><a class="reference internal" href="GRID_doc/SEDIMENT_TIME_GRID_doc.html#id1"><span class="std std-ref">grid.SEDIMENT_TIME_GRID</span></a> </span></dt><dd><p>sediment thickness in the form of SED_TIME_GRID class object</p>
+</dd>
+<dt>ocean_time_grid<span class="classifier"><a class="reference internal" href="GRID_doc/OCEAN_TIME_GRID_doc.html#id1"><span class="std std-ref">grid.OCEAN_TIME_GRID</span></a> </span></dt><dd><p>ocean thickness calculated using the SLE solver in the form of OCEAN_TIME_GRID class object</p>
+</dd>
+<dt>a<span class="classifier">float</span></dt><dd><p>radius of earth in meter</p>
+</dd>
+<dt>Me<span class="classifier">float</span></dt><dd><p>mass of earth (kg)</p>
+</dd>
+<dt>Output_way<span class="classifier">str</span></dt><dd><p>way of the output where the load is calculated</p>
+</dd>
+<dt>backend<span class="classifier">bool</span></dt><dd><p>set if the function is writing its state of computation</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id10">
+<h3>Returns :<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<p>The resulting LOAD and GEOID are stored in a LOAD file in the same file then the input files. The structure is based on the <a class="reference internal" href="GRID_doc/LOAD_TIME_GRID_doc.html#id1"><span class="std std-ref">LOAD_TIME_GRID</span></a> class object.</p>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.find_files">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">find_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.find_files" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="data-extractor">
+<h2><strong>Data_extractor</strong><a class="headerlink" href="#data-extractor" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.calc_transect">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">calc_transect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transect</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_bis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.calc_transect" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="calc-transect">calc_transect</span> function evaluate the spherical harmonics coefficient function run the plot functions for all type of load. This function use the <a class="reference internal" href="#plot-frame">plot_frame</a> function, see this function for more details.</p>
+<section id="id11">
+<h3>Attribute :<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>input_way_sed<span class="classifier">str</span></dt><dd><p>way where the load data are located. If you are using the function from SL_C0de.SOLVER library, this way should be xxx/model_output/earth_model_name.</p>
+</dd>
+<dt>time<span class="classifier">float</span></dt><dd><p>The selected time to plot the transect.</p>
+</dd>
+<dt>transect<span class="classifier">(lat1,lon1,lat2,lon2)</span></dt><dd><p>The coordinate of the beginning and the end of the transect.</p>
+</dd>
+<dt>point_dentity<span class="classifier">int</span></dt><dd><p>Number of points along the transect, this will define the resolution</p>
+</dd>
+<dt>type<span class="classifier">str</span></dt><dd><p>This define the type of load considered. Must be “SEDIMENT”, “NO_SEDIMENT”, “OCEAN”, “ICE” or “TOTAL”.</p>
+</dd>
+<dt>type_bis<span class="classifier">str</span></dt><dd><p>This define if the plot concern the geoid of the ground deformation. Must be “LOAD” or “GEOID”.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id12">
+<h3>Returns :<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.calc_point">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">calc_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_bis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.calc_point" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="calc-point">calc_point</span> function evaluate the spherical harmonics coefficient for a type of model output at precise points locations.</p>
+<section id="id13">
+<h3>Attribute :<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Input_way<span class="classifier">str</span></dt><dd><p>way where the load data are located. If you are using the function from SL_C0de.SOLVER library, this way should be xxx/model_output/earth_model_name.</p>
+</dd>
+<dt>time<span class="classifier">float</span></dt><dd><p>The selected time to plot the transect.</p>
+</dd>
+<dt>points<span class="classifier">np.array(n_p*[lat,lon])</span></dt><dd><p>The locations of the different points you wan’t to extract data.</p>
+</dd>
+<dt>type<span class="classifier">str</span></dt><dd><p>This define the type of load considered. Must be “SEDIMENT”, “NO_SEDIMENT”, “OCEAN”, “ICE” or “TOTAL”.</p>
+</dd>
+<dt>type_bis<span class="classifier">str</span></dt><dd><p>This define if the plot concern the geoid of the ground deformation. Must be “LOAD” or “GEOID”.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id14">
+<h3>Returns :<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.calculate_dESL">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">calculate_dESL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.calculate_dESL" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="calculate-desl">calculate_dESL</span> function compute the ESL variation over time including a varaible ocean surface.</p>
+<section id="id15">
+<h3>Attribute :<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Input_way<span class="classifier">str</span></dt><dd><p>way where the load data are located. If you are using the function from SL_C0de.SOLVER library, this way should be xxx/model_output/earth_model_name.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id16">
+<h3>Returns :<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>dESL<span class="classifier">np.array([time_step_number,])</span></dt><dd><p>The variation of the ESL at each time step.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="plot-functions">
+<h2><strong>Plot functions</strong><a class="headerlink" href="#plot-functions" title="Permalink to this heading"></a></h2>
+<p>Frame :</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.plot_model_result_map">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">plot_model_result_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.plot_model_result_map" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="plot-model-result-map">plot_model_result_map</span> function run the plot functions for all type of load. This function use the <a class="reference internal" href="#plot-frame">plot_frame</a> function, see this function for more details.</p>
+<section id="id17">
+<h3>Attribute :<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>input_way_sed<span class="classifier">str</span></dt><dd><p>way where the load data are located. If you are using the function from SL_C0de.SOLVER library, this way should be xxx/model_output/earth_model_name.</p>
+</dd>
+<dt>plot<span class="classifier">dict(plot=True,times=[n_t],frames=[n_f*(lon1,lon1,lat1,lat2)],frames_resolution=[n_f],frames_min_max=np.array([[[min_load],max_load,min_geoid,max_geoid]]),contours_v=[n_f*2*[contours…]],transects=[n_t*(lat1,lon1,lat2,lon2)],point_density=[n_t], transect_min_max=[n_t(min_load,max_load,min_geoid,max_geoid)], points=np.array([n_p[lat,lon]]))</span></dt><dd><p>The plot dictionnary used to define all the plot parameters of the output. In this dictionary, there is three main group of parameters, the frame plot parameters, the transect plot parameters and the points plot parameters. The frame plot parameters contain the frame locations in frames, the frames resolution in frames_resolution, the frames min and max value to plot in frames_min_max and the contours value to plot in contours_v. The transect plot parameters contains the location of the begining and end of the transects in transects, the point density along the transect in point_density and the min max value of the transect in transect_min_max. The points plot parameters contains the locations of the differents plots in points.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id18">
+<h3>Returns :<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.plot_frame">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">plot_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Output_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.plot_frame" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="plot-frame">plot_frame</span> function define the spherical harmonic coefficient to be expanded into a grid and plot in the frame defined in plot. This function make the difference between sediment subsidence and true sediment subsidence where water replaced by sediment is included.</p>
+<section id="id19">
+<h3>Attribute :<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Input_way<span class="classifier">str</span></dt><dd><p>way where the load data are located. If you are using the function from SL_C0de.SOLVER library, this way should be xxx/model_output/earth_model_name.</p>
+</dd>
+<dt>plot<span class="classifier">dict(plot=True,times=[n_t],frames=[n_f*(lon1,lon1,lat1,lat2)],frames_resolution=[n_f],frames_min_max=np.array([[[min_load],max_load,min_geoid,max_geoid]]),contours_v=[n_f*2*[contours…]],transects=[n_t*(lat1,lon1,lat2,lon2)],point_density=[n_t], transect_min_max=[n_t(min_load,max_load,min_geoid,max_geoid)], points=np.array([n_p[lat,lon]]))</span></dt><dd><p>The plot dictionnary used to define all the plot parameters of the output. In this dictionary, there is three main group of parameters, the frame plot parameters, the transect plot parameters and the points plot parameters. The frame plot parameters contain the frame locations in frames, the frames resolution in frames_resolution, the frames min and max value to plot in frames_min_max and the contours value to plot in contours_v. The transect plot parameters contains the location of the begining and end of the transects in transects, the point density along the transect in point_density and the min max value of the transect in transect_min_max. The points plot parameters contains the locations of the differents plots in points.</p>
+</dd>
+<dt>Output_way<span class="classifier">str</span></dt><dd><p>way where the plot will be saved.</p>
+</dd>
+<dt>type<span class="classifier">str</span></dt><dd><p>This define the type of load considered. Must be “SEDIMENT”, “NO_SEDIMENT”, “OCEAN”, “ICE” or “TOTAL”.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id20">
+<h3>Returns :<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.plot_model_output">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">plot_model_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Output_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contours_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.plot_model_output" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="plot-model-output">plot_model_output</span> function plot the frames for each frames and at each time steps.</p>
+<section id="id21">
+<h3>Attribute :<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>time_grid : TIME_GRID from <cite>ref</cite>:{TIME_GRID &lt;TIME_GRID&gt;}
+plot : dict(plot=True,times=[n_t],frames=[n_f*(lon1,lon1,lat1,lat2)],frames_resolution=[n_f],frames_min_max=np.array([[[min_load],max_load,min_geoid,max_geoid]]),contours_v=[n_f*2*[contours…]],transects=[n_t*(lat1,lon1,lat2,lon2)],point_density=[n_t], transect_min_max=[n_t(min_load,max_load,min_geoid,max_geoid)], points=np.array([n_p[lat,lon]]))</p>
+<blockquote>
+<div><p>The plot dictionnary used to define all the plot parameters of the output. In this dictionary, there is three main group of parameters, the frame plot parameters, the transect plot parameters and the points plot parameters. The frame plot parameters contain the frame locations in frames, the frames resolution in frames_resolution, the frames min and max value to plot in frames_min_max and the contours value to plot in contours_v. The transect plot parameters contains the location of the begining and end of the transects in transects, the point density along the transect in point_density and the min max value of the transect in transect_min_max. The points plot parameters contains the locations of the differents plots in points.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Output_way<span class="classifier">str</span></dt><dd><p>way where the plot will be saved.</p>
+</dd>
+<dt>type<span class="classifier">str</span></dt><dd><p>This define the type of load considered. Must be “SEDIMENT”, “NO_SEDIMENT”, “OCEAN”, “ICE” or “TOTAL”.</p>
+</dd>
+<dt>vmin<span class="classifier">float </span></dt><dd><p>The minimal value for the colormap of your plot</p>
+</dd>
+<dt>vmax<span class="classifier">float</span></dt><dd><p>The maximal value for the colormap of your plot</p>
+</dd>
+<dt>contours_v<span class="classifier">list</span></dt><dd><p>List of the contours values to be plot</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id22">
+<h3>Returns :<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.plot_load_frame">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">plot_load_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_contour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vcenter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.plot_load_frame" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="plot-load-frame">plot_load_frame</span> function plot the data in entry into a defined frame following different arguments fro the plot.</p>
+<section id="id23">
+<h3>Attribute :<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>ax<span class="classifier">matplotlib.pyplot.axes</span></dt><dd><p>The axis on wich the data will be plot.</p>
+</dd>
+<dt>data<span class="classifier">LOAD_TIME_GRID</span></dt><dd><p>A LOAD_TIME_GRID object with the LOAD_TIME_GRID.coeff to be ploted.</p>
+</dd>
+<dt>frame<span class="classifier">(lon1,lon2,lat1,lat2)</span></dt><dd><p>The coordinate of the frame to plot.</p>
+</dd>
+<dt>time<span class="classifier">float</span></dt><dd><p>The time of the plot that will be plot</p>
+</dd>
+<dt>resolution<span class="classifier">int</span></dt><dd><p>The resolution of the plot, the resulting resolution will be resolution x resolution*2</p>
+</dd>
+<dt>name<span class="classifier">str</span></dt><dd><p>The name of the plot, will be used in the title and legend of the plot</p>
+</dd>
+<dt>vmin<span class="classifier">float</span></dt><dd><p>The minimal value of the plot colormap</p>
+</dd>
+<dt>vmax<span class="classifier">float</span></dt><dd><p>The maximal value of the plot colormap</p>
+</dd>
+<dt>vcenter<span class="classifier">float</span></dt><dd><p>The central value of the plot colormap</p>
+</dd>
+<dt>contour<span class="classifier">np.array([n_c])</span></dt><dd><p>The contour that will be ploted on the map</p>
+</dd>
+<dt>color<span class="classifier">np.array([n_c])</span></dt><dd><p>The contour fill color to be ploted</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id24">
+<h3>Returns :<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>ax<span class="classifier">matplotlib.pyplot.axes</span></dt><dd><p>The axis updated from the plots</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<p>Cross section :</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.plot_model_result_cross_section">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">plot_model_result_cross_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.plot_model_result_cross_section" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="plot-model-result-cross-section">plot_model_result_cross_section</span> function evaluate the spherical harmonics coefficient function and plot the results along a defined transect in plot.</p>
+<section id="id25">
+<h3>Attribute :<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Input_way_sed<span class="classifier">str</span></dt><dd><p>way where the load data are located. If you are using the function from SL_C0de.SOLVER library, this way should be xxx/model_output/earth_model_name.</p>
+</dd>
+<dt>plot<span class="classifier">dict(plot=True,times=[n_t],frames=[n_f*(lon1,lon1,lat1,lat2)],frames_resolution=[n_f],frames_min_max=np.array([[[min_load],max_load,min_geoid,max_geoid]]),contours_v=[n_f*2*[contours…]],transects=[n_t*(lat1,lon1,lat2,lon2)],point_density=[n_t], transect_min_max=[n_t(min_load,max_load,min_geoid,max_geoid)], points=np.array([n_p[lat,lon]]))</span></dt><dd><p>The plot dictionnary used to define all the plot parameters of the output. In this dictionary, there is three main group of parameters, the frame plot parameters, the transect plot parameters and the points plot parameters. The frame plot parameters contain the frame locations in frames, the frames resolution in frames_resolution, the frames min and max value to plot in frames_min_max and the contours value to plot in contours_v. The transect plot parameters contains the location of the begining and end of the transects in transects, the point density along the transect in point_density and the min max value of the transect in transect_min_max. The points plot parameters contains the locations of the differents plots in points.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id26">
+<h3>Returns :<a class="headerlink" href="#id26" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<p>Points :</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.plot_model_output_points">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">plot_model_output_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.plot_model_output_points" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="plot-model-output-points">plot_model_output_points</span> function plot the output of the model at different points.</p>
+<section id="id27">
+<h3>Attribute :<a class="headerlink" href="#id27" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Input_way<span class="classifier">str</span></dt><dd><p>way where the load data are located. If you are using the function from SL_C0de.SOLVER library, this way should be xxx/model_output/earth_model_name.</p>
+</dd>
+<dt>plot<span class="classifier">dict(plot=True,times=[n_t],frames=[n_f*(lon1,lon1,lat1,lat2)],frames_resolution=[n_f],frames_min_max=np.array([[[min_load],max_load,min_geoid,max_geoid]]),contours_v=[n_f*2*[contours…]],transects=[n_t*(lat1,lon1,lat2,lon2)],point_density=[n_t], transect_min_max=[n_t(min_load,max_load,min_geoid,max_geoid)], points=np.array([n_p[lat,lon]]))</span></dt><dd><p>The plot dictionnary used to define all the plot parameters of the output. In this dictionary, there is three main group of parameters, the frame plot parameters, the transect plot parameters and the points plot parameters. The frame plot parameters contain the frame locations in frames, the frames resolution in frames_resolution, the frames min and max value to plot in frames_min_max and the contours value to plot in contours_v. The transect plot parameters contains the location of the begining and end of the transects in transects, the point density along the transect in point_density and the min max value of the transect in transect_min_max. The points plot parameters contains the locations of the differents plots in points.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id28">
+<h3>Returns :<a class="headerlink" href="#id28" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+<p>Precomputation</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.plot_precomputation">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">plot_precomputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_time_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precomputed_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_way</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.plot_precomputation" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="plot-precomputation">plot_precomputation</span> function plot the output of the precomputation as the ice, sediment and totpography. These plot allow you to compare the entry and the output to be sure there is no errors.</p>
+<section id="id29">
+<h3>Attribute :<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Input_way<span class="classifier">str</span></dt><dd><p>way where the load data are located. If you are using the function from SL_C0de.SOLVER library, this way should be xxx/model_output/earth_model_name.</p>
+</dd>
+<dt>plot<span class="classifier">dict(plot=True,times=[n_t],frames=[n_f*(lon1,lon1,lat1,lat2)],frames_resolution=[n_f],frames_min_max=np.array([[[min_load],max_load,min_geoid,max_geoid]]),contours_v=[n_f*2*[contours…]],transects=[n_t*(lat1,lon1,lat2,lon2)],point_density=[n_t], transect_min_max=[n_t(min_load,max_load,min_geoid,max_geoid)], points=np.array([n_p[lat,lon]]))</span></dt><dd><p>The plot dictionnary used to define all the plot parameters of the output. In this dictionary, there is three main group of parameters, the frame plot parameters, the transect plot parameters and the points plot parameters. The frame plot parameters contain the frame locations in frames, the frames resolution in frames_resolution, the frames min and max value to plot in frames_min_max and the contours value to plot in contours_v. The transect plot parameters contains the location of the begining and end of the transects in transects, the point density along the transect in point_density and the min max value of the transect in transect_min_max. The points plot parameters contains the locations of the differents plots in points.</p>
+</dd>
+<dt>Output_way<span class="classifier">str</span></dt><dd><p>way where the plot will be saved.</p>
+</dd>
+<dt>type<span class="classifier">str</span></dt><dd><p>This define the type of load considered. Must be “SEDIMENT”, “NO_SEDIMENT”, “OCEAN”, “ICE” or “TOTAL”.</p>
+</dd>
+<dt>vmin<span class="classifier">float </span></dt><dd><p>The minimal value for the colormap of your plot</p>
+</dd>
+<dt>vmax<span class="classifier">float</span></dt><dd><p>The maximal value for the colormap of your plot</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id30">
+<h3>Returns :<a class="headerlink" href="#id30" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="utils-functions">
+<h2><strong>Utils functions</strong><a class="headerlink" href="#utils-functions" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="SL_C0de.SOLVER.export_to_netcdf">
+<span class="sig-prename descclassname"><span class="pre">SL_C0de.SOLVER.</span></span><span class="sig-name descname"><span class="pre">export_to_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Input_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_way</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_bis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SL_C0de.SOLVER.export_to_netcdf" title="Permalink to this definition"></a></dt>
+<dd><p>The <span class="target" id="export-to-netcdf">export_to_netcdf</span> function export the data from the input_way, type and type_bis, of the frame shape into a netcdf file. This file can be open in any gis software.</p>
+<section id="id31">
+<h3>Attribute :<a class="headerlink" href="#id31" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Input_way<span class="classifier">str</span></dt><dd><p>way where the load data are located. If you are using the function from SL_C0de.SOLVER library, this way should be xxx/model_output/earth_model_name.</p>
+</dd>
+<dt>time<span class="classifier">float</span></dt><dd><p>The time of the plot in kyr</p>
+</dd>
+<dt>resolution<span class="classifier">int</span></dt><dd><p>the spatial resolution of the plot. ! This resolution concern the entire globe and not juste the frame.</p>
+</dd>
+<dt>frame<span class="classifier">(lon1,lon2,lat1,lat2)</span></dt><dd><p>The coordinate of the frame to plot.</p>
+</dd>
+<dt>save_way<span class="classifier">str</span></dt><dd><p>The filepath to save the netcdf file</p>
+</dd>
+<dt>type<span class="classifier">str </span></dt><dd><p>The type of loading taken into account. Can be : “SEDIMENT”, “OCEAN”, “ICE”, “NO_SEDIMENT”.</p>
+</dd>
+<dt>type_bis<span class="classifier">str</span></dt><dd><p>The type of affected surface by the loading. Can be : “GEOID”, “LOAD”.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<hr class="docutils" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="developer_guide.html" class="btn btn-neutral float-left" title="Developer guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="spharm_doc.html" class="btn btn-neutral float-right" title="spharm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, HENRY Adrien.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

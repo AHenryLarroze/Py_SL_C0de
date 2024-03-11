@@ -4,21 +4,13 @@ ICE_TIME_GRID
 **CLASS**
 ^^^^^^^^^
 
-.. autoclass:: grid.ICE_TIME_GRID
+.. autoclass:: SL_C0de.grid.ICE_TIME_GRID
 
 **METHODS**
 ^^^^^^^^^^^
 
-.. autofunction:: grid.ICE_TIME_GRID.load
+.. autofunction:: SL_C0de.grid.ICE_TIME_GRID.ice_correction
 
 ----
 
-.. autofunction:: grid.ICE_TIME_GRID.calc_del_ice
-
-----
-
-.. autofunction:: grid.ICE_TIME_GRID.zeros
-
-----
-
-.. autofunction:: grid.ICE_TIME_GRID.ice_correction
+.. autofunction:: SL_C0de.grid.ICE_TIME_GRID.save

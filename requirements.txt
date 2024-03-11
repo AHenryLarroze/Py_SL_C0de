@@ -6,4 +6,7 @@ pyshtools==4.10.1
 scipy==1.10.0
 sphinx_rtd_theme==1.2.0
 tomli==2.0.1
-#Add the netcdf4 to the requirements
+stripy==2.2
+cartopy==0.21.1
+netcdf4==1.6.2
+jupyter==1.0.0

@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: slcode
+Version: 0.4.1
+Summary: SL_C0de is a python library based on the matlab code SL_code. This module is used to calculate GIA over the world but alse the sediment isostasy. It include function to calculate radial symetric auto gravitational earth visco-elastic response. This module also include the possibility to resolve the Sea level equation based on the publication of Mitrovica and Austermann ... ajouter des refs. The aim of this library is to be easy to include new sources of load and link to other python library.
+Author-email: HENRY-LARROZE Adrien <adrien.henry@univ-lr.fr>
+Project-URL: Homepage, https://github.com/AHenryLarroze/Py_SL_C0de
+Project-URL: Bug Tracker, https://github.com/AHenryLarroze/Py_SL_C0de/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENCE.md
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: pyshtools
+Requires-Dist: matplotlib
+
+version 0.1.0 First realise of the library. 
+version 0.2.0 Paralelisation of several functions in the code. 
+version 0.3.0 Modification of the code to decompose the perturbation of the Sea level.
+version 0.3.1 New love number importation based on love numbers calculated by ALMA3
+version 0.3.2 Output function added as a csv writer for using in other application
+version 0.3.3 Add of the sediment import as in the matlab code
+version 0.3.4 Revision of the code to calculate the ground motion at the end of the computation
+version 0.3.5 Integration of saving and loading data from previous run

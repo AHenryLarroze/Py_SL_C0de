@@ -3,13 +3,9 @@ TOPOGRAPHIC_TIME_GRID
 **CLASS**
 ^^^^^^^^^
 
-.. autoclass:: grid.TOPOGRAPHIC_TIME_GRID
+.. autoclass:: SL_C0de.grid.TOPOGRAPHIC_TIME_GRID
 
 **METHODS**
 ^^^^^^^^^^^
 
-.. autofunction:: grid.TOPOGRAPHIC_TIME_GRID.load
-
-----
-
-.. autofunction:: grid.TOPOGRAPHIC_TIME_GRID.update_topo_0
+.. autofunction:: SL_C0de.grid.TOPOGRAPHIC_TIME_GRID.save

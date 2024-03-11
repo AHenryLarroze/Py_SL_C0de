@@ -7,6 +7,21 @@ import pyshtools as pysh
 import pyshtools.expand as expand
     
 def get_coeffs(a_lm,n):
+    '''
+    The _`get_coeffs` function get the spherical harmonics coefficients of the nth order from a linearly Spharm array.
+
+    Attribute : 
+    -----------
+        a_lm : np.array([maxdeg*(maxdeg+1)/2,])
+            An array containing the spherical coefficient in a linear form
+        n : int
+            The order of the spherical harmonics coefficient you are trying to retrive
+
+    Returns :
+    ---------  
+        a_n : np.array([n,])
+            The spherical harmonic coefficient of the order n.
+    '''
     if n == 0 :
         a_n = a_lm[0]
     else :
@@ -17,50 +32,38 @@ def get_coeffs(a_lm,n):
 
 class sphericalobject(object):
     """
-    A class difining any spherical object. This class is working with pyshtools.
-
-    ...
+    The _`sphericalobject` class include any spherical object. This class is working with pyshtools (`pyshtools <https://shtools.github.io/SHTOOLS/>`_).
 
     Attributes
     ----------
-        grd : np.array (maxdeg,maxdeg x2)
+        grd : np.array[(maxdeg,maxdeg x2)]
            Value of the spherical object on a Gaussian Grid. 
         isgrd : Bool
            A boolean to define if a Gaussian grid have been defined for this object. 
-        coeff : np.array (maxdeg,maxdeg) !!!! A vérifier !!!!
+        coeff : np.array[(maxdeg,maxdeg)]
            Spherical harmonic coefficient array. 
         iscoeff : Bool
            A boolean to define if a spherical harmonic coefficient have been defined for this object.
-        saved : np.array (n, maxdeg, maxdeg) !!!! A vérifier !!!! n is the number of time the save method is activated. 
+        saved : np.array[(n, maxdeg, maxdeg)]
            An array wich contain the spherical harmonic coefficient each time th save method is applied.
-        prev : np.array (maxedg, maxdeg) !!!! A vérifier !!!!
+        prev : np.array[(maxedg, maxdeg)] 
            save the spherical coefficient using save_prev. 
 
     Methods
     -------
-        grdtocoeff()
+        `grdtocoeff`_ : 
            Convert the Gaussian grid to spherical harmonic coefficient
-        coefftogrd()
+        `coefftogrd`_ : 
            Convert spherical harmonic coefficient to Gaussian grid
-        multiply(flm2)
-           Multiply the spherical coefficient of the object with the coefficient of flm2
-        save_prev()
+        `coefftogrdhd`_ :
+           Convert spherical harmonic coefficient to a Gaussian grid with a higher resolution then maxdeg
+        `save_prev`_ :
            Save the spherical harmonic coefficient to the attribute prev
-        save()
-           Save the spherical harmonic coefficient to the attribute saved and stack with previous saved coefficient
-        modify(gc,t='grd')
-           change the grid or coeff attribute with gc depending on t value    
+        
+           
     """
     
     def __init__(self,grd=None,coeff=None,maxdeg=None):
-        """
-        Parameters
-        ----------
-        grd : np.array
-            array input a gaussian grid or spherical harmonic coefficient
-        t : str
-            value defining the type of the grd input, can be 'grd' or 'coeff' (default 'grd')
-        """
         
         if coeff is None : # initialize the grid if the entry is a grid
             self.grd=grd.copy()
@@ -73,20 +76,18 @@ class sphericalobject(object):
         
     def grdtocoeff(self):
         '''
-        Convert a Gaussian grid into spherical harmonic coefficient array using a numerical method to create spherical harmonic coefficient
+        The _`grdtocoeff` method convert a Gaussian grid into spherical harmonic coefficient array using a numerical method to create spherical harmonic coefficient
         self.coeff is updated usig these output.
         self.iscoeff defining if a coefficient have been created for this object. 
         If there is no grid created (self.isgrid == 0) then it returns an error.
-        A modifier pour pouvoir modifier les entrées de la fonction.
     
-        Parameters : 
-            
-        See the documentation of the cited class object for more information on different parameters used in the function.
+        Attribute :
+        ----------- 
+            None 
         
-        Returns : 
-        
-        Added fields : 
-
+        Returns :
+        ---------
+            None        
         '''
         zero , w = expand.SHGLQ(self.maxdeg)
         self.coeff=expand.SHExpandGLQ(self.grd,w,zero)
@@ -97,7 +98,7 @@ class sphericalobject(object):
                                                                                   
     def coefftogrd(self):
         '''
-        Convert spherical harmonic coefficient into a gird array using shtools.
+        The _`coefftogrd` method convert spherical harmonic coefficient into a gird array using shtools.
         The output of pysh.SHCoeff are converted to real.
         self.grd is updated usig these output.
         self.isgrd defining if a grid have been created for this object. 
@@ -123,21 +124,21 @@ class sphericalobject(object):
     
     def coefftogrdhd(self,max_calc_deg):
         '''
-        Convert spherical harmonic coefficient into a gird array using shtools.
+        The _`coefftogrdhd` convert spherical harmonic coefficient into a gird array using shtools.
         The output of pysh.SHCoeff are converted to real.
         self.grd is updated usig these output.
         self.isgrd defining if a grid have been created for this object. 
         If there is no grid created (self.iscoeff == 0) then it returns an error.
         A modifier pour pouvoir modifier les entrées de la fonction.
     
-        Parameters : 
-            
-        See the documentation of the cited class object for more information on different parameters used in the function.
+        Attribute :
+        -----------
+            max_calc_deg : int
+                The maximum spherical harmonic degree to calculate the grid. This function can be used to have a better rendering in output.
         
-        Returns : 
-        
-        Added fields : 
-
+        Returns :
+        ---------
+            None 
         '''
         
         zero , w = expand.SHGLQ(max_calc_deg-1)
@@ -151,53 +152,51 @@ class sphericalobject(object):
         coeff=pysh.shio.SHCindexToCilm(coeff)
         return expand.MakeGridGLQ(coeff,zero,lmax=max_calc_deg-1,extend=1),lon_hd,lat_hd[::-1]
     
-    def multiply(self,coeff2):
-        '''
-        This function is no longer used !!!!    
+    # def multiply(self,coeff2):
+    #     '''
+    #     This function is no longer used !!!!    
         
-        Multiply the spherical coefficient of a gird with the others. It could be done using the pysh.SHcoeffs.Multiply.
-        I choose to do it manually but i could test the efficiency of the pysh tool function. 
+    #     Multiply the spherical coefficient of a gird with the others. It could be done using the pysh.SHcoeffs.Multiply.
+    #     I choose to do it manually but i could test the efficiency of the pysh tool function. 
     
-        Parameters : 
-            flm2 (np.array): the harmonic coefficient matrix of size maxdeg, maxdeg !!!! A vérifier !!!!!
+    #     Parameters : 
+    #         flm2 (np.array): the harmonic coefficient matrix of size maxdeg, maxdeg !!!! A vérifier !!!!!
              
-        See the documentation of the cited class object for more information on different parameters used in the function.
+    #     See the documentation of the cited class object for more information on different parameters used in the function.
         
-        Returns : 
-            flm[0,:,:]+1j*flm[1,:,:] (np.array): the harmonic coefficient matrix resulting of the multiplication of the two grids. 
-            size maxdeg, maxdeg !!!! A vérifier !!!!
+    #     Returns : 
+    #         flm[0,:,:]+1j*flm[1,:,:] (np.array): the harmonic coefficient matrix resulting of the multiplication of the two grids. 
+    #         size maxdeg, maxdeg !!!! A vérifier !!!!
             
-        Added fields : 
+    #     Added fields : 
 
-        '''
-        # convert two spherical coefficient into gaussian grid.
-        coeff1=np.stack((self.coeff.real,self.coeff.imag))
-        coeff1=pysh.shio.SHCindexToCilm(coeff1)
-        coeff2=np.stack((coeff2.real,coeff2.imag))
-        coeff2=pysh.shio.SHCindexToCilm(coeff2)
-        coeff=pysh.expand.SHMultiply(coeff1,coeff2)
-        coeff=pysh.shio.SHCilmToCindex(coeff)
-        coeff=coeff[0]+coeff[1]*1j
-        return coeff[:int((self.maxdeg*(self.maxdeg+1))/2)]
+    #     '''
+    #     # convert two spherical coefficient into gaussian grid.
+    #     coeff1=np.stack((self.coeff.real,self.coeff.imag))
+    #     coeff1=pysh.shio.SHCindexToCilm(coeff1)
+    #     coeff2=np.stack((coeff2.real,coeff2.imag))
+    #     coeff2=pysh.shio.SHCindexToCilm(coeff2)
+    #     coeff=pysh.expand.SHMultiply(coeff1,coeff2)
+    #     coeff=pysh.shio.SHCilmToCindex(coeff)
+    #     coeff=coeff[0]+coeff[1]*1j
+    #     return coeff[:int((self.maxdeg*(self.maxdeg+1))/2)]
     
-    def calculate_value_at_point(self,phi,theta):
-        Y_lm=(pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[0]+pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[1]*1j)
-        return np.dot(self.coeff,Y_lm)
+    # def calculate_value_at_point(self,phi,theta):
+    #     Y_lm=(pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[0]+pysh.expand.spharm(self.maxdeg,theta,phi,packed=True)[1]*1j)
+    #     return np.dot(self.coeff,Y_lm)
     
     def save_prev(self):
         '''
-        Create a new field for the object to save the spherical coefficient at the moment of the applied function. 
+        The _`save_prev` create a new field for the object to save the spherical coefficient at the moment of the applied function. 
         This function make a clean copy of the array to avoid modification. 
     
-        Parameters : 
-             
-        See the documentation of the cited class object for more information on different parameters used in the function.
+        Attribute :
+        -----------
+            None 
         
-        Returns : 
-            
-        Added fields : 
-            prev (np.array): a copy of the self.coeff spherical coeffcient matrix of size maxdeg, maxdeg !!!! A vérifier !!!!
-
+        Returns :
+        --------- 
+            None
         '''
         if not(self.coeff is None) : # if there is spherical coefficient for this object copy these coefficient to self.prev
             self.prev=self.coeff.copy()
