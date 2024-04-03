@@ -21,8 +21,7 @@ extensions = [
     'sphinx.ext.duration',
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
-    #'sphinxcontrib.bibtex',
-    'sphinx_rtd_theme',
+    'sphinxcontrib.bibtex',
 ]
 
 bibtex_encoding = 'latin'
