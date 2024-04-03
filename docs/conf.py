@@ -22,6 +22,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinxcontrib.bibtex',
+    'sphinx_rtd_theme',
 ]
 
 bibtex_encoding = 'latin'
