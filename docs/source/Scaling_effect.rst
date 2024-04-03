@@ -1,6 +1,6 @@
 Scaling effect
 ==============
-
+modified
 Here we present a bench of test run on the code with different spatial and temporal resolution, to determine the minimal resolution needed for an application. These test are performed using VM5a Earth model and its associated ice load ICE6G :cite:`peltier_2015`. The sediment loading we used the sediment loading model developed for the Ayeyarwady delta (Henry et al., in prep). 
 
 Spatial resolution effect
