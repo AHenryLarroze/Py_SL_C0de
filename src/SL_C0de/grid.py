@@ -375,6 +375,7 @@ class TIME_GRID(GRID,sphericalobject):
                 count=np.diff(np.nonzero(Merge_time_step[1])).squeeze()
                 to_merge=np.searchsorted(Merge_time_step[0],grid_time_step[np.isin(grid_time_step,model_time_step,invert=True)].squeeze())-1
                 grd_interpolated=np.zeros((len(Merge_time_step[0])-1,d_grid_to_interp.shape[1],d_grid_to_interp.shape[2]))
+                #print(np.concatenate((d_grid_to_interp.repeat(count,axis=0),np.zeros((out,d_grid_to_interp.shape[1],d_grid_to_interp.shape[2])))).shape)
                 grd_interpolated=np.array(np.concatenate((d_grid_to_interp.repeat(count,axis=0),np.zeros((out,d_grid_to_interp.shape[1],d_grid_to_interp.shape[2]))))*np.diff(Merge_time_step[0])[:,np.newaxis,np.newaxis])
 
                 for i in range(len(to_merge)):
@@ -400,12 +401,19 @@ class TIME_GRID(GRID,sphericalobject):
                 to_merge=np.searchsorted(Merge_time_step[0],grid_time_step[np.isin(grid_time_step,model_time_step,invert=True)].squeeze())-1
                 grd_interpolated=np.zeros((len(Merge_time_step[0])-1,d_grid_to_interp.shape[1]))
                 grd_interpolated=np.array(np.concatenate((d_grid_to_interp.repeat(count,axis=0),np.zeros((out,d_grid_to_interp.shape[1]))))*np.diff(Merge_time_step[0])[:,np.newaxis])
-
-                for i in range(len(to_merge)):
+                print(type(to_merge))
+                if type(to_merge) is 'np.array' :
+                    for i in range(len(to_merge)):
+                        if backend :
+                            print('time slicing : ' + str(i))
+                        grd_interpolated[to_merge[i]-1,:]+=grd_interpolated[to_merge[i],:]
+                        grd_interpolated=np.delete(grd_interpolated,to_merge[i],0)
+                        to_merge-=1
+                else :
                     if backend :
-                        print('time slicing : ' + str(i))
-                    grd_interpolated[to_merge[i]-1,:]+=grd_interpolated[to_merge[i],:]
-                    grd_interpolated=np.delete(grd_interpolated,to_merge[i],0)
+                        print('time slicing : ' + str(0))
+                    grd_interpolated[to_merge-1,:]+=grd_interpolated[to_merge,:]
+                    grd_interpolated=np.delete(grd_interpolated,to_merge,0)
                     to_merge-=1
                 return grd_interpolated[::-1,:]
             else :

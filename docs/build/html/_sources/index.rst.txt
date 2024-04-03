@@ -25,6 +25,7 @@ Welcome to :math:`SL_{C0de}`'s documentation!
    usage
    Theory
    numerical_imp
+   Scaling_effect
    developer_guide
 
 .. bibliography::

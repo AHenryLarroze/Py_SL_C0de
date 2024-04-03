@@ -45,6 +45,8 @@ def Precomputation(ice_grid,sed_grid,topo_grid,Output_way,stop=26,step=0.5,maxde
     '''
 
     time_step=np.arange(start=stop,stop=-step,step=-step)
+    if time_step[-1]<0:
+        time_step[-1]=0
     if not(irregular_time_step is None):
         time_step=irregular_time_step
 
@@ -74,7 +76,11 @@ def Precomputation(ice_grid,sed_grid,topo_grid,Output_way,stop=26,step=0.5,maxde
     if plot :
         plot_precomputation(ice_grid['time'],ice_grid['grid'],ice_time_grid,save_way=Output_way)
         plot_precomputation(sed_grid['time'],sed_grid['grid'],sed_time_grid,area=sed_grid['frame'],lon_init=sed_grid['lon'],lat_init=sed_grid['lat'],save_way=Output_way)
-        plot_precomputation(np.array([1]),topo_grid['grid'],topo_time_grid,topo=True,save_way=Output_way)
+        colors_undersea = plt.cm.terrain(np.linspace(0, 0.17, 256))
+        colors_land = plt.cm.terrain(np.linspace(0.25, 1, 256))
+        all_colors = np.vstack((colors_undersea, colors_land))
+        terrain_map = colors.LinearSegmentedColormap.from_list('terrain_map',all_colors)
+        plot_precomputation(np.array([1]),topo_grid['grid'],topo_time_grid,topo=True,save_way=Output_way,vcenter=0,cmap=terrain_map)
 
 def SLE_forward_modeling(Input_way,ice_name,sed_name,topo_name,ocean_name,love_way,love_file,conv_lim,Output_way):
     '''
@@ -518,6 +524,27 @@ def Post_process(Input_way,sed_name,ice_name,ocean_name,topo_name,love_way):
 
         print('Oceanic sediment calculation')
         calculate_sediment_ocean_interaction(love_number,ice_time_grid,sed_time_grid,ocean_time_grid,a,Me,topo_time_grid,Output_way)
+
+def plot_model_RSL(plot,Input_way,Output_way):
+    load_time_grid=LOAD_TIME_GRID(from_file=(True,f'{Input_way}/LOAD/TOTAL_LOAD'))
+    geoid_time_grid=LOAD_TIME_GRID(from_file=(True,f'{Input_way}/LOAD/TOTAL_GEOID'))
+    dESL=calculate_dESL(Input_way)
+    load_time_grid.height_time_coeff=(geoid_time_grid.viscuous_deformation+geoid_time_grid.elastic_deformation-load_time_grid.viscuous_deformation-load_time_grid.elastic_deformation)*dESL[2:,np.newaxis].repeat(load_time_grid.viscuous_deformation.shape[1],axis=1)
+    time_grid=load_time_grid
+    if plot['plot']:
+        if len(plot['frames'])>0 :
+            fig,ax=plt.subplots(len(plot['frames'])*len(plot['times']),1,figsize=(29.7,10*len(plot['frames'])*len(plot['times'])),subplot_kw={'projection': ccrs.PlateCarree(), "aspect": 1})
+            k=0
+            for i_time in range(len(plot['times'])):
+                for i_frame in range(len(plot['frames'])):
+                    axes=ax[k]
+                    time=plot['times'][i_time]
+                    central_longitude=0
+                    #ax_total  = plt.subplot(subplot_size+i_time*3+1, projection=ccrs.PlateCarree(central_longitude=central_longitude))
+                    ax_total=plot_load_frame(axes,time_grid,plot['frames'][i_frame],time,plot['frames_resolution'][i_frame],name=f'RSL',vmin=plot['frames_min_max'][i_frame][0],vmax=plot['frames_min_max'][i_frame][1])
+                    k+=1
+        plt.close(fig)
+        fig.savefig(f'{Output_way}/RSL.pdf')
 
 def plot_model_result_map(Input_way,plot):
     '''
@@ -996,7 +1023,7 @@ import cartopy.crs as ccrs
 from matplotlib import cm
 import matplotlib.colors as colors
 
-def plot_precomputation(initial_time_step,initial_grid,precomputed_grid,selected_time=1,area=None,save_way='',lon_init=None,lat_init=None,topo=False,vmin=None,vmax=None):
+def plot_precomputation(initial_time_step,initial_grid,precomputed_grid,selected_time=1,area=None,save_way='',lon_init=None,lat_init=None,topo=False,vmin=None,vmax=None,vcenter=0,cmap=cm.get_cmap('bwr', 255)):
     '''
     The _`plot_precomputation` function plot the output of the precomputation as the ice, sediment and totpography. These plot allow you to compare the entry and the output to be sure there is no errors.
     
@@ -1022,8 +1049,6 @@ def plot_precomputation(initial_time_step,initial_grid,precomputed_grid,selected
     '''
     our_ind=np.where((precomputed_grid.time_step-selected_time)==0)[0][0]
     in_ind=np.where((initial_time_step-selected_time)==0)[0][0]
-
-    cmap=cm.get_cmap('bwr', 255)
     alpha_ocean=0
     coast_line_width=0.5
     norm1 = colors.TwoSlopeNorm(vmin=-0.1,vmax=None,vcenter=0)
@@ -1031,7 +1056,7 @@ def plot_precomputation(initial_time_step,initial_grid,precomputed_grid,selected
 
     # plot the initial data
 
-    norm = colors.TwoSlopeNorm(vmin=vmin,vmax=vmax,vcenter=0)
+    norm = colors.TwoSlopeNorm(vmin=vmin,vmax=vmax,vcenter=vcenter)
 
     if area is None :
         ax_init  = plt.subplot(121, projection=ccrs.Mollweide())
@@ -1129,7 +1154,7 @@ import matplotlib.colors as colors
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_load_frame(ax,data,frame,time,resolution,name,add_contour=None,vmin=None,vmax=None,vcenter=0,contour=None,color=None):
+def plot_load_frame(ax,data,frame,time,resolution,name,add_contour=None,vmin=None,vmax=None,vcenter=0,contour=[None],color=None):
     '''
     The _`plot_load_frame` function plot the data in entry into a defined frame following different arguments fro the plot.
     
@@ -1181,8 +1206,9 @@ def plot_load_frame(ax,data,frame,time,resolution,name,add_contour=None,vmin=Non
 
     alpha_ocean=0
     coast_line_width=0.5
-    #cmap=cm.get_cmap('rainbow', 100)
-    cmap=mpl.colors.LinearSegmentedColormap.from_list('hsv_2',mpl.colormaps['hsv_r'].resampled(255)(range(255))[20:-20],gamma=1.0)
+    cmap=cm.get_cmap('bwr', 100)
+    #cmap=mpl.colors.LinearSegmentedColormap.from_list('hsv_2',mpl.colormaps['hsv_r'].resampled(255)(range(255))[20:-20],gamma=1.0)
+    
     if not(color is None):
         cmap=None
 
@@ -1199,7 +1225,7 @@ def plot_load_frame(ax,data,frame,time,resolution,name,add_contour=None,vmin=Non
     ax.set_extent(frame)
     #ax.set_global()
     if contour[0] is None :
-        m2 = ax.contourf(lon,lat,grid,origin='lower', transform=ccrs.PlateCarree(central_longitude=0),extent=frame, zorder=0, cmap=cmap,colors=color,norm=norm)
+        m2 = ax.contourf(lon,lat,grid,levels=50,origin='lower', transform=ccrs.PlateCarree(central_longitude=0),extent=frame, zorder=0, cmap=cmap,colors=color,norm=norm)
     else :
         m2 = ax.contourf(lon,lat,grid,levels=contour,origin='lower', transform=ccrs.PlateCarree(central_longitude=0),extent=frame, zorder=0, cmap=cmap,colors=color,norm=norm)
     if not(add_contour is None):

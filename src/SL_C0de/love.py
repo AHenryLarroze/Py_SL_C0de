@@ -103,7 +103,7 @@ class LOVE(object):
         Me : float
             The earth mass.
         type : str
-            The type of love number in input. could be 'time' or 'normal, where 'time' is for love numbers from ALMA3 code and 'normal' is for love number in normale mode from MIT serveur. Default is 'time'.
+            The type of love number in input. could be 'time', 'normal' or 'spectral', where 'time' is for love numbers from ALMA3 code, 'normal' is for love number in normale mode from MIT server and 'spectral' is the frequential decomposition of the Love numbers available in ALMA3. Default is 'time'.
     
     Methods
     -------
@@ -115,7 +115,7 @@ class LOVE(object):
             This method is used to clean the memory of your computer. 
 
     """
-    def __init__(self,maxdeg,way,time_step,a,Me,type='time'):
+    def __init__(self,maxdeg,way,time_step,a,Me,type='time',T=None):
         """
     Parameters
     ----------
@@ -275,6 +275,36 @@ class LOVE(object):
             self.beta_konly_l[t_it-1]=beta_konly_l_int
             self.beta_G_konly_l[t_it-1]=beta_G_konly_l_int
             self.beta_R_konly_l[t_it-1]=beta_R_konly_l_int
+        elif type is 'spectral':
+            self.h=np.loadtxt(way+'/h_ve.dat',unpack=True)[:,:maxdeg]
+            self.h=self.h[1,:]+self.h[2,:]*1j
+            self.k=np.loadtxt(way+'/k_ve.dat',unpack=True)[:,:maxdeg]
+            self.k=self.k[1,:]+self.k[2,:]*1j
+            self.h_e=np.loadtxt(way+'/h_e.dat',unpack=True)[1,:maxdeg]
+            self.k_e=np.loadtxt(way+'/k_e.dat',unpack=True)[1,:maxdeg]
+            self.h_e[0]=0
+            self.k_e[0]=0
+            # self.h_e=np.abs(self.h)*np.exp(np.imag(self.h)/np.real(self.h))#-np.loadtxt(way+'/k_e.dat',unpack=True)[1,:maxdeg]
+            # self.k_e=np.abs(self.k)*np.exp(np.imag(self.k)/np.real(self.k))#-np.loadtxt(way+'/k_e.dat',unpack=True)[1,:maxdeg]
+            time_diff=np.repeat(self.time_step[::-1,np.newaxis],self.time_step_number,axis=1)-np.repeat(self.time_step[::-1,np.newaxis],self.time_step_number,axis=1).T
+            time_diff[time_diff<0]=0
+            # self.beta_R_l=np.repeat(np.repeat(self.h[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)*np.exp(1j*2*np.pi/T*np.repeat(time_diff[:,:,np.newaxis],self.h.shape[0],axis=2))#-np.repeat(np.repeat(self.h_e[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)
+            # self.beta_G_l=np.repeat(np.repeat(self.k[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)*np.exp(1j*2*np.pi/T*np.repeat(time_diff[:,:,np.newaxis],self.k.shape[0],axis=2))#-np.repeat(np.repeat(self.k_e[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)
+            # self.beta_R_l=np.real(np.repeat(np.repeat(self.h[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)*np.exp(1j*2*np.pi/T*np.repeat(time_diff[:,:,np.newaxis],self.h.shape[0],axis=2)))#-np.repeat(np.repeat(self.h_e[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)
+            # self.beta_G_l=np.real(np.repeat(np.repeat(self.k[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)*np.exp(1j*2*np.pi/T*np.repeat(time_diff[:,:,np.newaxis],self.k.shape[0],axis=2)))#-np.repeat(np.repeat(self.k_e[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)
+
+            Phi=np.imag(np.repeat(np.repeat(self.h[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0))/np.real(np.repeat(np.repeat(self.h[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0))
+
+
+            self.beta_R_l=np.real(np.abs(np.repeat(np.repeat(self.h[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0))*np.exp(1j*2*np.pi/T*np.repeat(time_diff[:,:,np.newaxis],self.h.shape[0],axis=2)+Phi))-np.repeat(np.repeat(self.h_e[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)-np.abs(self.h)*np.exp(np.imag(self.h)/np.real(self.h))
+
+            self.beta_G_l=np.real(np.repeat(np.repeat(self.k[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)*np.exp(1j*2*np.pi/T*np.repeat(time_diff[:,:,np.newaxis],self.k.shape[0],axis=2)+Phi))-np.repeat(np.repeat(self.k_e[np.newaxis,:],self.time_step_number,axis=0)[np.newaxis,:,:],self.time_step_number,axis=0)-np.abs(self.k)*np.exp(np.imag(self.k)/np.real(self.k))
+
+            self.beta_G_l[0,:,0]=0
+            self.beta_G_l[0,0,:]=0
+            self.beta_l=self.beta_G_l-self.beta_R_l
+            calc_beta_counter(self,maxdeg)
+
 
     def dev_beta(self,applied='beta'):
         '''
