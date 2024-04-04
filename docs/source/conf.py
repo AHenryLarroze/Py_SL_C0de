@@ -7,12 +7,12 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 import sys, os
-sys.path.insert(0, 'slcode/')
+# sys.path.insert(0, 'slcode/')
 
 project = 'SL_C0de'
-copyright = '2023, HENRY Adrien'
+copyright = '2024, HENRY Adrien'
 author = 'HENRY Adrien'
-release = '0.4.0'
+release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
