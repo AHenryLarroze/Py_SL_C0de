@@ -13,7 +13,8 @@ INSTALL_REQUIRES = [
     "scipy",
     "stripy",
     "netcdf4",
-]
+    "Cartopy",
+    ]
 
 # INSTALL_REQUIRES = [
 #     "joblib==1.2.0",
