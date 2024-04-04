@@ -4,9 +4,9 @@ SEDIMENT_TIME_GRID
 **CLASS**
 ^^^^^^^^^
 
-.. autoclass:: SL_C0de.grid.SEDIMENT_TIME_GRID
+.. autoclass:: slcode.grid.SEDIMENT_TIME_GRID
 
 **METHODS**
 ^^^^^^^^^^^
 
-.. autofunction:: SL_C0de.grid.SEDIMENT_TIME_GRID.save
+.. autofunction:: slcode.grid.SEDIMENT_TIME_GRID.save

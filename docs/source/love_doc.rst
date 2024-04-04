@@ -6,32 +6,32 @@ This module is used to manage the love numbers for the earth deformation calcula
 **Functions**
 ^^^^^^^^^^^^^
 
-.. autofunction:: SL_C0de.love.love_lm
+.. autofunction:: slcode.love.love_lm
 
 ----
 
-.. autofunction:: SL_C0de.love.get_tlm
+.. autofunction:: slcode.love.get_tlm
 
 ----
 
-.. autofunction:: SL_C0de.love.calc_beta_counter
+.. autofunction:: slcode.love.calc_beta_counter
 
 ----
 
 **CLASS**
 ^^^^^^^^^
 
-.. autoclass:: SL_C0de.love.LOVE
+.. autoclass:: slcode.love.LOVE
 
 **Methods**
 ^^^^^^^^^^^
 
-.. autofunction:: SL_C0de.love.LOVE.dev_beta
+.. autofunction:: slcode.love.LOVE.dev_beta
 
 ----
 
-.. autofunction:: SL_C0de.love.LOVE.dev_beta_tide
+.. autofunction:: slcode.love.LOVE.dev_beta_tide
 
 ----
 
-.. autofunction:: SL_C0de.love.LOVE.clean_memory
+.. autofunction:: slcode.love.LOVE.clean_memory

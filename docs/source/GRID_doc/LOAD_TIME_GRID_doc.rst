@@ -3,27 +3,27 @@ LOAD_TIME_GRID
 
 **CLASS**
 ^^^^^^^^^
-.. autoclass:: SL_C0de.grid.LOAD_TIME_GRID
+.. autoclass:: slcode.grid.LOAD_TIME_GRID
 
 **Methods**
 ^^^^^^^^^^^
 
-.. autofunction:: SL_C0de.grid.LOAD_TIME_GRID.calc_viscuous
+.. autofunction:: slcode.grid.LOAD_TIME_GRID.calc_viscuous
 
 ----
 
-.. autofunction:: SL_C0de.grid.LOAD_TIME_GRID.calc_viscuous_time
+.. autofunction:: slcode.grid.LOAD_TIME_GRID.calc_viscuous_time
 
 ----
 
-.. autofunction:: SL_C0de.grid.LOAD_TIME_GRID.calc_elastic_time
+.. autofunction:: slcode.grid.LOAD_TIME_GRID.calc_elastic_time
 
 ----
 
-.. autofunction:: SL_C0de.grid.LOAD_TIME_GRID.save
+.. autofunction:: slcode.grid.LOAD_TIME_GRID.save
 
 ----
 
-.. autofunction:: SL_C0de.grid.LOAD_TIME_GRID.clean_memory
+.. autofunction:: slcode.grid.LOAD_TIME_GRID.clean_memory
 
 

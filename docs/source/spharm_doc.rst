@@ -4,26 +4,26 @@ spharm
 **Functions**
 ^^^^^^^^^^^^^
 
-.. autofunction:: SL_C0de.spharm.get_coeffs
+.. autofunction:: slcode.spharm.get_coeffs
 
 **CLASS**
 ^^^^^^^^^
 
-.. autoclass:: SL_C0de.spharm.sphericalobject
+.. autoclass:: slcode.spharm.sphericalobject
 
 **Methods**
 ^^^^^^^^^^^
 
-.. autofunction:: SL_C0de.spharm.sphericalobject.grdtocoeff
+.. autofunction:: slcode.spharm.sphericalobject.grdtocoeff
 
 ----
 
-.. autofunction:: SL_C0de.spharm.sphericalobject.coefftogrd
+.. autofunction:: slcode.spharm.sphericalobject.coefftogrd
 
 ----
 
-.. autofunction:: SL_C0de.spharm.sphericalobject.coefftogrdhd
+.. autofunction:: slcode.spharm.sphericalobject.coefftogrdhd
 
 ----
 
-.. autofunction:: SL_C0de.spharm.sphericalobject.save_prev
+.. autofunction:: slcode.spharm.sphericalobject.save_prev
