@@ -40,6 +40,6 @@ setuptools.setup(
     # Requirements
     install_requires=INSTALL_REQUIRES,
     packages=["slcode"],
-    long_description=open("README.rst").read(),
+    long_description=open("Readme.md").read(),
     long_description_content_type="text/markdown",
 )
