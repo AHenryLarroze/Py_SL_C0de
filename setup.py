@@ -1,6 +1,6 @@
 import setuptools
 
-VERSION = "1.0.0"  # PEP-440
+VERSION = "1.0.1"  # PEP-440
 
 NAME = "slcode"
 
