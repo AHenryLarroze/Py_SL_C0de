@@ -5,27 +5,16 @@ VERSION = "1.0.1"  # PEP-440
 NAME = "slcode"
 
 INSTALL_REQUIRES = [
-    "joblib",
-    "matplotlib",
-    "numpy",
-    "plotly",
-    "pyshtools",
-    "scipy",
-    "stripy",
-    "netcdf4",
+    "joblib==1.2.0",
+    "matplotlib==3.7.0",
+    "numpy==1.24.2",
+    "plotly==5.13.0",
+    "pyshtools==4.10.1",
+    "scipy==1.10.0",
+    "stripy==2.2",
+    "netcdf4==1.6.2",
     "Cartopy",
-    ]
-
-# INSTALL_REQUIRES = [
-#     "joblib==1.2.0",
-#     "matplotlib==3.7.0",
-#     "numpy==1.24.2",
-#     "plotly==5.13.0",
-#     "pyshtools==4.10.1",
-#     "scipy==1.10.0",
-#     "stripy==2.2",
-#     "netcdf4==1.6.2",
-# ]
+]
 
 
 
