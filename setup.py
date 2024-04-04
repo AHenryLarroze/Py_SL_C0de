@@ -5,15 +5,27 @@ VERSION = "1.0.0"  # PEP-440
 NAME = "slcode"
 
 INSTALL_REQUIRES = [
-    "joblib==1.2.0",
-    "matplotlib==3.7.0",
-    "numpy==1.24.2",
-    "plotly==5.13.0",
-    "pyshtools==4.10.1",
-    "scipy==1.10.0",
-    "stripy==2.2",
-    "netcdf4==1.6.2",
+    "joblib",
+    "matplotlib",
+    "numpy",
+    "plotly",
+    "pyshtools",
+    "scipy",
+    "stripy",
+    "netcdf4",
 ]
+
+# INSTALL_REQUIRES = [
+#     "joblib==1.2.0",
+#     "matplotlib==3.7.0",
+#     "numpy==1.24.2",
+#     "plotly==5.13.0",
+#     "pyshtools==4.10.1",
+#     "scipy==1.10.0",
+#     "stripy==2.2",
+#     "netcdf4==1.6.2",
+# ]
+
 
 
 setuptools.setup(
@@ -33,7 +45,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     # Snowpark requires Python 3.8
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     # Requirements
     install_requires=INSTALL_REQUIRES,
     packages=["slcode"],
