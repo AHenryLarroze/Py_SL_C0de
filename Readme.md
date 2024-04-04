@@ -12,18 +12,10 @@
     $ conda create -n SL_C0de 
     $ conda activate SL_C0de
     $ conda install pip      
-    $ pip install -i https://test.pypi.org/simple/ --no-deps slcode==0.4.1
-```
-
-### install requirements : 
-
-```
-    $ pip install -r requirements
-    $ conda install cartopy
+    $ conda install python==3.11
+    $ pip install slcode
 ```
 
 ## Easy use : 
 
 Download the /Data file and the /script/SL_C0de_run.ipynb
-
-require panda
