@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 import sys, os
-sys.path.insert(0, os.path.abspath('C:/Users/ahenry01/Desktop/Python_code/SL_C0de_lib_0_4_0/src'))
+# sys.path.insert(0, os.path.abspath('/slcode'))
 
 project = 'SL_C0de'
 copyright = '2023, HENRY Adrien'
