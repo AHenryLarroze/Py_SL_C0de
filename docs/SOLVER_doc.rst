@@ -4,7 +4,7 @@ SOLVER
 **Functions**
 ^^^^^^^^^^^^^
 
-.. autofunction:: SL_C0de.SOLVER.Precomputation
+.. autofunction:: slcode.SOLVER.Precomputation
 
 ----
 
