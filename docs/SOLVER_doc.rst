@@ -1,9 +1,6 @@
 SOLVER
 ======
 
-.. note::
-    The entire functions used here must be verified before publication of the code. They have not been tested yet. 
-
 **Functions**
 ^^^^^^^^^^^^^
 
