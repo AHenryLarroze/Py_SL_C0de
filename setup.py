@@ -11,11 +11,8 @@ INSTALL_REQUIRES = [
     "plotly==5.13.0",
     "pyshtools==4.10.1",
     "scipy==1.10.0",
-    "sphinx_rtd_theme==1.2.0",
-    "tomli==2.0.1",
     "stripy==2.2",
     "netcdf4==1.6.2",
-    "jupyter==1.0.0",
 ]
 
 
